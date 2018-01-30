@@ -3,4 +3,5 @@
     <string name="testing">Testing!</string>
     <string name="open_map">Open Map</string>
     <string name="test123">Test123</string>
+    <string name="background_water_texture_for_the_string_open_map">background water texture for the @string/open_map</string>
 </resources>
