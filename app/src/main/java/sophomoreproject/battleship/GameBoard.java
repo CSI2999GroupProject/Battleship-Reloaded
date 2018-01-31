@@ -63,6 +63,7 @@ public class GameBoard {
         position = new int[rows][col];
         markMiss(position);
     }
+
     /**
      * sets up rows
      * */
