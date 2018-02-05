@@ -1,7 +1,5 @@
 package sophomoreproject.battleship.ships;
 
-import sophomoreproject.battleship.ShipInterface;
-
 /**
  * Created by isaac on 1/31/2018.
  */
