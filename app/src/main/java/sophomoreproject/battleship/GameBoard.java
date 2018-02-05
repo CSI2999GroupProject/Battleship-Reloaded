@@ -1,7 +1,6 @@
 package sophomoreproject.battleship;
 
 import sophomoreproject.battleship.ships.Ship;
-import sophomoreproject.battleship.ships.GameBoardInterface;
 
 /**
  * Created by isaac on 1/31/2018.
