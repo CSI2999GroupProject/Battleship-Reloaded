@@ -35,4 +35,17 @@ public class Ship {
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getShipSize() {
+        return shipSize;
+    }
+
+    public void setShipSize(int shipSize) {
+        this.shipSize = shipSize;
+    }
+
 }

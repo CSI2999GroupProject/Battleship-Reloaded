@@ -1,12 +1,12 @@
 package sophomoreproject.battleship;
 
 import sophomoreproject.battleship.ships.Ship;
-import sophomoreproject.battleship.ships.ShipInterface;
+import sophomoreproject.battleship.ships.GameBoardInterface;
 
 /**
  * Created by isaac on 1/31/2018.
  */
-public class GameBoard implements ShipInterface {
+public class GameBoard implements GameBoardInterface {
 
     private Ship[][] board;
     private int boardRows;
@@ -38,10 +38,40 @@ public class GameBoard implements ShipInterface {
 
     /**
      * A method to add a ship to the board
+     *
+     * Still needs checks on the boundaries of the array
+     *
+     * Will be updated when user input is available
      */
     @Override
-    public void addShip(Ship aShip) {
-        //Your implementation here
+    public void addShip(Ship aShip, int xPos, int yPos) {
+        int shipSize = aShip.getShipSize();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        if (shipSize > 1) {
+            if (isHorizontal) {
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos][xPos - i] = aShip;
+                    }
+                } else {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos][xPos + i] = aShip;
+                    }
+                }
+            } else if (!isHorizontal) {
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos - i][xPos] = aShip;
+                    }
+                } else {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos + i][xPos] = aShip;
+                    }
+                }
+            }
+        }
     }
 
     /**
