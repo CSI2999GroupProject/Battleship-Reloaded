@@ -70,6 +70,8 @@ public class GameBoard implements GameBoardInterface {
                     }
                 }
             }
+        } else {
+            board[yPos][xPos] = aShip;
         }
     }
 
