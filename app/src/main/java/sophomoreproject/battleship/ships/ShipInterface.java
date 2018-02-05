@@ -1,4 +1,4 @@
-package sophomoreproject.battleship;
+package sophomoreproject.battleship.ships;
 
 /**
  * Created by isaac on 2/5/2018.

@@ -1,4 +1,6 @@
-package sophomoreproject.battleship.ships;
+package sophomoreproject.battleship;
+
+import sophomoreproject.battleship.ships.Ship;
 
 /**
  * Created by isaac on 1/31/2018.
