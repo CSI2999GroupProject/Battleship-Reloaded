@@ -15,6 +15,11 @@ public class Ship {
     private String name;
     private boolean isHorizontal;
     private boolean direction;
+<<<<<<< HEAD
+=======
+    private int rowCoord;
+    private int columnCoord;
+>>>>>>> origin/master
 
     public boolean getHorizontal() {
         return isHorizontal;
@@ -48,4 +53,22 @@ public class Ship {
         this.shipSize = shipSize;
     }
 
+<<<<<<< HEAD
+=======
+    public int getRowCoord() {
+        return rowCoord;
+    }
+
+    public void setRowCoord(int rowCoord) {
+        this.rowCoord = rowCoord;
+    }
+
+    public int getColumnCoord() {
+        return columnCoord;
+    }
+
+    public void setColumnCoord(int columnCoord) {
+        this.columnCoord = columnCoord;
+    }
+>>>>>>> origin/master
 }
