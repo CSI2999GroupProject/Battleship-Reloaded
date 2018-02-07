@@ -1,125 +1,87 @@
 package sophomoreproject.battleship;
+import sophomoreproject.battleship.ships.Ship;
 /**
- * Created by ZJ on 1/24/2018.
+ * Created by isaac on 1/31/2018.
  */
-public class GameBoard {
+public class GameBoard implements GameBoardInterface {
+    private Ship[][] board;
+    private int boardRows;
+    private int boardColumns;
+    private static final int DEFAULT_ROWS = 16;
+    private static final int DEFAULT_COLUMNS = 24;
+    public GameBoard() {
+        boardRows = DEFAULT_ROWS;
+        boardColumns = DEFAULT_COLUMNS;
+        board = new Ship[boardRows][boardColumns];
+    }
+    public int getBoardRows() {
+        return boardRows;
+    }
+    public void setBoardRows(int boardRows) {
+        this.boardRows = boardRows;
+    }
+
+    public int getBoardColumns() {
+        return boardColumns;
+    }
+
+    public void setBoardColumns(int boardColumns) {
+        this.boardColumns = boardColumns;
+    }
+
     /**
-     * @para position marks the location of the ships
-     * @para score keeps tracks of the points of the players
-     * @para rows there will be 16 rows
-     * @para col there will be 24 columns
+     * A method to add a ship to the board
+     *
+     * Still needs checks on the boundaries of the array
+     *
+     * Will be updated when user input is available
      */
-    private int[][] grid = new int[16][24];
-    private int[][] position;
-    public int score = 0;
-    //public static final int UnGuessed=0;
-    public static final int Hit=1;
-    public static final int Missed=2;
-    public int rows = 16;
-    public int col = 24;
-    private int status;
-    /*
-    public GameBoard() throws IllegalAccessException {
-        if(rows > 16){
-            throw new IllegalAccessException("ERROR!");
-        }
-        status=0;
-        position = new Location[rows][col];
-        for(int rows = 0; rows<position.length; rows++){
-            for(int col = 0; col < position[rows].length; col++){
-                Location mark = position[rows][col];
+    @Override
+    public void addShip(Ship aShip, int xPos, int yPos) {
+        int shipSize = aShip.getShipSize();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        if (shipSize > 1) {
+            if (isHorizontal) {
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos][xPos - i] = aShip;
+                    }
+                } else {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos][xPos + i] = aShip;
+                    }
+                }
+            } else if (!isHorizontal) {
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos - i][xPos] = aShip;
+                    }
+                } else {
+                    for (int i = 0; i < shipSize; i++) {
+                        board[yPos + i][xPos] = aShip;
+                    }
+                }
             }
+        } else {
+            board[yPos][xPos] = aShip;
         }
-    }
-    */
-    public boolean checkHit(){
-        if(status==Hit)
-            return true;
-        else
-            return false;
-    }
-    public boolean checkMiss(){
-        if(status==Missed)
-            return true;
-        else
-            return false;
-    }
-    /**
-     * if hit score will go up one
-     * @param rows the number of rows on the gameboard
-     * @param col the number of col on the gameboard
-     */
-    public void Hit(int rows, int col){
-        position=new int[rows][col];
-        markHit(position);
-        score++;
-    }
-    /**
-     * if misses score will not change
-     * @param rows the number of rows on the gameboard
-     * @param col the number of col on the gameboard
-     */
-    public void Miss(int rows, int col){
-        position = new int[rows][col];
-        markMiss(position);
     }
 
     /**
-     * sets up rows
-     * */
-    public void setRows(int row)
-    {
-        this.rows=row;
+     * A method to move the ships in the board
+     */
+    @Override
+    public void move() {
+        //Your implementation here
     }
-    /**
-     * return rows
-     * */
-    public int getRows()
-    {
-        return rows;
-    }
-    /**
-     * set up columns
-     * */
-    public void setCol(int col){
-        this.col=col;
-    }
-    /**
-     * return columns
-     * */
-    public int getCol(){
-        return col;
-    }
-    public void setStatus(int row, int col){
-        position=new int[row][col];
-    }
-    public void Status(int status){
-        if(status == Hit ){
 
-        }else if (status==Missed){
-            
-        }
-    }
-    public int[][] getStatus(){
-        return position;
-    }
-    public void markHit(int[][] position){
-        Status(Hit);
-    }
-    public void markMiss(int[][] position){
-        Status(Missed);
-    }
     /**
-     * return whether the position is going to be guessed or not
-     * */
-   /* public boolean GuessedOrNot(int[][] position){
-        return !isUnguessed(position);
+     * A method to rotate the ships in the board
+     */
+    @Override
+    public void rotate() {
+        //Your implementation here
     }
-    public boolean isUnguessed(int[][] position){
-        if(status==Hit || status==Missed;){
-            return true;
-        }
-        else
-            return false;
-    }*/
 }
