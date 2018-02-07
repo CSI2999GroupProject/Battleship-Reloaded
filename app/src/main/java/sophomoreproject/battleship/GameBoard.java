@@ -1,6 +1,7 @@
 package sophomoreproject.battleship;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import sophomoreproject.battleship.ships.Ship;
 
@@ -105,5 +106,16 @@ public class GameBoard implements GameBoardInterface {
         //Your implementation here
     }
 
+    public int shipCount() {
+        int count = 0;
+        if (shipSet.isEmpty()) {
+            return 0;
+        }
+        Iterator<Ship> shipIterator = shipSet.iterator();
+        while(shipIterator.hasNext()) {
+            count++;
+        }
+        return count;
+    }
 
 }
