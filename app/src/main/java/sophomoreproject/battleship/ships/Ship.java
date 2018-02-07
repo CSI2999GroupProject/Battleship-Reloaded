@@ -15,6 +15,8 @@ public class Ship {
     private String name;
     private boolean isHorizontal;
     private boolean direction;
+    private int rowCoord;
+    private int columnCoord;
 
     public boolean getHorizontal() {
         return isHorizontal;
@@ -48,4 +50,19 @@ public class Ship {
         this.shipSize = shipSize;
     }
 
+    public int getRowCoord() {
+        return rowCoord;
+    }
+
+    public void setRowCoord(int rowCoord) {
+        this.rowCoord = rowCoord;
+    }
+
+    public int getColumnCoord() {
+        return columnCoord;
+    }
+
+    public void setColumnCoord(int columnCoord) {
+        this.columnCoord = columnCoord;
+    }
 }
