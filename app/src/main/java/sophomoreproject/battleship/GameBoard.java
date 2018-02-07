@@ -85,13 +85,16 @@ public class GameBoard implements GameBoardInterface {
         } else {
             board[yPos][xPos] = aShip;
         }
-        shipSet.add(aShip);
+
         aShip.setRowCoord(yPos);
         aShip.setColumnCoord(xPos);
+        shipSet.add(aShip);
     }
 
     /**
-     * A method to move the ships in the board
+     * A method to move the ships in the board.
+     *
+     *
      */
     @Override
     public void move() {
@@ -106,6 +109,10 @@ public class GameBoard implements GameBoardInterface {
         //Your implementation here
     }
 
+    /**
+     * Gets the amount of ships in the shipSet
+     * @return int count is the amount of ships
+     */
     public int shipCount() {
         int count = 0;
         if (shipSet.isEmpty()) {
@@ -118,4 +125,18 @@ public class GameBoard implements GameBoardInterface {
         return count;
     }
 
+    /**
+     * Note: If you change the variables of an object, they do not get updated automatically.
+     *       HashSets are unordered, so it's easy enough to remove the object from the set and add it back
+     *       with its updated variables.
+     *
+     * Use this method when you modify a ship that is currently on the board
+     * @param targetShip the Ship from the shipSet to be updated
+     */
+    public void updateShipInSet(Ship targetShip) {
+        if(shipSet.contains(targetShip)) {
+            shipSet.remove(targetShip);
+            shipSet.add(targetShip);
+        }
+    }
 }
