@@ -13,7 +13,7 @@ public class Debug extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //setContentView(new GamePanel(this));
+        setContentView(new GamePanel(this));
     }
 
 
