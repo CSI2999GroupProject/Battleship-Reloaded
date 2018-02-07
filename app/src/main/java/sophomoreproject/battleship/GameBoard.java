@@ -1,7 +1,5 @@
 package sophomoreproject.battleship;
 
-import java.util.HashSet;
-
 import sophomoreproject.battleship.ships.Ship;
 
 /**
@@ -14,13 +12,11 @@ public class GameBoard implements GameBoardInterface {
     private int boardColumns;
     private static final int DEFAULT_ROWS = 16;
     private static final int DEFAULT_COLUMNS = 24;
-    private HashSet<Ship> shipSet;
 
     public GameBoard() {
         boardRows = DEFAULT_ROWS;
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
-        shipSet = new HashSet<Ship>();
     }
 
     public int getBoardRows() {
@@ -39,15 +35,8 @@ public class GameBoard implements GameBoardInterface {
         this.boardColumns = boardColumns;
     }
 
-    public HashSet<Ship> getShipSet() {
-        return shipSet;
-    }
-
     /**
-     * A method to add a ship to the board. If the shipSize is greater than 1, then depending on the direction of the Ship,
-     * the Ship[][] will add multiple of the same object in the corresponding spot.
-     *
-     * After it adds the ship to board, it adds the front of the ship to the HashSet shipSet and sets the Ship's coordinates.
+     * A method to add a ship to the board
      *
      * Still needs checks on the boundaries of the array
      *
@@ -84,9 +73,6 @@ public class GameBoard implements GameBoardInterface {
         } else {
             board[yPos][xPos] = aShip;
         }
-        shipSet.add(aShip);
-        aShip.setRowCoord(yPos);
-        aShip.setColumnCoord(xPos);
     }
 
     /**
@@ -104,6 +90,4 @@ public class GameBoard implements GameBoardInterface {
     public void rotate() {
         //Your implementation here
     }
-
-
 }
