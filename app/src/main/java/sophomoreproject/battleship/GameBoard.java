@@ -50,9 +50,6 @@ public class GameBoard implements GameBoardInterface {
      *
      * After it adds the ship to board, it adds the front of the ship to the HashSet shipSet and sets the Ship's coordinates.
      *
-     * Still needs checks on the boundaries of the array
-     *
-     * Will be updated when user input is available
      */
     @Override
     public void addShip(Ship aShip, int xPos, int yPos) {
@@ -60,34 +57,55 @@ public class GameBoard implements GameBoardInterface {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
 
+        if (xPos < 0 || yPos < 0) {
+            throw new IllegalArgumentException("There is no negative position on the board");
+        }
+        if (xPos > boardColumns || yPos > boardRows) {
+            throw new IllegalArgumentException("Can't place a ship beyond the board's boundaries");
+        }
+        if (!checkIndexBoundaries(aShip)) {
+            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
+        }
+        if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
+            throw new IllegalStateException("There is already a ship there");
+        }
+
+        aShip.setRowCoord(yPos);
+        aShip.setColumnCoord(xPos);
+
         if (shipSize > 1) {
             if (isHorizontal) {
                 if (direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos][xPos - i] = aShip;
+                        if(board[yPos][xPos - i] == null) {
+                            board[yPos][xPos - i] = aShip;
+                        }
                     }
-                } else {
+                } else if (!direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos][xPos + i] = aShip;
+                        if(board[yPos][xPos + i] == null) {
+                            board[yPos][xPos + i] = aShip;
+                        }
                     }
                 }
             } else if (!isHorizontal) {
                 if (direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos - i][xPos] = aShip;
+                        if (board[yPos - i][xPos] == null) {
+                            board[yPos - i][xPos] = aShip;
+                        }
                     }
                 } else {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos + i][xPos] = aShip;
+                        if (board[yPos + i][xPos] == null) {
+                            board[yPos + i][xPos] = aShip;
+                        }
                     }
                 }
             }
         } else {
             board[yPos][xPos] = aShip;
         }
-
-        aShip.setRowCoord(yPos);
-        aShip.setColumnCoord(xPos);
         shipSet.add(aShip);
     }
 
@@ -101,13 +119,85 @@ public class GameBoard implements GameBoardInterface {
         //Your implementation here
     }
 
+    @Override
+    public void rotateLeft() {
+
+    }
+
+    @Override
+    public void rotateRight() {
+
+    }
+
     /**
-     * A method to rotate the ships in the board
+     * A boolean that checks if the area around the ship would go outside the index of the board.
+     * @return true if it does not go outside the index of the board. false if it would.
      */
     @Override
-    public void rotate() {
-        //Your implementation here
+    public boolean checkIndexBoundaries(Ship aShip) {
+        int shipSize = aShip.getShipSize();
+        int shipX = aShip.getColumnCoord();
+        int shipY = aShip.getRowCoord();
+
+        if (shipY - (shipSize - 1) < 0) {
+            return false;
+        }
+        if (shipY + (shipSize - 1) > boardRows) {
+            return false;
+        }
+        if (shipX - (shipSize - 1) < 0) {
+            return false;
+        }
+        if (shipX + (shipSize - 1) > boardColumns) {
+            return false;
+        }
+        return true;
     }
+
+    /**
+     * A method that checks the board to see if there is a ship or not where you would want to place a ship
+     * @param shipSize The size of the ship
+     * @param startX The column position of the front of the ship
+     * @param startY The row position of the front of the ship
+     * @param isHorizontal The way the ship is facing
+     * @param direction Left or Right if it's horizontal, Up or Down if it's vertical
+     * @return counter, the amount of nulls in the board of where the ship would take a spot.
+     */
+    @Override
+    public int nullCountOfShipSize(int shipSize, int startX, int startY, boolean isHorizontal, boolean direction) {
+        int counter = 0;
+        if(isHorizontal) {
+            if (direction) {
+                for (int i = 0; i < shipSize; i++) {
+                    if (board[startY][startX - i] == null) {
+                        counter++;
+                    }
+                }
+            } else if(!direction) {
+                for (int i = 0; i < shipSize; i++) {
+                    if (board[startY][startX + i] == null) {
+                        counter++;
+                    }
+                }
+            }
+        } else if(!isHorizontal) {
+            if(direction) {
+                for (int i = 0; i < shipSize; i++) {
+                    if (board[startY - i][startX] == null) {
+                        counter++;
+                    }
+                }
+            } else if(!direction) {
+                for (int i = 0; i < shipSize; i++) {
+                    if (board[startY + i][startX] == null) {
+                        counter++;
+                    }
+                }
+            }
+        }
+        return counter;
+    }
+
 
     /**
      * Gets the amount of ships in the shipSet
