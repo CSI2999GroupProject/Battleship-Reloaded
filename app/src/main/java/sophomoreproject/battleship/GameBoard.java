@@ -115,8 +115,54 @@ public class GameBoard implements GameBoardInterface {
      *
      */
     @Override
-    public void move() {
-        //Your implementation here
+    public void move(Ship aShip, int xPos, int yPos, int pmove) {
+        int shipX = aShip.getColumnCoord();
+        int shipY = aShip.getRowCoord();
+        int shipSize = aShip.getShipSize();
+        int nMove = aShip.getnMove();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        if (!checkIndexBoundaries(aShip)) {
+            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
+        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
+            throw new IllegalStateException("There is already a ship there");
+        }else if(pmove > nMove) {
+            throw new IllegalStateException("This ship cannot move that many spaces");
+        }else{
+            if (shipSize > 1) {
+                if (isHorizontal) {
+                    if (direction) {
+
+                        xPos=xPos+pmove;
+                        for (int i = 0; i < shipSize; i++) {
+                                board[yPos][xPos - i] = aShip;
+                        }
+                    } else if (!direction) {
+
+                        xPos=xPos-pmove;
+                        for (int i = 0; i < shipSize; i++) {
+                                board[yPos][xPos + i] = aShip;
+                        }
+                    }
+                } else if (!isHorizontal) {
+                    if (direction) {
+
+                        yPos=yPos+pmove;
+                        for (int i = 0; i < shipSize; i++) {
+                                board[yPos - i][xPos] = aShip;
+                        }
+                    } else {
+
+                        yPos=yPos-pmove;
+                        for (int i = 0; i < shipSize; i++) {
+                                board[yPos + i][xPos] = aShip;
+                        }
+                    }
+                }
+            }
+            updateShipInSet(aShip);
+        }
     }
 
     @Override
