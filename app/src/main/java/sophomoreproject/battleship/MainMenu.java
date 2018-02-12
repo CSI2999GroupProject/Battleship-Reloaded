@@ -6,7 +6,7 @@ import android.view.View;
 
 public class MainMenu extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { //kjkj
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
     }
