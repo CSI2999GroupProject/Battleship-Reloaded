@@ -2,10 +2,14 @@ package sophomoreproject.battleship;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import sophomoreproject.battleship.ships.Cruiser;
 
 /**
  * Created by Jacob Austin on 2/7/2018.
@@ -14,6 +18,8 @@ import android.view.SurfaceView;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     private MainThread thread;
+    private Cruiser test;
+    private Point startPoint;
 
     public GamePanel(Context context)
     {
@@ -23,6 +29,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
+
+        test = new Cruiser(context);
+        startPoint = new Point(100, 100);
     }
 
     @Override
@@ -35,7 +44,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder holder)
     {
         boolean retry = true;
-        while(true)
+        while(retry)
         {
             try {
                 thread.setRunning(false);
@@ -62,7 +71,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void update()
     {
-
+        test.update(startPoint);
     }
 
     @Override
@@ -70,5 +79,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         super.draw(canvas);
 
+        test.draw(canvas);
     }
 }
