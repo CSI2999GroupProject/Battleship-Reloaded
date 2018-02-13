@@ -8,6 +8,6 @@ package sophomoreproject.battleship;
 
 public class Game {
     public Game() {
-        GameBoard gb = new GameBoard();
+        //GameBoard gb = new GameBoard();
     }
 }
