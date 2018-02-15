@@ -11,6 +11,7 @@ public class Submarine extends Ship implements ShipInterface{
     }
 
 
+
     @Override
     public void ability() {
 
