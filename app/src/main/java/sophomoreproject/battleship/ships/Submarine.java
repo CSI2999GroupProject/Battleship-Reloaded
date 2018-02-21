@@ -10,6 +10,8 @@ public class Submarine extends Ship implements ShipInterface{
         setShipSize(3);
     }
 
+
+
     @Override
     public void ability() {
 
