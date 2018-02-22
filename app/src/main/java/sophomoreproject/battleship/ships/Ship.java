@@ -65,5 +65,4 @@ public class Ship {
     public void setColumnCoord(int columnCoord) {
         this.columnCoord = columnCoord;
     }
-
 }
