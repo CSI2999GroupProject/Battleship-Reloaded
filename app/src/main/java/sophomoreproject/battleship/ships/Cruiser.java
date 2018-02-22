@@ -14,7 +14,7 @@ public class Cruiser extends Ship implements ShipInterface{
         super(context, row, column);
         setName("Cruiser");
         setShipSize(2);
-        shipImage = context.getResources().getDrawable(R.drawable.cruiser);
+        shipImage = context.getResources().getDrawable(R.drawable.cruiser_old);
     }
 
     @Override

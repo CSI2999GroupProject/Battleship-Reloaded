@@ -1,16 +1,15 @@
 package sophomoreproject.battleship;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import java.util.ArrayList;
 
 import sophomoreproject.battleship.ships.Cruiser;
+import sophomoreproject.battleship.ships.Ship;
 
 /**
  * Created by Jacob Austin on 2/7/2018.
@@ -19,10 +18,15 @@ import sophomoreproject.battleship.ships.Cruiser;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     private MainThread thread;
+    private ArrayList<Ship> boardObjects = new ArrayList();
+    private ArrayList<Panel> panels = new ArrayList();
     private GameBoard board;
     private Cruiser test; //Test is just an experimental fixed cruiser
+    private FleetBuildPanel fbp;
     private Point masterPoint; //The top-left corner of the map
+    private Point historicPoint = new Point();
     private Point locator; //A dynamic point that corresponds to the last point the finger was that the game has updated to.
+    private int seq; //The sequence that the game is in. Sequence 0 is when the players are placing ships on board, sequence 1 when they are playing.
 
     public GamePanel(Context context)
     {
@@ -34,10 +38,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
 
         board = new GameBoard(context);
-
         test = new Cruiser(context, 2, 4);
+        fbp = new FleetBuildPanel(context);
         masterPoint = new Point(0, 0); //Starts the game with the map's top-left corner being on the screen's top-left corner
         locator = new Point(0,0);
+        seq = 0;
+
+        boardObjects.add(test);
+        panels.add(fbp);
     }
 
     @Override
@@ -69,6 +77,38 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         thread.start();
     }
 
+    public void update()
+    {
+        board.update(masterPoint);
+
+        for(Ship s : boardObjects)
+        {
+            s.update(masterPoint);
+        }
+
+        for(Panel p : panels)
+        {
+            p.update();
+        }
+    }
+
+    @Override
+    public void draw(Canvas canvas)
+    {
+        super.draw(canvas);
+        board.draw(canvas);
+
+        for(Ship s : boardObjects)
+        {
+            s.draw(canvas);
+        }
+
+        for(Panel p : panels)
+        {
+            p.draw(canvas);
+        }
+    }
+
     /**
      * A method that will move the game board and its contents whenever the user swipes across the screen
      *
@@ -78,45 +118,27 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        switch(event.getAction())
+        locator.set((int)event.getX(), (int)event.getY());
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+            historicPoint.set((int)event.getX(), (int)event.getY());
+        else if (event.getAction() == MotionEvent.ACTION_UP)
+            historicPoint.set(0, 0);
+        boolean foundTarget = false;
+
+        for(Panel panel : panels)
         {
-            case MotionEvent.ACTION_DOWN:
-                locator.set((int)event.getX(), (int)event.getY());
-                break;
-            case MotionEvent.ACTION_MOVE:
-                masterPoint.set(masterPoint.x + (int)event.getX() - locator.x, masterPoint.y + (int)event.getY() - locator.y);
-                final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
-                final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
-                final int MIN_GRID_SPACES = 5;
-
-
-                //Will not let the user scroll anymore if there are only MIN_GRID_SPACES left on the screen.
-                if(masterPoint.x > SCREEN_WIDTH - 128*MIN_GRID_SPACES)
-                    masterPoint.x = SCREEN_WIDTH - 128*MIN_GRID_SPACES;
-                else if(masterPoint.x < -128*(24-MIN_GRID_SPACES))
-                    masterPoint.x = -128*(24-MIN_GRID_SPACES);
-                if(masterPoint.y > SCREEN_HEIGHT - 128*MIN_GRID_SPACES)
-                    masterPoint.y = SCREEN_HEIGHT - 128*MIN_GRID_SPACES;
-                else if(masterPoint.y < -128*(16-MIN_GRID_SPACES))
-                    masterPoint.y = -128*(16-MIN_GRID_SPACES);
-
-                locator.set((int)event.getX(), (int)event.getY());
+            if(panel.contains(historicPoint) && !(historicPoint.x == 0 && historicPoint.y == 0))
+            {
+                panel.onTouchEvent(event);
+                foundTarget = true;
+            }
         }
 
-        return true;//super.onTouchEvent(event);
-    }
+        if(!foundTarget)
+        {
+            board.onTouchEvent(event);
+        }
 
-    public void update()
-    {
-        board.update(masterPoint);
-        test.update(masterPoint);
-    }
-
-    @Override
-    public void draw(Canvas canvas)
-    {
-        super.draw(canvas);
-        board.draw(canvas);
-        test.draw(canvas);
+        return true;
     }
 }

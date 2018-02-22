@@ -24,6 +24,10 @@ public class Ship {
     private int columnCoord;
     Drawable shipImage;
 
+    final int CRUISER_SIZE = 2;
+
+
+
     public Ship()
     {
 
