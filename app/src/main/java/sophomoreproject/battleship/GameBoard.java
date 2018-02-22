@@ -166,13 +166,109 @@ public class GameBoard implements GameBoardInterface {
     }
 
     @Override
-    public void rotateLeft() {
+    public void rotateLeft(Ship aShip, int xPos, int yPos) {
+        int shipX = aShip.getColumnCoord();
+        int shipY = aShip.getRowCoord();
+        int shipSize = aShip.getShipSize();
 
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        if (!checkIndexBoundaries(aShip)) {
+            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
+        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
+            throw new IllegalStateException("There is already a ship there");
+        }else{
+            if (shipSize > 1) {
+                if (isHorizontal) {
+                    if (direction) {
+
+                        aShip.setHorizontal(false);
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos-i][xPos] = aShip;
+                        }
+                    } else if (!direction) {
+
+                        aShip.setHorizontal(false);
+
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos+i][xPos] = aShip;
+                        }
+                    }
+                } else if (!isHorizontal) {
+                    if (direction) {
+
+                        aShip.setHorizontal(true);
+                        aShip.setDirection(false);
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos][xPos-i] = aShip;
+                        }
+                    } else {
+
+                        aShip.setHorizontal(true);
+                        aShip.setDirection(true);
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos][xPos+i] = aShip;
+                        }
+                    }
+                }
+            }
+            updateShipInSet(aShip);
+        }
     }
 
     @Override
-    public void rotateRight() {
+    public void rotateRight(Ship aShip, int xPos, int yPos) {
+        int shipX = aShip.getColumnCoord();
+        int shipY = aShip.getRowCoord();
+        int shipSize = aShip.getShipSize();
 
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        if (!checkIndexBoundaries(aShip)) {
+            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
+        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
+            throw new IllegalStateException("There is already a ship there");
+        }else{
+            if (shipSize > 1) {
+                if (isHorizontal) {
+                    if (direction) {
+
+                        aShip.setHorizontal(false);
+                        aShip.setDirection(false);
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos+i][xPos] = aShip;
+                        }
+                    } else if (!direction) {
+
+                        aShip.setHorizontal(false);
+                        aShip.setDirection(true);
+
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos-i][xPos] = aShip;
+                        }
+                    }
+                } else if (!isHorizontal) {
+                    if (direction) {
+
+                        aShip.setHorizontal(true);
+
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos][xPos+i] = aShip;
+                        }
+                    } else {
+
+                        aShip.setHorizontal(true);
+
+                        for (int i = 0; i < shipSize; i++) {
+                            board[yPos][xPos-i] = aShip;
+                        }
+                    }
+                }
+            }
+            updateShipInSet(aShip);
+        }
     }
 
     /**
