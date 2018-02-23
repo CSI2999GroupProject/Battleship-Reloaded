@@ -16,7 +16,7 @@ public class GameBoard implements GameBoardInterface {
     private static final int DEFAULT_ROWS = 16;
     private static final int DEFAULT_COLUMNS = 24;
     private HashSet<Ship> shipSet;
-
+    private int lostShips = 0;
     public GameBoard() {
         boardRows = DEFAULT_ROWS;
         boardColumns = DEFAULT_COLUMNS;
@@ -369,6 +369,27 @@ public class GameBoard implements GameBoardInterface {
         if(shipSet.contains(targetShip)) {
             shipSet.remove(targetShip);
             shipSet.add(targetShip);
+        }
+    }
+    /**
+     * Use this method when a ship is Hit or Missed
+     * @param AttackedShip the ship from shipSet that is being attacked
+     * @param Hits the amount of damage the ship from the shipSet is about to take
+     * */
+    public boolean PlayersSunkenShip(Ship AttackedShip, int Hits){
+        if(Hits==AttackedShip.getHitpoints()){
+            shipSet.remove(AttackedShip);
+            lostShips++;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean hasLost(int lostShips){
+        if(lostShips==5){
+            return true;
+        }else{
+            return false;
         }
     }
 }
