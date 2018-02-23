@@ -11,9 +11,6 @@ public class Submarine extends Ship implements ShipInterface{
         setSC(2);
         setDC(1);
     }
-
-
-
     @Override
     public void ability() {
 

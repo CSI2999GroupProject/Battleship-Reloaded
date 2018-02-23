@@ -16,14 +16,14 @@ public class GameBoard implements GameBoardInterface {
     private static final int DEFAULT_ROWS = 16;
     private static final int DEFAULT_COLUMNS = 24;
     private HashSet<Ship> shipSet;
-    private int lostShips = 0;
+    private int lostShips;
     public GameBoard() {
         boardRows = DEFAULT_ROWS;
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
         shipSet = new HashSet<Ship>();
+        lostShips = 0;
     }
-
     public int getBoardRows() {
         return boardRows;
     }
@@ -43,7 +43,12 @@ public class GameBoard implements GameBoardInterface {
     public HashSet<Ship> getShipSet() {
         return shipSet;
     }
-
+    public int getLostShips(){
+        return lostShips;
+    }
+    public void setLostShips(int lostShips){
+        this.lostShips = lostShips;
+    }
     /**
      * A method to add a ship to the board. If the shipSize is greater than 1, then depending on the direction of the Ship,
      * the Ship[][] will add multiple of the same object in the corresponding spot.
@@ -376,15 +381,22 @@ public class GameBoard implements GameBoardInterface {
      * @param AttackedShip the ship from shipSet that is being attacked
      * @param Hits the amount of damage the ship from the shipSet is about to take
      * */
-    public boolean PlayersSunkenShip(Ship AttackedShip, int Hits){
-        if(Hits==AttackedShip.getHitpoints()){
+    public boolean SunkenShip(Ship AttackedShip, int Hits){
+        AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
+        if(AttackedShip.getHitpoints()<=0){
             shipSet.remove(AttackedShip);
             lostShips++;
+            setLostShips(lostShips);
             return true;
         }else{
             return false;
         }
     }
+    /**
+     * Use this method to calculate the number of ships lost in order to determine if the player
+     * lost
+     * @param lostShips the number of ships from shipSet lost
+     * */
     public boolean hasLost(int lostShips){
         if(lostShips==5){
             return true;
