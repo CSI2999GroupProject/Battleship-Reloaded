@@ -231,6 +231,7 @@ public class GameBoard implements GameBoardInterface {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
 
+
         if (!checkIndexBoundaries(aShip)) {
             throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
         }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
