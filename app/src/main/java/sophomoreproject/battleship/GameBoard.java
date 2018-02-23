@@ -34,7 +34,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         boardRows = DEFAULT_ROWS;
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
-        shipSet = new HashSet<Ship>();
+        shipSet = new HashSet<>();
         waterBox.set(0, 0, 128*24, 128*16);
         waterImage = context.getResources().getDrawable(R.drawable.water_old);
         waterImage.setBounds(waterBox);
@@ -54,6 +54,11 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void setBoardColumns(int boardColumns) {
         this.boardColumns = boardColumns;
+    }
+
+    Point getMasterPoint()
+    {
+        return masterPoint;
     }
 
     public HashSet<Ship> getShipSet() {
@@ -137,6 +142,11 @@ public class GameBoard implements GameBoardInterface, Panel {
         waterBox.set(point.x, point.y, point.x + 128*24, point.y + 128*16);
         masterPoint = point;
         waterImage.setBounds(waterBox);
+
+        for(Ship ship : shipSet)
+        {
+            ship.update(point);
+        }
     }
 
     /**
@@ -146,6 +156,11 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public void draw(Canvas canvas) {
         waterImage.draw(canvas);
+
+        for(Ship ship : shipSet)
+        {
+            ship.draw(canvas);
+        }
     }
 
     public boolean contains(Point point)

@@ -24,7 +24,7 @@ public class Ship {
     private int columnCoord;
     Drawable shipImage;
 
-    final int CRUISER_SIZE = 2;
+    public static final int CRUISER_SIZE = 2;
 
 
 
@@ -35,6 +35,11 @@ public class Ship {
 
     public Ship(Context context, int row, int column)
     {
+        if(row > 23 || row < 0 || column > 15 || column < 0)
+        {
+            throw new IllegalArgumentException();
+        }
+
         this.rowCoord = row;
         this.columnCoord = column;
     }

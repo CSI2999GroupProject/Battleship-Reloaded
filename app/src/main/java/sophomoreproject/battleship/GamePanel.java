@@ -18,13 +18,12 @@ import sophomoreproject.battleship.ships.Ship;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     private MainThread thread;
-    private ArrayList<Ship> boardObjects = new ArrayList();
+    public ArrayList<Ship> boardObjects = new ArrayList();
     private ArrayList<Panel> panels = new ArrayList();
     private GameBoard board;
-    private Cruiser test; //Test is just an experimental fixed cruiser
     private FleetBuildPanel fbp;
-    private Point masterPoint; //The top-left corner of the map
-    private Point historicPoint = new Point();
+    private Point masterPoint; //The top-left corner of the map. Can be moved about the screen.
+    private Point historicPoint = new Point(); //A point that represents the origin of a finger moving across the screen.
     private Point locator; //A dynamic point that corresponds to the last point the finger was that the game has updated to.
     private int seq; //The sequence that the game is in. Sequence 0 is when the players are placing ships on board, sequence 1 when they are playing.
 
@@ -38,13 +37,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
 
         board = new GameBoard(context);
-        test = new Cruiser(context, 2, 4);
-        fbp = new FleetBuildPanel(context);
+        fbp = new FleetBuildPanel(context, board);
         masterPoint = new Point(0, 0); //Starts the game with the map's top-left corner being on the screen's top-left corner
         locator = new Point(0,0);
         seq = 0;
 
-        boardObjects.add(test);
         panels.add(fbp);
     }
 
@@ -110,7 +107,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     /**
-     * A method that will move the game board and its contents whenever the user swipes across the screen
+     * A method that will delegate a touch event to the respective panel or ship that was clicked on.
      *
      * @param event the event of touching the screen
      * @return true
@@ -121,8 +118,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         locator.set((int)event.getX(), (int)event.getY());
         if(event.getAction() == MotionEvent.ACTION_DOWN)
             historicPoint.set((int)event.getX(), (int)event.getY());
-        else if (event.getAction() == MotionEvent.ACTION_UP)
-            historicPoint.set(0, 0);
         boolean foundTarget = false;
 
         for(Panel panel : panels)
@@ -134,7 +129,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
-        if(!foundTarget)
+        if (event.getAction() == MotionEvent.ACTION_UP)
+            historicPoint.set(0, 0);
+
+        if(!foundTarget) //If user didn't click in the bounds of an open panel, delegate it to the game board
         {
             board.onTouchEvent(event);
         }
