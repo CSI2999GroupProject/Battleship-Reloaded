@@ -389,6 +389,7 @@ public class GameBoard implements GameBoardInterface {
             return false;
         }
     }
+
     /**
      * Use this method to calculate the number of ships lost in order to determine if the player
      * lost
