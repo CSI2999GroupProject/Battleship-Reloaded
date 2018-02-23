@@ -406,6 +406,7 @@ public class GameBoard implements GameBoardInterface {
      * order to determine if the player win
      * @param DestroyedShips the number of ships from shipSet that you destroyed
      * */
+
     public boolean hasWon(HashSet<Ship> DestroyedShips){
         if(DestroyedShips.isEmpty()){
             return true;
