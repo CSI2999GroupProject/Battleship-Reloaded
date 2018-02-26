@@ -369,10 +369,10 @@ public class GameBoard implements GameBoardInterface {
     /**
      * Use this method when a ship is Hit or Missed
      * @param AttackedShip the ship from shipSet that is being attacked
-     * @param Hits the amount of damage the ship from the shipSet is about to take
+     * @param AttackingShip the ship from shipSet making the attack
      * */
-    public boolean SunkenShip(Ship AttackedShip, int Hits){
-        AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
+    public boolean SunkenShip(Ship AttackedShip, Ship AttackingShip){
+        AttackedShip.setHitpoints(AttackedShip.getHitpoints()-AttackingShip.getdamage());
         if(AttackedShip.getHitpoints()<=0){
             shipSet.remove(AttackedShip);
             return true;
@@ -380,16 +380,6 @@ public class GameBoard implements GameBoardInterface {
             return false;
         }
     }
-    public boolean HitShips(Ship AttackedShip, int Hits){
-        AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
-        if(AttackedShip.getHitpoints()<=0){
-            shipSet.remove(AttackedShip);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     /**
      * Use this method to calculate the number of ships lost in order to determine if the player
      * lost
@@ -407,7 +397,6 @@ public class GameBoard implements GameBoardInterface {
      * order to determine if the player win
      * @param DestroyedShips the number of ships from shipSet that you destroyed
      * */
-
     public boolean hasWon(HashSet<Ship> DestroyedShips){
         if(DestroyedShips.isEmpty()){
             return true;
@@ -415,4 +404,5 @@ public class GameBoard implements GameBoardInterface {
             return false;
         }
     }
+
 }
