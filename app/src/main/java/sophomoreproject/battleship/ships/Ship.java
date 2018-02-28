@@ -1,5 +1,13 @@
 package sophomoreproject.battleship.ships;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
+
 /**
  * Created by isaac on 1/31/2018.
  */
@@ -27,6 +35,43 @@ public class Ship {
     private int FDC;
     private int BDC;
     private int Hitpoints;
+    Bitmap shipImage;
+    private Point masterPoint;
+
+    public static final int CRUISER_SIZE = 2;
+
+
+
+    public Ship()
+    {
+
+    }
+
+    public Ship(Context context, int row, int column)
+    {
+        if(row > 23 || row < 0 || column > 15 || column < 0)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        this.rowCoord = row;
+        this.columnCoord = column;
+    }
+
+    public void applyRotate()
+    {
+        Matrix m = new Matrix();
+
+        int degree = 0;
+        if(!this.getHorizontal())
+            degree -= 90;
+        if(!this.getDirection())
+            degree -= 180;
+
+        m.postRotate(degree);
+        System.out.println("Rotation of Ship image: " + degree + " degrees");
+        shipImage = Bitmap.createBitmap(shipImage, 0, 0, shipImage.getWidth(), shipImage.getHeight(), m, false);
+    }
 
     public boolean getHorizontal() {
         return isHorizontal;
@@ -142,4 +187,33 @@ public class Ship {
 
 
 
+
+    /**
+     * A method to update the ship's position on the game panel.
+     *
+     * @param point the point on the screen corresponding to the top-left corner of the map (masterPoint)
+     */
+    public void update(Point point)
+    {
+        masterPoint = point;
+    }
+
+    /**
+     * A method to draw the ship on the correct place on screen.
+     *
+     * @param canvas the main canvas of the game
+     */
+    public void draw(Canvas canvas)
+    {
+        if(isHorizontal)
+            if(direction)
+                canvas.drawBitmap(shipImage, masterPoint.x + 128*(columnCoord-getShipSize() + 1), masterPoint.y + 128*rowCoord, null);
+            else
+                canvas.drawBitmap(shipImage, masterPoint.x + 128*columnCoord, masterPoint.y + 128*rowCoord, null);
+        else
+        if(direction)
+            canvas.drawBitmap(shipImage, masterPoint.x + 128*columnCoord, masterPoint.y + 128*rowCoord, null);
+        else
+            canvas.drawBitmap(shipImage, masterPoint.x + 128*columnCoord, masterPoint.y + 128*(rowCoord-getShipSize() + 1), null);
+    }
 }

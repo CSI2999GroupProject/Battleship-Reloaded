@@ -18,6 +18,7 @@ public class Destroyer extends Ship implements ShipInterface{
         setFDC(4);
         setbdamage(400);
         setBDC(3);
+        shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.destroyer), 128*getShipSize(), 128, false);
     }
 
     @Override
