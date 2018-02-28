@@ -17,6 +17,7 @@ public class Battleship extends Ship implements ShipInterface{
         setDC(2);
         setbdamage(50);
         setBDC(1);
+        shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.battleship), 128*getShipSize(), 128, false);
     }
 
     @Override

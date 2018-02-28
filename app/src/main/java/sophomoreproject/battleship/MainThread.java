@@ -84,6 +84,7 @@ public class MainThread extends Thread {
                 frameCount = 0;
                 totalTime = 0;
                 System.out.println("FPS: " + averageFPS);
+                //System.out.println("FPS: " + averageFPS);
             }
         }
     }

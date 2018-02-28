@@ -1,7 +1,9 @@
 package sophomoreproject.battleship.ships;
 
+import android.graphics.Canvas;
+
 /**
- * Created by isaac on 2/5/2018.
+ * Created by Isaac on 2/5/2018.
  */
 
 public interface ShipInterface {
@@ -10,4 +12,6 @@ public interface ShipInterface {
      * Still working out what they are
      */
     void ability();
+    //void update();
+    //void draw(Canvas canvas);
 }
