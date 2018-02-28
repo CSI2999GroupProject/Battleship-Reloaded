@@ -102,24 +102,32 @@ public class GameBoard implements GameBoardInterface, Panel {
             if (isHorizontal) {
                 if (direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos][xPos - i] = aShip;
+                        if(board[yPos][xPos - i] == null) {
+                            board[yPos][xPos - i] = aShip;
+                        }
                     }
-                } else {
+                } else if (!direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos][xPos + i] = aShip;
+                        if(board[yPos][xPos + i] == null) {
+                            board[yPos][xPos + i] = aShip;
+                        }
                     }
                 }
             } else {
                 if (direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos - i][xPos] = aShip;
+                        if (board[yPos - i][xPos] == null) {
+                            board[yPos - i][xPos] = aShip;
+                        }
+
                     }
                 } else {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos + i][xPos] = aShip;
+                        if (board[yPos + i][xPos] == null) {
+                            board[yPos + i][xPos] = aShip;
+                        }
                     }
-                }
-            }
+                }}
         } else {
             board[yPos][xPos] = aShip;
         }
@@ -233,8 +241,14 @@ public class GameBoard implements GameBoardInterface, Panel {
             }
             updateShipInSet(aShip);
         }
+        shipSet.add(aShip);
     }
 
+    /**
+     * A method to move the ships in the board.
+     *
+     *
+     */
     @Override
     public void rotateRight(Ship aShip, int xPos, int yPos) {
         int shipX = aShip.getColumnCoord();
@@ -359,37 +373,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
 
-    /**
-     * Gets the amount of ships in the shipSet
-     * @return int count is the amount of ships
-     */
-    public int shipCount() {
-        int count = 0;
-        if (shipSet.isEmpty()) {
-            return 0;
-        }
-        Iterator<Ship> shipIterator = shipSet.iterator();
-        while(shipIterator.hasNext()) {
-            count++;
-        }
-        return count;
     }
-
-    /**
-     * Note: If you change the variables of an object, they do not get updated automatically.
-     *       HashSets are unordered, so it's easy enough to remove the object from the set and add it back
-     *       with its updated variables.
-     *
-     * Use this method when you modify a ship that is currently on the board
-     * @param targetShip the Ship from the shipSet to be updated
-     */
-    public void updateShipInSet(Ship targetShip) {
-        if(shipSet.contains(targetShip)) {
-            shipSet.remove(targetShip);
-            shipSet.add(targetShip);
-        }
-    }
-
 
     /**
      * A method to update the map's position on the board
@@ -422,15 +406,40 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
-    @Override
-    public void update() {
-
-    }
-
-
     public boolean contains(Point point)
     {
         return waterBox.contains(point.x, point.y);
+    }
+
+    /**
+     * Gets the amount of ships in the shipSet
+     * @return int count is the amount of ships
+     */
+    public int shipCount() {
+        int count = 0;
+        if (shipSet.isEmpty()) {
+            return 0;
+        }
+        Iterator<Ship> shipIterator = shipSet.iterator();
+        while(shipIterator.hasNext()) {
+            count++;
+        }
+        return count;
+    }
+
+    /**
+     * Note: If you change the variables of an object, they do not get updated automatically.
+     *       HashSets are unordered, so it's easy enough to remove the object from the set and add it back
+     *       with its updated variables.
+     *
+     * Use this method when you modify a ship that is currently on the board
+     * @param targetShip the Ship from the shipSet to be updated
+     */
+    public void updateShipInSet(Ship targetShip) {
+        if(shipSet.contains(targetShip)) {
+            shipSet.remove(targetShip);
+            shipSet.add(targetShip);
+        }
     }
 
     public void onTouchEvent(MotionEvent event)
@@ -513,4 +522,3 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 }
-
