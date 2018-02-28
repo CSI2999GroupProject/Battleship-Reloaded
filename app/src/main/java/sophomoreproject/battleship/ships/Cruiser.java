@@ -1,6 +1,9 @@
 package sophomoreproject.battleship.ships;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import sophomoreproject.battleship.R;
 
 /**
@@ -14,7 +17,7 @@ public class Cruiser extends Ship implements ShipInterface{
         super(context, row, column);
         setName("Cruiser");
         setShipSize(2);
-        shipImage = context.getResources().getDrawable(R.drawable.cruiser_old);
+        shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.cruiser), 128*getShipSize(), 128, false);
     }
 
     @Override

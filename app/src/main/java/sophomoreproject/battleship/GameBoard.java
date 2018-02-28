@@ -76,7 +76,7 @@ public class GameBoard implements GameBoardInterface, Panel {
      * Will be updated when user input is available
      */
     @Override
-    public void addShip(Ship aShip, int xPos, int yPos) {
+    public void addShip(Ship aShip, int xPos, int yPos) throws IndexOutOfBoundsException {
         int shipSize = aShip.getShipSize();
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
@@ -92,14 +92,14 @@ public class GameBoard implements GameBoardInterface, Panel {
                         board[yPos][xPos + i] = aShip;
                     }
                 }
-            } else if (!isHorizontal) {
+            } else {
                 if (direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos - i][xPos] = aShip;
+                        board[yPos + i][xPos] = aShip;
                     }
                 } else {
                     for (int i = 0; i < shipSize; i++) {
-                        board[yPos + i][xPos] = aShip;
+                        board[yPos - i][xPos] = aShip;
                     }
                 }
             }
