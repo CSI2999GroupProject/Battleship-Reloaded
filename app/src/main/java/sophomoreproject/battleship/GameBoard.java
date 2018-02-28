@@ -373,7 +373,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
 
-    }
+
 
     /**
      * A method to update the map's position on the board
@@ -404,6 +404,11 @@ public class GameBoard implements GameBoardInterface, Panel {
         {
             ship.draw(canvas);
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 
     public boolean contains(Point point)
