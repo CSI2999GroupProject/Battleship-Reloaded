@@ -213,8 +213,7 @@ public class GameBoard implements GameBoardInterface, Panel {
                     } else if (!direction) {
 
                         aShip.setHorizontal(false);
-    public void update()
-    {
+
 
                         for (int i = 0; i < shipSize; i++) {
                             board[yPos+i][xPos] = aShip;
@@ -396,7 +395,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             shipSet.add(targetShip);
         }
     }
-    }
+
 
     /**
      * A method to update the map's position on the board
@@ -427,6 +426,11 @@ public class GameBoard implements GameBoardInterface, Panel {
         {
             ship.draw(canvas);
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 
     public boolean contains(Point point)

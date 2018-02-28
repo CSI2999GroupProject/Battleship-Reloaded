@@ -1,11 +1,16 @@
 package sophomoreproject.battleship.ships;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import sophomoreproject.battleship.R;
 /**
  * Created by isaac on 1/31/2018.
  */
 
 public class Battleship extends Ship implements ShipInterface{
-    public Battleship() {
+    public Battleship(Context context, int row, int column) {
+        super(context, row, column);
         setName("Battleship");
         setShipSize(3);
         setSC(2);
