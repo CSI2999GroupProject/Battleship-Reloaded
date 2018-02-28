@@ -10,6 +10,9 @@ public interface GameBoardInterface {
 
     void addShip(Ship aShip, int xPos, int yPos);
     void move();
-    void rotate();
+    void rotateLeft();
+    void rotateRight();
+    boolean checkIndexBoundaries(Ship aShip);
+    int nullCountOfShipSize(int shipSize, int startX, int startY, boolean isHorizontal, boolean direction);
 
 }
