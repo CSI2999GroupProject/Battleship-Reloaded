@@ -303,7 +303,7 @@ public class FleetBuildPanel implements Panel
                 }
                 catch(Exception e)
                 {
-                    //Do nothing if the ship was placed in a stupid place
+                    System.out.println("Failed to place a ship at (" + row + ", " + column + ") because: " + e.getMessage());
                 }
                 selectedShip = "";
         }

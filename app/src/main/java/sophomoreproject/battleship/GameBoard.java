@@ -79,15 +79,15 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
 
-        if (xPos < 0 || yPos < 0) {
+        /*if (xPos < 0 || yPos < 0) {
             throw new IllegalArgumentException("There is no negative position on the board");
         }
         if (xPos > boardColumns || yPos > boardRows) {
-            throw new IllegalArgumentException("Can't place a ship beyond the board's boundaries");
+            throw new IllegalArgumentException("Can't place a ship beyond the board's boundaries A");
         }
         if (!checkIndexBoundaries(aShip)) {
-            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
-        }
+            throw new IllegalStateException("Can't place a ship beyond the board's boundaries B");
+        }*/
         if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
             throw new IllegalStateException("There is already a ship there");
         }
@@ -113,14 +113,14 @@ public class GameBoard implements GameBoardInterface, Panel {
             } else {
                 if (direction) {
                     for (int i = 0; i < shipSize; i++) {
-                        if (board[yPos - i][xPos] == null) {
-                            board[yPos - i][xPos] = aShip;
+                        if (board[yPos + i][xPos] == null) {
+                            board[yPos + i][xPos] = aShip;
                         }
                     }
                 } else {
                     for (int i = 0; i < shipSize; i++) {
-                        if (board[yPos + i][xPos] == null) {
-                            board[yPos + i][xPos] = aShip;
+                        if (board[yPos - i][xPos] == null) {
+                            board[yPos - i][xPos] = aShip;
                         }
                     }
                 }
@@ -150,27 +150,29 @@ public class GameBoard implements GameBoardInterface, Panel {
     public void rotateRight() {
 
     }
-
     /**
      * A boolean that checks if the area around the ship would go outside the index of the board.
      * @return true if it does not go outside the index of the board. false if it would.
      */
+
     @Override
     public boolean checkIndexBoundaries(Ship aShip) {
         int shipSize = aShip.getShipSize();
         int shipX = aShip.getColumnCoord();
         int shipY = aShip.getRowCoord();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
 
-        if (shipY - (shipSize - 1) < 0) {
+        if (direction && !isHorizontal && shipY < shipSize - 1) {
             return false;
         }
-        if (shipY + (shipSize - 1) > boardRows) {
+        else if (!direction && !isHorizontal && shipY + (shipSize - 1) > boardColumns) {
             return false;
         }
-        if (shipX - (shipSize - 1) < 0) {
+        else if (direction && isHorizontal && shipX - (shipSize - 1) < 0) {
             return false;
         }
-        if (shipX + (shipSize - 1) > boardColumns) {
+        else if (!direction && isHorizontal && shipX + (shipSize - 1) > boardRows) {
             return false;
         }
         return true;
@@ -205,13 +207,13 @@ public class GameBoard implements GameBoardInterface, Panel {
         } else if(!isHorizontal) {
             if(direction) {
                 for (int i = 0; i < shipSize; i++) {
-                    if (board[startY - i][startX] == null) {
+                    if (board[startY + i][startX] == null) {
                         counter++;
                     }
                 }
             } else if(!direction) {
                 for (int i = 0; i < shipSize; i++) {
-                    if (board[startY + i][startX] == null) {
+                    if (board[startY - i][startX] == null) {
                         counter++;
                     }
                 }
