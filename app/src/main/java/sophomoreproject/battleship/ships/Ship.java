@@ -83,58 +83,63 @@ public class Ship {
     public int getSC() {
         return SC;
     }
-
     public void setSC(int SC) {
         this.SC = SC;
     }
+    //records the ship count
     public int getnMove() {
         return nMove;
     }
-
     public void setnMove(int nMove) {
         this.nMove = nMove;
     }
+    //records max number of available moves
     public int getdamage() {
         return damage;
     }
-
     public void setdamage(int damage) {this.damage = damage; }
+    //main damage
     public int getfdamage() {
         return fdamage;
     }
-
     public void setfdamage(int fdamage) {this.fdamage = fdamage; }
+    //damage from front of ship
     public int getbdamage() {
         return bdamage;
     }
-
     public void setbdamage(int bdamage) {this.bdamage = bdamage; }
+    //damage from back of ship
     public int getHitpoints() {
         return Hitpoints;
     }
+    public void setHitpoints(int Hitpoints) {
+        this.Hitpoints = Hitpoints;
+    }
+    //ships hitpoints
     public int getnShots() {
         return nShots;
     }
-
+    public void setnShots(int nShots) {
+        this.nShots = nShots;
+    }
+    //number of shots a ship can shoot per turn
     public void setDC(int DC) {this.DC = DC; }
     public int getDC() {
         return DC;
     }
+    //damage count
     public void setFDC(int FDC) {this.FDC = FDC; }
     public int getFDC() {
         return FDC;
     }
+    //front damage count
     public void setBDC(int BDC) {this.BDC = BDC; }
     public int getBDC() {
         return BDC;
     }
+    //back damage count
 
-    public void setnShots(int nShots) {
-        this.nShots = nShots;
-    }
 
-    public void setHitpoints(int Hitpoints) {
-        this.Hitpoints = Hitpoints;
-    }
+
 
 }
