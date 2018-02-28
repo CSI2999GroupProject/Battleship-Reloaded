@@ -286,9 +286,11 @@ public class GameBoard implements GameBoardInterface, Panel {
      * @param targetShip the Ship from the shipSet to be updated
      */
     public void updateShipInSet(Ship targetShip) {
-        if(shipSet.contains(targetShip)) {
+        if (shipSet.contains(targetShip)) {
             shipSet.remove(targetShip);
             shipSet.add(targetShip);
+        }
+    }
 
     public void onTouchEvent(MotionEvent event)
     {
