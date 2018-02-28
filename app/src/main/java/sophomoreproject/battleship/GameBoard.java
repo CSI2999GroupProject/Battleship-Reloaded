@@ -433,6 +433,7 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     }
 
+
     public boolean contains(Point point)
     {
         return waterBox.contains(point.x, point.y);
@@ -473,6 +474,48 @@ public class GameBoard implements GameBoardInterface, Panel {
                 }
             case MotionEvent.ACTION_UP:
                 isScrolling = false;
+        }
+    }
+
+    /**
+     * Use this method when a ship is Hit or Missed
+     * @param AttackedShip the ship from shipSet that is being attacked
+     * @param Hits the amount of damage the ship from the shipSet is about to take
+     * */
+
+    public boolean HitShips(Ship AttackedShip, int Hits){
+        AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
+        if(AttackedShip.getHitpoints()<=0){
+            shipSet.remove(AttackedShip);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Use this method to calculate the number of ships lost in order to determine if the player
+     * lost
+     * @param PlayerShips the number of ships from shipSet that you lost
+     * */
+    public boolean hasLost(HashSet<Ship> PlayerShips){
+        if(PlayerShips.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * Use this method to calculate the number of the opponent's ships the player destroyed in
+     * order to determine if the player win
+     * @param OpponentsShips the number of ships from shipSet that you destroyed
+     * */
+
+    public boolean hasWon(HashSet<Ship> OpponentsShips){
+        if(OpponentsShips.isEmpty()){
+            return true;
+        }else{
+            return false;
         }
     }
 }
