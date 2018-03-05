@@ -24,11 +24,14 @@ public class GameBoard implements GameBoardInterface, Panel {
     private static final int DEFAULT_ROWS = 16;
     private static final int DEFAULT_COLUMNS = 24;
     private HashSet<Ship> shipSet;
-    private Rect waterBox = new Rect();
+    private Rect waterBox;
     private Drawable waterImage;
     private boolean isScrolling = false;
     private Point locator = new Point(0, 0);
     private Point masterPoint = new Point(0, 0);
+    private int playerTurn;
+    private Player p1, p2;
+
 
     public GameBoard(Context context)
     {
@@ -36,9 +39,12 @@ public class GameBoard implements GameBoardInterface, Panel {
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
         shipSet = new HashSet<>();
+        waterBox = new Rect();
         waterBox.set(0, 0, 128*24, 128*16);
         waterImage = context.getResources().getDrawable(R.drawable.water_old);
         waterImage.setBounds(waterBox);
+        p1 = new Player();
+        p2 = new Player();
     }
 
     public int getBoardRows() {
@@ -65,6 +71,26 @@ public class GameBoard implements GameBoardInterface, Panel {
     public HashSet<Ship> getShipSet() {
         return shipSet;
     }
+
+    public Player getP1() {
+        return p1;
+    }
+
+    public void setP1(Player p1) {
+        this.p1 = p1;
+    }
+
+    public Player getP2() {
+        return p2;
+    }
+
+    public void setP2(Player p2) {
+        this.p2 = p2;
+    }
+
+    public int getPlayerTurn() { return playerTurn; }
+
+    public void setPlayerTurn(int playerTurn) { this.playerTurn = playerTurn; }
 
     /**
      * A method to add a cruiser to the board. If the shipSize is greater than 1, then depending on the direction of the Ship,

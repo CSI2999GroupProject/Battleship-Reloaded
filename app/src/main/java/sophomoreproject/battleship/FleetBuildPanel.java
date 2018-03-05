@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
@@ -30,12 +32,15 @@ public class FleetBuildPanel implements Panel
     private GameBoard board;
     private ArrayList<Rect> buttons = new ArrayList<>();
     private Rect panel, aircraftcarrierBox, battleshipBox, cruiserBox, destroyerBox, submarineBox, turnLeftBox, turnRightBox;
+    private Rect finishBox;
     private Paint panelPaint, selectedPaint;
     private Bitmap aircraftcarrier, battleship, cruiser, destroyer, submarine, turnLeft, turnRight;
     private Bitmap lastButtonPress, selected;
+    private Bitmap finishButton;
     private boolean isHorizontal = true, direction = true;
     private String selectedShip = "";
     private Point lastMotion = new Point(0, 0);
+    private int initialSeq = 0;
 
     public FleetBuildPanel(Context context, GameBoard board)
     {
@@ -43,7 +48,7 @@ public class FleetBuildPanel implements Panel
         this.board = board;
 
         panel = new Rect();
-        panel.set(0, 0, 160, 800);
+        panel.set(0, 0, 420, 1100);
         panelPaint = new Paint();
         panelPaint.setColor(Color.GRAY);
 
@@ -76,9 +81,22 @@ public class FleetBuildPanel implements Panel
         submarineBox.set(16, 592, 16 + 128, 592 + 43);
         submarine = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128, 43, false);
 
+        finishBox = new Rect(16, 830, 16 + 388, 830 + 195);
+        finishButton = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.shipplacing_button_on), 388, 195, false);
+
+
         buttons.add(cruiserBox);
+
+
     }
 
+    public int getInitialSeq() {
+        return initialSeq;
+    }
+
+    public void setInitialSeq(int initialSeq) {
+        this.initialSeq = initialSeq;
+    }
 
     /**
      * A method to update the panel (currently unused)
@@ -95,7 +113,9 @@ public class FleetBuildPanel implements Panel
      */
     public void draw(Canvas canvas)
     {
+
         canvas.drawRect(panel, panelPaint);
+
         canvas.drawBitmap(aircraftcarrier, aircraftcarrierBox.left, aircraftcarrierBox.top, null);
         canvas.drawBitmap(battleship, battleshipBox.left, battleshipBox.top, null);
         canvas.drawBitmap(cruiser, cruiserBox.left, cruiserBox.top, null);
@@ -103,19 +123,20 @@ public class FleetBuildPanel implements Panel
         canvas.drawBitmap(submarine, submarineBox.left, submarineBox.top, null);
         canvas.drawBitmap(turnLeft, turnLeftBox.left, turnLeftBox.top, null);
         canvas.drawBitmap(turnRight, turnRightBox.left, turnRightBox.top, null);
-        if(selected != null)
-        {
-            if(isHorizontal)
-                if(direction)
+        canvas.drawBitmap(finishButton, finishBox.left, finishBox.top, null);
+
+        if (selected != null) {
+            if (isHorizontal)
+                if (direction)
                     canvas.drawBitmap(selected, lastMotion.x - selected.getWidth() + 64, lastMotion.y - 64, selectedPaint);
                 else
                     canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - 64, selectedPaint);
+            else if (direction)
+                canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - 64, selectedPaint);
             else
-                if(direction)
-                    canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - 64, selectedPaint);
-                else
-                    canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - selected.getHeight() + 64, selectedPaint);
+                canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - selected.getHeight() + 64, selectedPaint);
         }
+
     }
 
     private Bitmap applyRotate(Bitmap image, int degrees)
@@ -148,7 +169,10 @@ public class FleetBuildPanel implements Panel
 
         switch(event.getAction())
         {
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN: //What happens after any of the Rect is clicked
+
+
+
                 if(aircraftcarrierBox.contains(x, y))
                 {
                     if(isHorizontal)
@@ -196,11 +220,23 @@ public class FleetBuildPanel implements Panel
                 else if(turnRightBox.contains(x, y))
                 {
                     lastButtonPress = turnRight;
+                } else if(finishBox.contains(x, y)) { //
+                    lastButtonPress = finishButton;
                 }
+
+
+
+
+
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
                 selected = null;
+
+
+
+
+
 
                 if(lastButtonPress == turnLeft && turnLeftBox.contains(x, y))
                 {
@@ -245,7 +281,14 @@ public class FleetBuildPanel implements Panel
                     {
                         isHorizontal = true;
                     }
+                } else if(lastButtonPress == finishButton && finishBox.contains(x, y)) {
+                        initialSeq = 2;
                 }
+
+
+
+
+
                 lastButtonPress = null;
 
                 if(panel.contains(x, y))
@@ -253,6 +296,10 @@ public class FleetBuildPanel implements Panel
 
                 int row = (x - board.getMasterPoint().x)/128;
                 int column = (y - board.getMasterPoint().y)/128;
+
+
+
+
                 try
                 {
                     Ship ship;
@@ -305,7 +352,13 @@ public class FleetBuildPanel implements Panel
                 {
                     System.out.println("Failed to place a ship at (" + row + ", " + column + ") because: " + e.getMessage());
                 }
+
+
+
+
+
                 selectedShip = "";
+
         }
     }
 }
