@@ -21,8 +21,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private GameBoard board;
     private FleetBuildPanel fbp;
     private HudPanel hudPanel;
-    private FleetBuildPanel fbp; //Test
-    private ShipPanel sp; //Test
+    private ShipPanel sp;
 
     private Point masterPoint; //The top-left corner of the map. Can be moved about the screen.
     private Point historicPoint = new Point(); //A point that represents the origin of a finger moving across the screen.
@@ -53,9 +52,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void setSeq(int seq) {
         this.seq = seq;
-
-        panels.add(fbp);
-        panels.add(sp);
 
     }
 
@@ -116,7 +112,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 panels.remove(fbp);
             }
             panels.add(hudPanel);
-            fbp.setInitialSeq(3);//
+            board.setReady(true);
+            fbp.setInitialSeq(3);
         }
         super.draw(canvas);
         board.draw(canvas);

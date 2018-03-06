@@ -27,7 +27,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Rect waterBox;
     private Drawable waterImage;
     private boolean isScrolling = false;
-    public boolean ready = true; //ready should be set to true when it is the user's turn, and they aren't placing ships anymore. Otherwise be false
+    public boolean ready = false; //ready should be set to true when it is the user's turn, and they aren't placing ships anymore. Otherwise be false
     private Point locator = new Point(0, 0);
     private Point masterPoint = new Point(0, 0);
     private Context context;
@@ -91,6 +91,14 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void setP2(Player p2) {
         this.p2 = p2;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     public int getPlayerTurn() { return playerTurn; }
