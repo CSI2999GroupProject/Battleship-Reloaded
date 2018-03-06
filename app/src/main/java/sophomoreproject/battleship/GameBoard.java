@@ -27,11 +27,16 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Rect waterBox = new Rect();
     private Drawable waterImage;
     private boolean isScrolling = false;
+    public boolean ready = true; //ready should be set to true when it is the user's turn, and they aren't placing ships anymore. Otherwise be false
     private Point locator = new Point(0, 0);
     private Point masterPoint = new Point(0, 0);
+    private Context context;
+    private GamePanel gp;
 
-    public GameBoard(Context context)
+    public GameBoard(Context context, GamePanel gp)
     {
+        this.context = context;
+        this.gp = gp;
         boardRows = DEFAULT_ROWS;
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
@@ -451,12 +456,13 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void onTouchEvent(MotionEvent event)
     {
+        final int SCROLL_TOLERANCE = 10;
+
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 locator.set((int) event.getX(), (int) event.getY());
                 break;
             case MotionEvent.ACTION_MOVE:
-                final int SCROLL_TOLERANCE = 10;
                 //Only scroll if the user has moved their finger more than SCROLL_TOLERANCE pixels
                 if (Math.abs(locator.x - event.getX()) > SCROLL_TOLERANCE
                         || Math.abs(locator.y - event.getY()) > SCROLL_TOLERANCE
@@ -483,6 +489,24 @@ public class GameBoard implements GameBoardInterface, Panel {
                     break;
                 }
             case MotionEvent.ACTION_UP:
+                if(!isScrolling && ready) //User only clicked a ship, didn't swipe screen over one
+                {
+                    Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
+
+                    for (Object next : gp.panels) {
+                        if (next instanceof ShipPanel)
+                            gp.panels.remove(next);
+                    }
+
+                    if(selected != null)
+                    {
+                        System.out.println("Selected a " + selected.getName());
+
+                        ShipPanel sp = new ShipPanel(context, selected, gp);
+                        gp.panels.add(sp);
+                    }
+                }
+
                 isScrolling = false;
         }
     }
@@ -509,11 +533,7 @@ public class GameBoard implements GameBoardInterface, Panel {
      * @param PlayerShips the number of ships from shipSet that you lost
      * */
     public boolean hasLost(HashSet<Ship> PlayerShips){
-        if(PlayerShips.isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
+        return PlayerShips.isEmpty();
     }
     /**
      * Use this method to calculate the number of the opponent's ships the player destroyed in
@@ -522,10 +542,6 @@ public class GameBoard implements GameBoardInterface, Panel {
      * */
 
     public boolean hasWon(HashSet<Ship> OpponentsShips){
-        if(OpponentsShips.isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
+        return OpponentsShips.isEmpty();
     }
 }
