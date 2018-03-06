@@ -117,12 +117,35 @@ public class GameBoard implements GameBoardInterface, Panel {
         if (!checkIndexBoundaries(aShip)) {
             throw new IllegalStateException("Can't place a ship beyond the board's boundaries B");
         }*/
+        if(playerTurn == 0 && xPos > 11) {
+            throw new IllegalArgumentException("It's player 1's turn and you're trying to place into player 2's territory");
+        } else if(playerTurn == 1 && xPos < 12) {
+            throw new IllegalArgumentException("It's player 2's turn and you're trying to place into player 1's territory");
+        }
+        if(!checkPlacementInEnemy(aShip, xPos)) {
+            throw new IllegalArgumentException("checkPlacementInEnemy returns false");
+        }
         if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
             throw new IllegalStateException("There is already a ship there");
         }
 
+
         aShip.setRowCoord(yPos);
         aShip.setColumnCoord(xPos);
+        if(playerTurn == 0) {
+            if(hasEnoughPoints(aShip, p1)) {
+                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getSC());
+            } else {
+                throw new IllegalStateException("player 1 doesn't have enough points");
+            }
+        }
+        if(playerTurn == 1) {
+            if(hasEnoughPoints(aShip, p2)) {
+                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getSC());
+            }else {
+                throw new IllegalStateException("player 2 doesn't have enough points");
+            }
+        }
 
         if (shipSize > 1) {
             if (isHorizontal) {
@@ -327,6 +350,47 @@ public class GameBoard implements GameBoardInterface, Panel {
             }
             updateShipInSet(aShip);
         }
+    }
+
+    /**
+     * A method to see if a player has enough points to place a ship on the board
+     * @param aShip the ship to be placed so we can get it's cost
+     * @param player player 1 or player 2
+     * @return true if they have enough, false if they don't
+     */
+    public boolean hasEnoughPoints(Ship aShip, Player player) {
+        int playerPoints = player.getAvailablePoints();
+        int shipCost = aShip.getSC();
+
+        if(playerPoints - shipCost < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**A method to see if your ship would be placed within the enemy's area
+     *
+     * @param aShip the ship to be placed
+     * @param x the x position of the head of the ship
+     * @return true if it WOULD NOT go in enemy territory (across red line),
+     *          false if it WOULD go in enemy territory
+     */
+    public boolean checkPlacementInEnemy(Ship aShip, int x) {
+        int shipSize = aShip.getShipSize();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        if(playerTurn == 0 && !direction && isHorizontal) {
+            if(shipSize + x > 12) {
+                return false;
+            }
+        } else if(playerTurn == 1 && direction && isHorizontal) {
+            if(x - shipSize < 11 ) {
+                return false;
+            }
+        }
+        return true;
     }
     /**
      * A boolean that checks if the area around the ship would go outside the index of the board.
