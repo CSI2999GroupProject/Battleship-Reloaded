@@ -7,8 +7,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.ArrayList;
-
-import sophomoreproject.battleship.ships.Cruiser;
 import sophomoreproject.battleship.ships.Ship;
 
 /**
@@ -21,8 +19,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public ArrayList<Ship> boardObjects = new ArrayList<Ship>();
     public ArrayList<Panel> panels = new ArrayList<Panel>();
     private GameBoard board;
+    private FleetBuildPanel fbp;
+    private HudPanel hudPanel;
     private FleetBuildPanel fbp; //Test
     private ShipPanel sp; //Test
+
     private Point masterPoint; //The top-left corner of the map. Can be moved about the screen.
     private Point historicPoint = new Point(); //A point that represents the origin of a finger moving across the screen.
     private Point locator; //A dynamic point that corresponds to the last point the finger was that the game has updated to.
@@ -39,13 +40,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         board = new GameBoard(context, this);
         fbp = new FleetBuildPanel(context, board);
+        hudPanel = new HudPanel(context, board);
         sp = new ShipPanel(context, null, this);
         masterPoint = new Point(0, 0); //Starts the game with the map's top-left corner being on the screen's top-left corner
         locator = new Point(0,0);
         seq = 0;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
 
         panels.add(fbp);
         panels.add(sp);
+
     }
 
     @Override
@@ -79,6 +90,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void update()
     {
+
         board.update(masterPoint);
 
         for(Ship s : boardObjects)
@@ -95,6 +107,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void draw(Canvas canvas)
     {
+        if(fbp.getInitialSeq() == 0) {
+            panels.add(fbp);
+            fbp.setInitialSeq(1);
+        }
+        if(fbp.getInitialSeq() == 2) {
+            if(panels.contains(fbp)) {
+                panels.remove(fbp);
+            }
+            panels.add(hudPanel);
+            fbp.setInitialSeq(3);//
+        }
         super.draw(canvas);
         board.draw(canvas);
 
