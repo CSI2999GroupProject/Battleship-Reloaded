@@ -17,8 +17,8 @@ public class Submarine extends Ship implements ShipInterface{
         super(context, row, column);
         setName("Submarine");
         setShipSize(3);
-        setSC(2);
-        setDC(1);
+        setShipCost(2);
+        setDamageCost(1);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128*getShipSize(), 128, false);
     }
     @Override
