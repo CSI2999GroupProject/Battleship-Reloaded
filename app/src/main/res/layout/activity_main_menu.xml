@@ -38,7 +38,7 @@
         android:layout_marginTop="65dp"
         android:onClick="onDebugClick"
         android:scaleType="fitCenter"
-        android:src="@drawable/Play_Button"
+        android:src="@drawable/play_button"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

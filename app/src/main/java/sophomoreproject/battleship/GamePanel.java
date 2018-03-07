@@ -89,29 +89,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         thread.start();
     }
 
-    public void update()
-    {
-
+    public void update() {
         board.update(masterPoint);
 
-        for(Ship s : boardObjects)
-        {
+        for (Ship s : boardObjects) {
             s.update(masterPoint);
         }
 
-        for(Panel p : panels)
-        {
+        for (Panel p : panels) {
             p.update();
         }
-    @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        return super.onTouchEvent(event);
-    }
-
-    public void update()
-    {
-
     }
 
     @Override
