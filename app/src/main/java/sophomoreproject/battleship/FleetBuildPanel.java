@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
@@ -30,12 +32,15 @@ public class FleetBuildPanel implements Panel
     private GameBoard board;
     private ArrayList<Rect> buttons = new ArrayList<>();
     private Rect panel, aircraftcarrierBox, battleshipBox, cruiserBox, destroyerBox, submarineBox, turnLeftBox, turnRightBox;
-    private Paint panelPaint, selectedPaint;
+    private Rect finishBox, fleetPointsBox;
+    private Paint panelPaint, selectedPaint, fontColor, costFontColor;
     private Bitmap aircraftcarrier, battleship, cruiser, destroyer, submarine, turnLeft, turnRight;
     private Bitmap lastButtonPress, selected;
+    private Bitmap finishButton, fleetPointsDisplay;
     private boolean isHorizontal = true, direction = true;
     private String selectedShip = "";
     private Point lastMotion = new Point(0, 0);
+    private int initialSeq = 0;
 
     public FleetBuildPanel(Context context, GameBoard board)
     {
@@ -43,42 +48,65 @@ public class FleetBuildPanel implements Panel
         this.board = board;
 
         panel = new Rect();
-        panel.set(0, 0, 160, 800);
+        panel.set(0, 0, 420, 1100);
         panelPaint = new Paint();
         panelPaint.setColor(Color.GRAY);
 
-        turnLeftBox = new Rect(16, 720, 80, 784);
+        turnLeftBox = new Rect(16, 720+30, 80, 784+30);
         turnLeft = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_left_button), 64, 64, false);
 
-        turnRightBox = new Rect(80, 720, 144, 784);
+        turnRightBox = new Rect(80, 720+30, 144, 784+30);
         turnRight = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_right_button), 64, 64, false);
 
         selectedPaint = new Paint();
         selectedPaint.setAlpha(175);
 
         aircraftcarrierBox = new Rect();
-        aircraftcarrierBox.set(16, 16, 16 + 128, 16 + 26);
+        aircraftcarrierBox.set(16, 16+30, 16 + 128, 16 + 26+30);
         aircraftcarrier = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.aircraftcarrier), 128, 26, false);
 
         battleshipBox = new Rect();
-        battleshipBox.set(16, 160, 16 + 128, 160 + 43);
+        battleshipBox.set(16, 160+30, 16 + 128, 160 + 43+30);
         battleship = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.battleship), 128, 43, false);
 
         cruiserBox = new Rect();
-        cruiserBox.set(16, 304, 16 + 128, 304 + 64);
+        cruiserBox.set(16, 304+30, 16 + 128, 304 + 64+30);
         cruiser = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.cruiser), 128, 64, false);
         
         destroyerBox = new Rect();
-        destroyerBox.set(16, 448, 16 + 128, 448 + 32);
+        destroyerBox.set(16, 448+30, 16 + 128, 448 + 32+30);
         destroyer = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.destroyer), 128, 32, false);
 
         submarineBox = new Rect();
-        submarineBox.set(16, 592, 16 + 128, 592 + 43);
+        submarineBox.set(16, 592+30, 16 + 128, 592 + 43+30);
         submarine = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128, 43, false);
 
+        finishBox = new Rect(16, 830, 16 + 388, 830 + 195);
+        finishButton = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.shipplacing_button_on), 388, 195, false);
+
+        fleetPointsBox = new Rect(600, 1080 - 195, 520 + 600, 1080);
+        fleetPointsDisplay = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.points_title), 520, 195, false);
+
+        fontColor = new Paint();
+        fontColor.setTextSize(55);
+        fontColor.setColor(Color.WHITE);
+
+        costFontColor = new Paint();
+        costFontColor.setTextSize(40);
+        costFontColor.setColor(Color.BLUE);
+
         buttons.add(cruiserBox);
+
+
     }
 
+    public int getInitialSeq() {
+        return initialSeq;
+    }
+
+    public void setInitialSeq(int initialSeq) {
+        this.initialSeq = initialSeq;
+    }
 
     /**
      * A method to update the panel (currently unused)
@@ -95,7 +123,9 @@ public class FleetBuildPanel implements Panel
      */
     public void draw(Canvas canvas)
     {
+
         canvas.drawRect(panel, panelPaint);
+
         canvas.drawBitmap(aircraftcarrier, aircraftcarrierBox.left, aircraftcarrierBox.top, null);
         canvas.drawBitmap(battleship, battleshipBox.left, battleshipBox.top, null);
         canvas.drawBitmap(cruiser, cruiserBox.left, cruiserBox.top, null);
@@ -103,19 +133,28 @@ public class FleetBuildPanel implements Panel
         canvas.drawBitmap(submarine, submarineBox.left, submarineBox.top, null);
         canvas.drawBitmap(turnLeft, turnLeftBox.left, turnLeftBox.top, null);
         canvas.drawBitmap(turnRight, turnRightBox.left, turnRightBox.top, null);
-        if(selected != null)
-        {
-            if(isHorizontal)
-                if(direction)
+        canvas.drawBitmap(finishButton, finishBox.left, finishBox.top, null);
+        canvas.drawBitmap(fleetPointsDisplay, fleetPointsBox.left, fleetPointsBox.top, null);
+        canvas.drawText("" + board.getP1().getAvailablePoints(), 600 + 195, 1035, fontColor);
+        canvas.drawText("" + board.getP2().getAvailablePoints(), 600 + 435, 1035, fontColor);
+        canvas.drawText("4 points", 180, 65, costFontColor);
+        canvas.drawText("2 points", 180, 225, costFontColor);
+        canvas.drawText("1 point", 180, 370, costFontColor);
+        canvas.drawText("3 points", 180, 505, costFontColor);
+        canvas.drawText("2 points", 180, 655, costFontColor);
+
+        if (selected != null) {
+            if (isHorizontal)
+                if (direction)
                     canvas.drawBitmap(selected, lastMotion.x - selected.getWidth() + 64, lastMotion.y - 64, selectedPaint);
                 else
                     canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - 64, selectedPaint);
+            else if (direction)
+                canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - 64, selectedPaint);
             else
-                if(direction)
-                    canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - 64, selectedPaint);
-                else
-                    canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - selected.getHeight() + 64, selectedPaint);
+                canvas.drawBitmap(selected, lastMotion.x - 64, lastMotion.y - selected.getHeight() + 64, selectedPaint);
         }
+
     }
 
     private Bitmap applyRotate(Bitmap image, int degrees)
@@ -148,7 +187,10 @@ public class FleetBuildPanel implements Panel
 
         switch(event.getAction())
         {
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN: //What happens after any of the Rect is clicked
+
+
+
                 if(aircraftcarrierBox.contains(x, y))
                 {
                     if(isHorizontal)
@@ -196,11 +238,23 @@ public class FleetBuildPanel implements Panel
                 else if(turnRightBox.contains(x, y))
                 {
                     lastButtonPress = turnRight;
+                } else if(finishBox.contains(x, y)) { //
+                    lastButtonPress = finishButton;
                 }
+
+
+
+
+
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
                 selected = null;
+
+
+
+
+
 
                 if(lastButtonPress == turnLeft && turnLeftBox.contains(x, y))
                 {
@@ -245,7 +299,20 @@ public class FleetBuildPanel implements Panel
                     {
                         isHorizontal = true;
                     }
+                } else if(lastButtonPress == finishButton && finishBox.contains(x, y)) {
+                    if(board.getPlayerTurn() == 0) {
+                        board.setPlayerTurn(1);
+                    } else if(board.getPlayerTurn() == 1) {
+                        board.setPlayerTurn(0);
+                        initialSeq = 2;
+                    }
+
                 }
+
+
+
+
+
                 lastButtonPress = null;
 
                 if(panel.contains(x, y))
@@ -253,6 +320,10 @@ public class FleetBuildPanel implements Panel
 
                 int row = (x - board.getMasterPoint().x)/128;
                 int column = (y - board.getMasterPoint().y)/128;
+
+
+
+
                 try
                 {
                     Ship ship;
@@ -303,9 +374,15 @@ public class FleetBuildPanel implements Panel
                 }
                 catch(Exception e)
                 {
-                    //Do nothing if the ship was placed in a stupid place
+                    System.out.println("Failed to place a ship at (" + row + ", " + column + ") because: " + e.getMessage());
                 }
+
+
+
+
+
                 selectedShip = "";
+
         }
     }
 }

@@ -18,7 +18,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:context="@drawable/water"
-            tools:showIn="@drawable/water_old">
+            tools:showIn="@drawable/water_old_old">
 
             <ImageView
                 android:id="@+id/background"
@@ -30,7 +30,7 @@
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/water_old" />
+                app:srcCompat="@drawable/water_old_old" />
 
         </android.support.v4.widget.NestedScrollView>
     </HorizontalScrollView>

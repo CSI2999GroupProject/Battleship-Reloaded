@@ -1,11 +1,20 @@
 package sophomoreproject.battleship.ships;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import sophomoreproject.battleship.R;
+
 /**
  * Created by isaac on 1/31/2018.
  */
 
 public class AircraftCarrier extends Ship implements ShipInterface{
-    public AircraftCarrier() {
+
+    public AircraftCarrier(Context context, int row, int column)
+    {
+        super(context, row, column);
         setName("Aircraft Carrier");
         setShipSize(5);
         setSC(4);
@@ -18,7 +27,9 @@ public class AircraftCarrier extends Ship implements ShipInterface{
     }
 
     @Override
-    public void ability() {
+    public void ability()
+    {
 
     }
+
 }
