@@ -149,14 +149,14 @@ public class GameBoard implements GameBoardInterface, Panel {
         aShip.setColumnCoord(xPos);
         if(playerTurn == 0) {
             if(hasEnoughPoints(aShip, p1)) {
-                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getSC());
+                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getShipCost());
             } else {
                 throw new IllegalStateException("player 1 doesn't have enough points");
             }
         }
         if(playerTurn == 1) {
             if(hasEnoughPoints(aShip, p2)) {
-                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getSC());
+                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getShipCost());
             }else {
                 throw new IllegalStateException("player 2 doesn't have enough points");
             }
@@ -373,7 +373,7 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public boolean hasEnoughPoints(Ship aShip, Player player) {
         int playerPoints = player.getAvailablePoints();
-        int shipCost = aShip.getSC();
+        int shipCost = aShip.getShipCost();
 
         if(playerPoints - shipCost < 0) {
             return false;
