@@ -38,6 +38,8 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public GameBoard(Context context, GamePanel gp)
     {
+
+
         this.context = context;
         this.gp = gp;
         boardRows = DEFAULT_ROWS;
@@ -316,10 +318,8 @@ public class GameBoard implements GameBoardInterface, Panel {
         int shipX = aShip.getColumnCoord();
         int shipY = aShip.getRowCoord();
         int shipSize = aShip.getShipSize();
-
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
-
         if (!checkIndexBoundaries(aShip)) {
             throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
         }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
@@ -478,6 +478,49 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
 
+
+
+    /**
+     * Note: If you change the variables of an object, they do not get updated automatically.
+     *       HashSets are unordered, so it's easy enough to remove the object from the set and add it back
+     *       with its updated variables.
+     *
+     * Use this method when you modify a ship that is currently on the board
+     * @param targetShip the Ship from the shipSet to be updated
+     */
+    public void updateShipInSet(Ship targetShip) {
+        if(shipSet.contains(targetShip)) {
+            shipSet.remove(targetShip);
+            shipSet.add(targetShip);
+        }
+    }
+    /**
+     * Use this method to calculate the number of ships lost in order to determine if the player
+     * lost
+     * @param lostShips the number of ships from shipSet that you lost
+     * */
+    public boolean hasLost(HashSet<Ship> lostShips){
+        if(lostShips.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * Use this method to calculate the number of the opponent's ships the player destroyed in
+     * order to determine if the player win
+     * @param DestroyedShips the number of ships from shipSet that you destroyed
+     * */
+    public boolean hasWon(HashSet<Ship> DestroyedShips){
+        if(DestroyedShips.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+}
+    }
 
 
     /**

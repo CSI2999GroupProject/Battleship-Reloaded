@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainMenu extends AppCompatActivity {
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { //kjkj
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
     }
-
     public void onDebugClick(View view)
     {
         Intent intent = new Intent(this, Debug.class);
