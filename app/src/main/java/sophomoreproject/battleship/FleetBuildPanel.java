@@ -213,7 +213,7 @@ public class FleetBuildPanel implements Panel
                         selected = Bitmap.createScaledBitmap(cruiser, 256, 128, false);
                     else
                         selected = Bitmap.createScaledBitmap(cruiser, 128, 256, false);
-                    selectedShip = "Cruiser";
+                    selectedShip = "cruiser";
                 }
                 else if(destroyerBox.contains(x, y))
                 {
@@ -221,7 +221,7 @@ public class FleetBuildPanel implements Panel
                         selected = Bitmap.createScaledBitmap(destroyer, 512, 128, false);
                     else
                         selected = Bitmap.createScaledBitmap(destroyer, 128, 512, false);
-                    selectedShip = "Destroyer";
+                    selectedShip = "destroyer";
                 }
                 else if(submarineBox.contains(x, y))
                 {
@@ -229,7 +229,7 @@ public class FleetBuildPanel implements Panel
                         selected = Bitmap.createScaledBitmap(submarine, 384, 128, false);
                     else
                         selected = Bitmap.createScaledBitmap(submarine, 128, 384, false);
-                    selectedShip = "Submarine";
+                    selectedShip = "submarine";
                 }
                 else if(turnLeftBox.contains(x, y))
                 {
@@ -346,7 +346,7 @@ public class FleetBuildPanel implements Panel
                             board.addShip(ship, row, column);
                             System.out.println("Added a battleship at (" + row + ", " + column + ")");
                             break;
-                        case "Cruiser":
+                        case "cruiser":
                             ship = new Cruiser(context, row, column);
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
@@ -354,7 +354,7 @@ public class FleetBuildPanel implements Panel
                             board.addShip(ship, row, column);
                             System.out.println("Added a cruiser at (" + row + ", " + column + ")");
                             break;
-                        case "Destroyer":
+                        case "destroyer":
                             ship = new Destroyer(context, row, column);
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
@@ -362,7 +362,7 @@ public class FleetBuildPanel implements Panel
                             board.addShip(ship, row, column);
                             System.out.println("Added a destroyer at (" + row + ", " + column + ")");
                             break;
-                        case "Submarine":
+                        case "submarine":
                             ship = new Submarine(context, row, column);
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);

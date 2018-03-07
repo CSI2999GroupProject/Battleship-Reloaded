@@ -35,6 +35,8 @@ public class Ship {
     private int FDamageCost;
     private int BDamageCost;
     private int Hitpoints;
+    private int range;
+    private int Frange;
     Bitmap shipImage;
     private Point masterPoint;
 
@@ -179,6 +181,14 @@ public class Ship {
     /**
      *Don't worry about nshots, and the diffrent damage costs they are part of my part in making the game rules
      */
+    public int getRange(){return range;}
+    public void setRange(int range){this.range=range;}
+    //range ships can fire
+
+    public int getFRange(){return Frange;}
+    public void setFRange(int Frange){this.Frange=Frange;}
+    //range ships can fire
+
     public int getnShots() {
         return nShots;
     }

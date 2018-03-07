@@ -15,10 +15,12 @@ public class Submarine extends Ship implements ShipInterface{
     public Submarine(Context context, int row, int column)
     {
         super(context, row, column);
-        setName("Submarine");
+        setName("submarine");
         setShipSize(3);
         setShipCost(2);
         setDamageCost(1);
+        setRange(3);
+        setFRange(5);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128*getShipSize(), 128, false);
     }
     @Override
