@@ -110,12 +110,12 @@ public class ShipPanel implements Panel
                                 System.out.println("You have moved this ship its maximum number of spaces!");
                             }
                                 break;
-                            case 2: //Rotate left button pressed
+                            case 2: //Rotate left button pressed this is the rotate that we currently have
 
                                 GameBoard.rotateLeft(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Left!");
                                 break;
-                            case 3: //Rotate Right button pressed
+                            case 3: //Rotate Right button pressed this is currently in here but it needs to be
                                 GameBoard.rotateRight(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Left!");
                                 break;
