@@ -214,49 +214,59 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
 
-        if (!checkIndexBoundaries(aShip)) {
-            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
-        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
-            throw new IllegalStateException("There is already a ship there");
-        }else{
+        System.out.println("made it");
             if (shipSize > 1) {
                 if (isHorizontal) {
                     if (direction) {
+                        System.out.println(xPos+" "+yPos);
                         shipSet.remove(aShip);
-                        xPos=xPos+1;
+                        yPos=yPos+1;
+
+                        aShip.setColumnCoord(yPos);
                         for (int i = 0; i < shipSize; i++) {
-                            board[yPos][xPos - i] = aShip;
+                           board[yPos-i][xPos] = aShip;
+                            //board[yPos-i][xPos]=board[yPos][xPos];
                         }
+                        board[yPos-shipSize][xPos]=null;
+                        System.out.println(board[yPos-1][xPos]);
+                        System.out.println(xPos+" "+yPos);
+
                         shipSet.add(aShip);
                     } else if (!direction) {
+                        System.out.println(xPos+" "+yPos);
                         shipSet.remove(aShip);
-                        xPos=xPos-1;
+                        yPos=yPos-1;
+                        aShip.setColumnCoord(yPos);
                         for (int i = 0; i < shipSize; i++) {
-                            board[yPos][xPos + i] = aShip;
+                            board[yPos+i][xPos] = aShip;
                         }
                         shipSet.add(aShip);
                     }
                 } else if (!isHorizontal) {
                     if (direction) {
+                        System.out.println(xPos+" "+yPos);
                         shipSet.remove(aShip);
-                        yPos=yPos+1;
+                        xPos=xPos-1;
+                        aShip.setRowCoord(xPos);
                         for (int i = 0; i < shipSize; i++) {
-                            board[yPos - i][xPos] = aShip;
+                            board[yPos ][xPos+i] = aShip;
                         }
                         shipSet.add(aShip);
                     } else {
+                        System.out.println(xPos+" "+yPos);
                         shipSet.remove(aShip);
-                        yPos=yPos-1;
+                        xPos=xPos+1;
+                        aShip.setRowCoord(xPos);
                         for (int i = 0; i < shipSize; i++) {
-                            board[yPos + i][xPos] = aShip;
+                            board[yPos][xPos-i] = aShip;
                         }
                         shipSet.add(aShip);
                     }
                 }
             }
             updateShipInSet(aShip);
-        }
     }
+
 
     @Override
     public void rotateLeft(Ship aShip, int xPos, int yPos) {
