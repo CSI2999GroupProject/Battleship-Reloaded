@@ -100,11 +100,15 @@ public class ShipPanel implements Panel
                                 System.out.println("Fire!");
                                 break;
                             case 1: //Move button pressed
-
-                                int pmove=ship.getpmove();//not sure where its at but when player turn switches pmove needs to be reset to 0
+                                int temp=0;
+                                if ( temp != gp.getBoard().getPlayerTurn()){
+                                ship.setpmove(0);
+                                temp = gp.getBoard().getPlayerTurn();
+                            }
+                                int pmove=ship.getpmove();//not sure where its at but when player turn switches pmove for all ships needs to be reset to 0
                                 ship.setpmove(pmove++);
                             if(pmove!=ship.getnMove()){
-                                gp.getBoard().move(ship,ship.getRowCoord(),ship.getColumnCoord(), pmove);
+                                gp.getBoard().move(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Move!");
                             }else{
                                 System.out.println("You have moved this ship its maximum number of spaces!");

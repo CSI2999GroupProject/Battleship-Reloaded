@@ -13,7 +13,7 @@ public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GamePanel gamePanel;
     private boolean running;
-    public static Canvas canvas;
+    public  static Canvas canvas;
 
     public MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel)
     {

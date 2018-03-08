@@ -9,7 +9,7 @@ import sophomoreproject.battleship.ships.Ship;
 public interface GameBoardInterface {
 
     void addShip(Ship aShip, int xPos, int yPos);
-    void move(Ship aShip, int xPos, int yPos, int pmove);
+    void move(Ship aShip, int xPos, int yPos);
     void rotateLeft(Ship aShip, int xPos, int yPos);
     void rotateRight(Ship aShip, int xPos, int yPos);
     boolean checkIndexBoundaries(Ship aShip);
