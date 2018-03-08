@@ -100,10 +100,24 @@ public class ShipPanel implements Panel
                                 System.out.println("Fire!");
                                 break;
                             case 1: //Move button pressed
+
+                                int pmove=ship.getpmove();//not sure where its at but when player turn switches pmove needs to be reset to 0
+                                ship.setpmove(pmove++);
+                            if(pmove!=ship.getnMove()){
+                                GameBoard.move(ship,ship.getRowCoord(),ship.getColumnCoord(), pmove);
                                 System.out.println("Move!");
+                            }else{
+                                System.out.println("You have moved this ship its maximum number of spaces!");
+                            }
                                 break;
-                            case 2: //Rotate button pressed
-                                System.out.println("Rotate!");
+                            case 2: //Rotate left button pressed
+
+                                GameBoard.rotateLeft(ship,ship.getRowCoord(),ship.getColumnCoord());
+                                System.out.println("Rotate Left!");
+                                break;
+                            case 3: //Rotate Right button pressed
+                                GameBoard.rotateRight(ship,ship.getRowCoord(),ship.getColumnCoord());
+                                System.out.println("Rotate Left!");
                                 break;
                             default:
                                 System.out.println("Something unexpected happened.");

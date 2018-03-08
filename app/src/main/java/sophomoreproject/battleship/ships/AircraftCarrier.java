@@ -24,6 +24,7 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         setDamageCost(1);
         setnShots(3);
         setRange(24);
+        setpmove(0);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.aircraftcarrier), 128*getShipSize(), 128, false);
     }
 

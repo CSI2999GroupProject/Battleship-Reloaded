@@ -204,7 +204,7 @@ public class GameBoard implements GameBoardInterface, Panel {
      * A method to move the ships in the board
      */
     @Override
-    public void move(Ship aShip, int xPos, int yPos, int pmove) {
+    public  void move(Ship aShip, int xPos, int yPos, int pmove) {
         int shipX = aShip.getColumnCoord();
         int shipY = aShip.getRowCoord();
         int shipSize = aShip.getShipSize();

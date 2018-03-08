@@ -37,6 +37,7 @@ public class Ship {
     private int Hitpoints;
     private int range;
     private int Frange;
+    private int pmove;
     Bitmap shipImage;
     private Point masterPoint;
 
@@ -189,13 +190,14 @@ public class Ship {
     public void setFRange(int Frange){this.Frange=Frange;}
     //range ships can fire
 
-    public int getnShots() {
-        return nShots;
-    }
+    public int getnShots() { return nShots;}
     public void setnShots(int nShots) {
         this.nShots = nShots;
     }
     //number of shots a ship specific damage can shoot per turn
+
+    public int getpmove(){return pmove;}
+    public void setpmove(int pmove){this.pmove=pmove;}
 
     public int getDamageCost() {
         return DamageCost;
