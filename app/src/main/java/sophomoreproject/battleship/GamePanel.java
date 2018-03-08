@@ -59,6 +59,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+    public GameBoard getBoard() {
+        return board;
+    }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
