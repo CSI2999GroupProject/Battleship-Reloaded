@@ -115,7 +115,7 @@ public class ShipPanel implements Panel
                                 GameBoard.rotateLeft(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Left!");
                                 break;
-                            case 3: //Rotate Right button pressed this is currently in here but it needs to be
+                            case 3: //Rotate Right button pressed this is currently in not here but it needs to be
                                 GameBoard.rotateRight(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Left!");
                                 break;
