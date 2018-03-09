@@ -61,15 +61,25 @@ public class Ship {
         this.columnCoord = column;
     }
 
+    public void applyRotateL(int degree){
+        Matrix m = new Matrix();
+        m.postRotate(degree);
+        System.out.println("Rotation of Ship image: " + degree + " degrees");
+        shipImage = Bitmap.createBitmap(shipImage, 0, 0, shipImage.getWidth(), shipImage.getHeight(), m, false);
+    }
+
+
     public void applyRotate()
     {
         Matrix m = new Matrix();
 
         int degree = 0;
+
         if(!this.getHorizontal())
             degree -= 90;
         if(!this.getDirection())
             degree -= 180;
+
 
         m.postRotate(degree);
         System.out.println("Rotation of Ship image: " + degree + " degrees");
