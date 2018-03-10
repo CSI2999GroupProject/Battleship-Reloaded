@@ -255,54 +255,6 @@ public class GameBoard implements GameBoardInterface, Panel {
         {
             addShip(aShip, xPos, yPos + pmove);
         }
-
-        /*int shipX = aShip.getColumnCoord();
-        int shipY = aShip.getRowCoord();
-        int shipSize = aShip.getShipSize();
-        int nMove = aShip.getnMove();
-        boolean isHorizontal = aShip.getHorizontal();
-        boolean direction = aShip.getDirection();
-
-        if (!checkIndexBoundaries(aShip)) {
-            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
-        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
-            throw new IllegalStateException("There is already a ship there");
-        }else if(pmove > nMove) {
-            throw new IllegalStateException("This ship cannot move that many spaces");
-        }else{
-            if (shipSize > 1) {
-                if (isHorizontal) {
-                    if (direction) {
-
-                        xPos=xPos+pmove;
-                        for (int i = 0; i < shipSize; i++) {
-                                board[yPos][xPos - i] = aShip;
-                        }
-                    } else if (!direction) {
-
-                        xPos=xPos-pmove;
-                        for (int i = 0; i < shipSize; i++) {
-                                board[yPos][xPos + i] = aShip;
-                        }
-                    }
-                } else if (!isHorizontal) {
-                    if (direction) {
-
-                        yPos=yPos+pmove;
-                        for (int i = 0; i < shipSize; i++) {
-                                board[yPos - i][xPos] = aShip;
-                        }
-                    } else {
-
-                        yPos=yPos-pmove;
-                        for (int i = 0; i < shipSize; i++) {
-                                board[yPos + i][xPos] = aShip;
-                        }
-                    }
-                }
-            }
-            updateShipInSet(aShip);
-        }*/
     }
 
     @Override
@@ -316,16 +268,14 @@ public class GameBoard implements GameBoardInterface, Panel {
 
         removeShip(aShip);
 
-        if(isHorizontal)                //Facing West or East
+        if (isHorizontal)                //Facing West or East
         {
             aShip.setHorizontal(false);
-        }
-        else if (direction)             //Facing North
+        } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
             aShip.setDirection(false);
-        }
-        else                            //Facing South
+        } else                            //Facing South
         {
             aShip.setHorizontal(true);
             aShip.setDirection(true);
@@ -336,50 +286,6 @@ public class GameBoard implements GameBoardInterface, Panel {
         addShip(aShip, shipX, shipY);
 
         System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
-
-        /*if (!checkIndexBoundaries(aShip)) {
-            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
-        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
-            throw new IllegalStateException("There is already a ship there");
-        }else{
-            if (shipSize > 1) {
-                if (isHorizontal) {
-                    if (direction) {
-
-                        aShip.setHorizontal(false);
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos-i][xPos] = aShip;
-                        }
-                    } else if (!direction) {
-
-                        aShip.setHorizontal(false);
-
-
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos+i][xPos] = aShip;
-                        }
-                    }
-                } else if (!isHorizontal) {
-                    if (direction) {
-
-                        aShip.setHorizontal(true);
-                        aShip.setDirection(false);
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos][xPos-i] = aShip;
-                        }
-                    } else {
-
-                        aShip.setHorizontal(true);
-                        aShip.setDirection(true);
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos][xPos+i] = aShip;
-                        }
-                    }
-                }
-            }
-            updateShipInSet(aShip);
-        }
-        shipSet.add(aShip);*/
     }
 
     /**
