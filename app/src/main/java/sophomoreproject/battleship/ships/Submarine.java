@@ -24,6 +24,7 @@ public class Submarine extends Ship implements ShipInterface{
         setpmove(0);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128*getShipSize(), 128, false);
     }
+
     @Override
     public void ability()
     {

@@ -6,42 +6,29 @@
     android:layout_height="match_parent"
     tools:context="sophomoreproject.battleship.MainMenu">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="393dp"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/main_menu_screen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent" />
-<TextView
-    android:id="@+id/textView"
-    android:layout_width="wrap_content"
-    android:layout_height="200dp"
-    android:text=" "
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="parent"
-    app:layout_constraintVertical_bias="0.26"
-    />
-    <ImageButton
+        android:text="@string/testing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26" />
 
+    <Button
         android:id="@+id/button"
-        android:layout_height="80dp"
-        android:layout_width="140dp"
+        android:layout_width="104dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="65dp"
         android:onClick="onDebugClick"
-        android:scaleType="fitCenter"
-        android:src="@drawable/play_button"
+        android:text="@string/test123"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </android.support.constraint.ConstraintLayout>

@@ -2,10 +2,6 @@ package sophomoreproject.battleship;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.view.MotionEvent;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -73,7 +69,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder holder)
     {
         boolean retry = true;
-        while(true)
         while(retry)
         {
             try {
@@ -93,14 +88,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         thread.start();
     }
 
-    public void update() {
+    public void update()
+    {
+
         board.update(masterPoint);
 
-        for (Ship s : boardObjects) {
+        for(Ship s : boardObjects)
+        {
             s.update(masterPoint);
         }
 
-        for (Panel p : panels) {
+        for(Panel p : panels)
+        {
             p.update();
         }
     }
@@ -121,7 +120,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             fbp.setInitialSeq(3);
         }
         super.draw(canvas);
-
         board.draw(canvas);
 
         for(Ship s : boardObjects)
