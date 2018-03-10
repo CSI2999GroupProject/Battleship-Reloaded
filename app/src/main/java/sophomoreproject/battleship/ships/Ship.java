@@ -8,6 +8,8 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 
+import sophomoreproject.battleship.GameBoard;
+
 /**
  * Created by isaac on 1/31/2018.
  */
@@ -47,7 +49,6 @@ public class Ship {
 
     public Ship()
     {
-
     }
 
     public Ship(Context context, int row, int column)

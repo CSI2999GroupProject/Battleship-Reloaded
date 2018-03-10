@@ -108,7 +108,7 @@ public class ShipPanel implements Panel
                                 int pmove=ship.getpmove();//not sure where its at but when player turn switches pmove for all ships needs to be reset to 0
                                 ship.setpmove(pmove++);
                             if(pmove!=ship.getnMove()){
-                                gp.getBoard().move(ship,ship.getRowCoord(),ship.getColumnCoord());
+                                gp.getBoard().move(ship,ship.getColumnCoord(),ship.getRowCoord(), 1);
                                 System.out.println("Move!");
                             }else{
                                 System.out.println("You have moved this ship its maximum number of spaces!");
@@ -119,10 +119,10 @@ public class ShipPanel implements Panel
                                 gp.getBoard().rotateLeft(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Left!");
                                 break;
-                            case 3: //Rotate Right button pressed this is currently in not here but it needs to be
+                            /*case 3: //Rotate Right button pressed this is currently in not here but it needs to be
                                 gp.getBoard().rotateRight(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Right!");
-                                break;
+                                break;*/
                             default:
                                 System.out.println("Something unexpected happened.");
                         }
