@@ -302,49 +302,26 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
 
-        if (!checkIndexBoundaries(aShip)) {
-            throw new IllegalStateException("Can't place a ship beyond the board's boundaries");
-        }else if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
-            throw new IllegalStateException("There is already a ship there");
-        }else{
-            if (shipSize > 1) {
-                if (isHorizontal) {
-                    if (direction) {
+        removeShip(aShip);
 
-                        aShip.setHorizontal(false);
-                        aShip.setDirection(false);
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos+i][xPos] = aShip;
-                        }
-                    } else if (!direction) {
-
-                        aShip.setHorizontal(false);
-                        aShip.setDirection(true);
-
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos-i][xPos] = aShip;
-                        }
-                    }
-                } else if (!isHorizontal) {
-                    if (direction) {
-
-                        aShip.setHorizontal(true);
-
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos][xPos+i] = aShip;
-                        }
-                    } else {
-
-                        aShip.setHorizontal(true);
-
-                        for (int i = 0; i < shipSize; i++) {
-                            board[yPos][xPos-i] = aShip;
-                        }
-                    }
-                }
-            }
-            updateShipInSet(aShip);
+        if (!isHorizontal)                //Facing West or East
+        {
+            aShip.setHorizontal(true);
+        } else if (!direction)             //Facing North
+        {
+            aShip.setHorizontal(false);
+            aShip.setDirection(true);
+        } else                            //Facing South
+        {
+            aShip.setHorizontal(false);
+            aShip.setDirection(false);
         }
+
+        aShip.applyRotateL(90);
+
+        addShip(aShip, shipX, shipY);
+
+        System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
 
     /**

@@ -122,10 +122,13 @@ public class ShipPanel implements Panel
                                     gp.getBoard().move(ship,ship.getColumnCoord(),ship.getRowCoord(), 1);
                                 }
                                 break;
-                            /*case 3: //Rotate Right button pressed this is currently in not here but it needs to be
+                            case 3: //Rotate Right button pressed this is currently in not here but it needs to be
                                 gp.getBoard().rotateRight(ship,ship.getRowCoord(),ship.getColumnCoord());
                                 System.out.println("Rotate Right!");
-                                break;*/
+                                for (int j = 0; j < ship.getShipSize()-1; j++) {
+                                    gp.getBoard().move(ship,ship.getColumnCoord(),ship.getRowCoord(), 1);
+                                }
+                                break;
                             default:
                                 System.out.println("Something unexpected happened.");
                         }
