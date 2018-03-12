@@ -17,12 +17,14 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         super(context, row, column);
         setName("Aircraft Carrier");
         setShipSize(5);
-        setSC(4);
+        setShipCost(4);
         setnMove(1);
         setHitpoints(4000);
         setdamage(350);
-        setDC(1);
+        setDamageCost(1);
         setnShots(3);
+        setRange(24);
+        setpmove(0);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.aircraftcarrier), 128*getShipSize(), 128, false);
     }
 

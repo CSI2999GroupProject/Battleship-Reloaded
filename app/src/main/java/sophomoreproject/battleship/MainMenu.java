@@ -20,6 +20,7 @@ public class MainMenu extends AppCompatActivity implements
 
         Log.i(getLocalClassName(), "oncREATE");
     }
+
     public void onDebugClick(View view)
     {
         startActivity(new Intent(this, Debug.class));

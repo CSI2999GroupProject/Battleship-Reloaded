@@ -8,6 +8,8 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 
+import sophomoreproject.battleship.GameBoard;
+
 /**
  * Created by isaac on 1/31/2018.
  */
@@ -25,16 +27,19 @@ public class Ship {
     private boolean direction;
     private int rowCoord;
     private int columnCoord;
-    private int SC;
+    private int ShipCost;
     private int nMove;
     private int damage;
     private int fdamage;
     private int bdamage;
     private int nShots;
-    private int DC;
-    private int FDC;
-    private int BDC;
+    private int DamageCost;
+    private int FDamageCost;
+    private int BDamageCost;
     private int Hitpoints;
+    private int range;
+    private int Frange;
+    private int pmove;
     Bitmap shipImage;
     private Point masterPoint;
 
@@ -44,7 +49,6 @@ public class Ship {
 
     public Ship()
     {
-
     }
 
     public Ship(Context context, int row, int column)
@@ -58,15 +62,25 @@ public class Ship {
         this.columnCoord = column;
     }
 
+    public void applyRotateL(int degree){
+        Matrix m = new Matrix();
+        m.postRotate(degree);
+        System.out.println("Rotation of Ship image: " + degree + " degrees");
+        shipImage = Bitmap.createBitmap(shipImage, 0, 0, shipImage.getWidth(), shipImage.getHeight(), m, false);
+    }
+
+
     public void applyRotate()
     {
         Matrix m = new Matrix();
 
         int degree = 0;
+
         if(!this.getHorizontal())
             degree -= 90;
         if(!this.getDirection())
             degree -= 180;
+
 
         m.postRotate(degree);
         System.out.println("Rotation of Ship image: " + degree + " degrees");
@@ -125,35 +139,47 @@ public class Ship {
 
 
 
-    public int getSC() {
-        return SC;
+    public int getShipCost() {
+        return ShipCost;
     }
-    public void setSC(int SC) {
-        this.SC = SC;
+    public void setShipCost(int ShipCost) {
+        this.ShipCost = ShipCost;
     }
-    //records the ship count
-    public int getnMove() {
-        return nMove;
-    }
+    //records the ship cost
+
+    public int getnMove() { return nMove;}
     public void setnMove(int nMove) {
         this.nMove = nMove;
     }
-    //records max number of available moves
+    //the max number of moves a single ship can physically move per turn
+
     public int getdamage() {
         return damage;
     }
     public void setdamage(int damage) {this.damage = damage; }
-    //main damage
+    /*special damage
+    *Battleship: damage out sides
+    * AirCraft carrier: damage at any spot of choice
+    * cruiser: main gun damage
+    * destroyer: damage out sides
+    */
+
     public int getfdamage() {
         return fdamage;
     }
     public void setfdamage(int fdamage) {this.fdamage = fdamage; }
-    //damage from front of ship
+    /*damage from front of ships
+     *only used on destroyer and battleship
+     */
+
     public int getbdamage() {
         return bdamage;
     }
     public void setbdamage(int bdamage) {this.bdamage = bdamage; }
-    //damage from back of ship
+    /*damage from back of ship
+     *only used on destroyer and battleship
+     */
+
     public int getHitpoints() {
         return Hitpoints;
     }
@@ -161,28 +187,46 @@ public class Ship {
         this.Hitpoints = Hitpoints;
     }
     //ships hitpoints
-    public int getnShots() {
-        return nShots;
-    }
+
+
+
+    /**
+     *Don't worry about nshots, and the diffrent damage costs they are part of my part in making the game rules
+     */
+    public int getRange(){return range;}
+    public void setRange(int range){this.range=range;}
+    //range ships can fire
+
+    public int getFRange(){return Frange;}
+    public void setFRange(int Frange){this.Frange=Frange;}
+    //range ships can fire
+
+    public int getnShots() { return nShots;}
     public void setnShots(int nShots) {
         this.nShots = nShots;
     }
-    //number of shots a ship can shoot per turn
-    public void setDC(int DC) {this.DC = DC; }
-    public int getDC() {
-        return DC;
+    //number of shots a ship specific damage can shoot per turn
+
+    public int getpmove(){return pmove;}
+    public void setpmove(int pmove){this.pmove=pmove;}
+
+    public int getDamageCost() {
+        return DamageCost;
     }
-    //damage count
-    public void setFDC(int FDC) {this.FDC = FDC; }
-    public int getFDC() {
-        return FDC;
+    public void setDamageCost(int DamageCost) {this.DamageCost = DamageCost; }
+    //damage cost
+
+    public int getFDamageCost() {
+        return FDamageCost;
     }
-    //front damage count
-    public void setBDC(int BDC) {this.BDC = BDC; }
-    public int getBDC() {
-        return BDC;
+    public void setFDamageCost(int FDamageCoust) {this.FDamageCost = FDamageCost; }
+    //front damage cost
+
+    public int getBDamageCost() {
+        return BDamageCost;
     }
-    //back damage count
+    public void setBDamageCost(int BDamageCost) {this.BDamageCost = BDamageCost; }
+    //back damage cost
 
 
 

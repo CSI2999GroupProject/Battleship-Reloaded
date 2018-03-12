@@ -13,15 +13,18 @@ public class Battleship extends Ship implements ShipInterface{
         super(context, row, column);
         setName("Battleship");
         setShipSize(3);
-        setSC(2);
+        setShipCost(2);
         setnMove(2);
         setHitpoints(1500);
         setfdamage(100);
-        setFDC(1);
+        setFDamageCost(1);
         setdamage(300);
-        setDC(2);
+        setDamageCost(2);
         setbdamage(50);
-        setBDC(1);
+        setBDamageCost(1);
+        setRange(5);
+        setnShots(2);
+        setpmove(0);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.battleship), 128*getShipSize(), 128, false);
     }
 
