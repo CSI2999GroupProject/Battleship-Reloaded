@@ -123,7 +123,6 @@ public class ShipPanel implements Panel
                                     for (int j = 0; j < ship.getShipSize() - 1; j++) {
                                         gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
                                     }
-
                                 } else {
                                     System.out.println("You cannot rotate and move");
                                 }
