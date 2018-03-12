@@ -94,39 +94,45 @@ public class ShipPanel implements Panel
                 case MotionEvent.ACTION_UP:
                     if(lastButtonClicked == i) //The button the player let go of was the same button they last pressed
                     {
-                        switch(i)
-                        {
+                        switch (i) {
                             case 0: //Fire button pressed
                                 System.out.println("Fire!");
+
                                 break;
                             case 1: //Move button pressed
-                                int temp=0;
-                                if ( temp != gp.getBoard().getPlayerTurn()){
-                                ship.setpmove(0);
-                                temp = gp.getBoard().getPlayerTurn();
-                            }
-                                int pmove=ship.getpmove();//not sure where its at but when player turn switches pmove for all ships needs to be reset to 0
-                                ship.setpmove(pmove++);
-                            if(pmove!=ship.getnMove()){
-                                gp.getBoard().move(ship,ship.getColumnCoord(),ship.getRowCoord(), 1);
-                                System.out.println("Move!");
-                            }else{
-                                System.out.println("You have moved this ship its maximum number of spaces!");
-                            }
+
+                                int pmove = ship.getpmove();
+                                System.out.println(pmove);
+
+                                if (pmove < ship.getnMove()) {
+                                    gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
+                                    System.out.println("Move!");
+
+
+                                } else {
+                                    System.out.println("You have moved this ship its maximum number of spaces!");
+                                }
+                                ship.setpmove(pmove = pmove + 1);
                                 break;
                             case 2: //Rotate left button pressed this is the rotate that we currently have
 
-                                gp.getBoard().rotateLeft(ship,ship.getRowCoord(),ship.getColumnCoord());
-                                System.out.println("Rotate Left!");
-                                for (int j = 0; j < ship.getShipSize()-1; j++) {
-                                    gp.getBoard().move(ship,ship.getColumnCoord(),ship.getRowCoord(), 1);
+                                if (ship.getpmove() == 0) {
+                                    ship.setpmove(ship.getnMove());
+                                    gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
+                                    System.out.println("Rotate Left!");
+                                    for (int j = 0; j < ship.getShipSize() - 1; j++) {
+                                        gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
+                                    }
+
+                                } else {
+                                    System.out.println("You cannot rotate and move");
                                 }
                                 break;
                             case 3: //Rotate Right button pressed this is currently in not here but it needs to be
-                                gp.getBoard().rotateRight(ship,ship.getRowCoord(),ship.getColumnCoord());
+                                gp.getBoard().rotateRight(ship, ship.getRowCoord(), ship.getColumnCoord());
                                 System.out.println("Rotate Right!");
-                                for (int j = 0; j < ship.getShipSize()-1; j++) {
-                                    gp.getBoard().move(ship,ship.getColumnCoord(),ship.getRowCoord(), 1);
+                                for (int j = 0; j < ship.getShipSize() - 1; j++) {
+                                    gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
                                 }
                                 break;
                             default:
