@@ -19,7 +19,7 @@ public class Player {
 
     public Player() {
         playerSet = new HashSet<>();
-        availablePoints = 12; // the cost of 1 of every ship
+        availablePoints = 100; // the cost of 1 of every ship
     }
 
     public int getAvailablePoints() {

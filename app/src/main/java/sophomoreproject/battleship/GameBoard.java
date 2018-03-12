@@ -238,11 +238,11 @@ public class GameBoard implements GameBoardInterface, Panel {
      * possibleMoveLoc(Ship aShip)
      * @param aShip the ship that is tapped to see where it can move to.
      * @return an ArrayList of Coordinates, the Coordinates have a x and y int as its only private variables.
-     *          The x and y ints in this function are the possible spots the ship can move to. See Coordinate.java
+     *          The x and y ints in this function are the possible spots the ship can move to.
      */
-    public ArrayList<Coordinate> possibleMoveLoc(Ship aShip) {
-        ArrayList<Coordinate> coordinateList = new ArrayList<>();
-        Coordinate coordinate = null;
+    public ArrayList<Point> possibleMoveLoc(Ship aShip) {
+        ArrayList<Point> coordinateList = new ArrayList<>();
+        Point point;
         int numOfMoves = aShip.getnMove();
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
@@ -255,11 +255,11 @@ public class GameBoard implements GameBoardInterface, Panel {
                 if(xPos + numOfMoves < 24) {
                     if (board[yPos][xPos + i] != null) {
                         if (playerTurn == 0 && xPos + i < 12) {
-                            coordinate = new Coordinate(xPos + i, yPos);
-                            coordinateList.add(coordinate);
+                            point = new Point(xPos + i, yPos);
+                            coordinateList.add(point);
                         } else if (playerTurn == 1 && xPos + i < 24) {
-                            coordinate = new Coordinate(xPos + i, yPos);
-                            coordinateList.add(coordinate);
+                            point = new Point(xPos + i, yPos);
+                            coordinateList.add(point);
                         }
                     }
                 }
@@ -271,11 +271,11 @@ public class GameBoard implements GameBoardInterface, Panel {
                 if(xPos - numOfMoves >= 0) {
                     if (board[yPos][xPos - i] != null) {
                         if (playerTurn == 0 && xPos - i > 0) {
-                            coordinate = new Coordinate(xPos - i, yPos);
-                            coordinateList.add(coordinate);
+                            point = new Point(xPos - i, yPos);
+                            coordinateList.add(point);
                         } else if (playerTurn == 1 && xPos - i > 11) {
-                            coordinate = new Coordinate(xPos - i, yPos);
-                            coordinateList.add(coordinate);
+                            point = new Point(xPos - i, yPos);
+                            coordinateList.add(point);
                         }
                     }
                 }
@@ -286,8 +286,8 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if (yPos - i > 0) {
                     if(board[yPos - i][xPos] != null) {
-                        coordinate = new Coordinate(xPos, yPos - i);
-                        coordinateList.add(coordinate);
+                        point = new Point(xPos, yPos - i);
+                        coordinateList.add(point);
                     }
                 }
             }
@@ -297,14 +297,67 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if (yPos + i < 16) {
                     if(board[yPos + i][xPos] != null) {
-                        coordinate = new Coordinate(xPos, yPos + i);
-                        coordinateList.add(coordinate);
+                        point = new Point(xPos, yPos + i);
+                        coordinateList.add(point);
                     }
                 }
             }
         }
 
         return coordinateList;
+    }
+
+    /**
+     * Need to find out how the shooting mechanic works. NOT DONE
+     *
+     *
+     *
+     * possibleFireLoc(Ship aShip)
+     * @param aShip The ship that is going to shoot
+     * @return an ArrayList of Coordinates, every coordinate where you can shoot to.
+     *          Note: It does not store coordinates on your side of the map, as you can't shoot
+     *          your own ships.
+     */
+    public ArrayList<Point> possibleFireLoc(Ship aShip) {
+        ArrayList<Point> coordinateList = new ArrayList<>();
+        Point point;
+        int fireRange = aShip.getFrange();
+        int shipSize = aShip.getShipSize();
+        int xPos = aShip.getColumnCoord();
+        int yPos = aShip.getRowCoord();
+
+        if(playerTurn == 0 && xPos + fireRange > 11) {
+            for(int i = 0; i < fireRange; i++) {
+
+            }
+        } else if (playerTurn == 1 && xPos - fireRange < 12) {
+            for(int i = 0; i < fireRange; i++) {
+
+            }
+        }
+
+
+        return coordinateList;
+    }
+
+    /**
+     * Need to find out in what respect the ship rotates. NOT DONE
+     *
+     *
+     * checkRotate(Ship aShip),
+     * @param aShip The ship that will be rotated
+     * @return coordinateList, an Array of Point in which its size depends on the shipSize
+     */
+    public Point[] checkRotate(Ship aShip) {
+        int shipSize = aShip.getShipSize();
+        Point[] pointsArray = new Point[2*shipSize];
+
+
+
+
+
+
+        return pointsArray;
     }
     /**
      * A method to move the ships in the board

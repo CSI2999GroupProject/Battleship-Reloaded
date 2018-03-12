@@ -88,7 +88,7 @@ public class FleetBuildPanel implements Panel
         fleetPointsDisplay = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.points_title), 520, 195, false);
 
         fontColor = new Paint();
-        fontColor.setTextSize(55);
+        fontColor.setTextSize(40);
         fontColor.setColor(Color.WHITE);
 
         costFontColor = new Paint();

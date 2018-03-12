@@ -2,13 +2,9 @@ package sophomoreproject.battleship.ships;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-
-import sophomoreproject.battleship.GameBoard;
 
 /**
  * Created by isaac on 1/31/2018.
@@ -30,8 +26,8 @@ public class Ship {
     private int ShipCost;
     private int nMove;
     private int damage;
-    private int fdamage;
-    private int bdamage;
+    private int fDamage;
+    private int bDamage;
     private int nShots;
     private int DamageCost;
     private int FDamageCost;
@@ -42,8 +38,6 @@ public class Ship {
     private int pmove;
     Bitmap shipImage;
     private Point masterPoint;
-
-    public static final int CRUISER_SIZE = 2;
 
 
 
@@ -165,17 +159,17 @@ public class Ship {
     */
 
     public int getfdamage() {
-        return fdamage;
+        return fDamage;
     }
-    public void setfdamage(int fdamage) {this.fdamage = fdamage; }
+    public void setfdamage(int fdamage) {this.fDamage = fdamage; }
     /*damage from front of ships
      *only used on destroyer and battleship
      */
 
     public int getbdamage() {
-        return bdamage;
+        return bDamage;
     }
-    public void setbdamage(int bdamage) {this.bdamage = bdamage; }
+    public void setbdamage(int bdamage) {this.bDamage = bdamage; }
     /*damage from back of ship
      *only used on destroyer and battleship
      */
@@ -186,7 +180,7 @@ public class Ship {
     public void setHitpoints(int Hitpoints) {
         this.Hitpoints = Hitpoints;
     }
-    //ships hitpoints
+    //ships Hitpoints
 
 
 
@@ -197,8 +191,8 @@ public class Ship {
     public void setRange(int range){this.range=range;}
     //range ships can fire
 
-    public int getFRange(){return Frange;}
-    public void setFRange(int Frange){this.Frange=Frange;}
+    public int getFrange(){return Frange;}
+    public void setFrange(int Frange){this.Frange =Frange;}
     //range ships can fire
 
     public int getnShots() { return nShots;}
@@ -208,7 +202,7 @@ public class Ship {
     //number of shots a ship specific damage can shoot per turn
 
     public int getpmove(){return pmove;}
-    public void setpmove(int pmove){this.pmove=pmove;}
+    public void setpmove(int pmove){this.pmove =pmove;}
 
     public int getDamageCost() {
         return DamageCost;
