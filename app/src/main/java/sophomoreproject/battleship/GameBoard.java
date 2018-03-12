@@ -252,13 +252,15 @@ public class GameBoard implements GameBoardInterface, Panel {
         if (isHorizontal && direction)          //Facing East
         {
             for (int i = 1; i <= numOfMoves; i++) {
-                if(board[yPos][xPos + i] != null) {
-                    if (playerTurn == 0 && xPos + i < 12) {
-                        coordinate = new Coordinate(xPos + i, yPos);
-                        coordinateList.add(coordinate);
-                    } else if (playerTurn == 1 && xPos + i < 23) {
-                        coordinate = new Coordinate(xPos + i, yPos);
-                        coordinateList.add(coordinate);
+                if(xPos + numOfMoves < 24) {
+                    if (board[yPos][xPos + i] != null) {
+                        if (playerTurn == 0 && xPos + i < 12) {
+                            coordinate = new Coordinate(xPos + i, yPos);
+                            coordinateList.add(coordinate);
+                        } else if (playerTurn == 1 && xPos + i < 24) {
+                            coordinate = new Coordinate(xPos + i, yPos);
+                            coordinateList.add(coordinate);
+                        }
                     }
                 }
             }
@@ -266,13 +268,15 @@ public class GameBoard implements GameBoardInterface, Panel {
         else if (isHorizontal)                  //West
         {
             for (int i = 1; i <= numOfMoves; i++) {
-                if(board[yPos][xPos - i] != null) {
-                    if (playerTurn == 0 && xPos - i > 0) {
-                        coordinate = new Coordinate(xPos - i, yPos);
-                        coordinateList.add(coordinate);
-                    } else if (playerTurn == 1 && xPos - i > 11) {
-                        coordinate = new Coordinate(xPos - i, yPos);
-                        coordinateList.add(coordinate);
+                if(xPos - numOfMoves >= 0) {
+                    if (board[yPos][xPos - i] != null) {
+                        if (playerTurn == 0 && xPos - i > 0) {
+                            coordinate = new Coordinate(xPos - i, yPos);
+                            coordinateList.add(coordinate);
+                        } else if (playerTurn == 1 && xPos - i > 11) {
+                            coordinate = new Coordinate(xPos - i, yPos);
+                            coordinateList.add(coordinate);
+                        }
                     }
                 }
             }
@@ -280,8 +284,8 @@ public class GameBoard implements GameBoardInterface, Panel {
         else if (direction)                     //North
         {
             for (int i = 1; i <= numOfMoves; i++) {
-                if(board[yPos - i][xPos] != null) {
-                    if (yPos - i > 0) {
+                if (yPos - i > 0) {
+                    if(board[yPos - i][xPos] != null) {
                         coordinate = new Coordinate(xPos, yPos - i);
                         coordinateList.add(coordinate);
                     }
@@ -291,8 +295,8 @@ public class GameBoard implements GameBoardInterface, Panel {
         else                                    //South
         {
             for (int i = 1; i <= numOfMoves; i++) {
-                if(board[yPos + i][xPos] != null) {
-                    if (yPos + i < 16) {
+                if (yPos + i < 16) {
+                    if(board[yPos + i][xPos] != null) {
                         coordinate = new Coordinate(xPos, yPos + i);
                         coordinateList.add(coordinate);
                     }
