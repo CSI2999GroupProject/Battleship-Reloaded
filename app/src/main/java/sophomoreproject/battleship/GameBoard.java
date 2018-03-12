@@ -195,8 +195,11 @@ public class GameBoard implements GameBoardInterface, Panel {
             board[yPos][xPos] = aShip;
         }
         shipSet.add(aShip);
-        aShip.setRowCoord(yPos);
-        aShip.setColumnCoord(xPos);
+        if(playerTurn == 0) {
+            p1.getPlayerSet().add(aShip);
+        } else {
+            p2.getPlayerSet().add(aShip);
+        }
     }
 
     public void removeShip(Ship aShip)
