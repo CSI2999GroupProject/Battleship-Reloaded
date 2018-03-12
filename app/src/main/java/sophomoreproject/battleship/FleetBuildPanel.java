@@ -247,7 +247,7 @@ public class FleetBuildPanel implements Panel
 
 
             case MotionEvent.ACTION_MOVE:
-                break;
+            break;
             case MotionEvent.ACTION_UP:
                 selected = null;
 
