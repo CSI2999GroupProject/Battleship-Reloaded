@@ -18,7 +18,7 @@ public class Player {
 
 
     public Player() {
-        playerSet = null;
+        playerSet = new HashSet<>();
         availablePoints = 12; // the cost of 1 of every ship
     }
 
