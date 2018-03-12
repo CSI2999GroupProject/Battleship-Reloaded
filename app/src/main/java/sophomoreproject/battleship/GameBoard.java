@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -230,6 +231,74 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
+    /**
+     * possibleMoveLoc(Ship aShip)
+     * @param aShip the ship that is tapped to see where it can move to.
+     * @return an ArrayList of Coordinates, the Coordinates have a x and y int as its only private variables.
+     *          The x and y ints in this function are the possible spots the ship can move to. See Coordinate.java
+     */
+    public ArrayList<Coordinate> possibleMoveLoc(Ship aShip) {
+        ArrayList<Coordinate> coordinateList = new ArrayList<>();
+        Coordinate coordinate = null;
+        int numOfMoves = aShip.getnMove();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+        int xPos = aShip.getColumnCoord();
+        int yPos = aShip.getRowCoord();
+
+        if (isHorizontal && direction)          //Facing East
+        {
+            for (int i = 1; i <= numOfMoves; i++) {
+                if(board[yPos][xPos + i] != null) {
+                    if (playerTurn == 0 && xPos + i < 12) {
+                        coordinate = new Coordinate(xPos + i, yPos);
+                        coordinateList.add(coordinate);
+                    } else if (playerTurn == 1 && xPos + i < 23) {
+                        coordinate = new Coordinate(xPos + i, yPos);
+                        coordinateList.add(coordinate);
+                    }
+                }
+            }
+        }
+        else if (isHorizontal)                  //West
+        {
+            for (int i = 1; i <= numOfMoves; i++) {
+                if(board[yPos][xPos - i] != null) {
+                    if (playerTurn == 0 && xPos - i > 0) {
+                        coordinate = new Coordinate(xPos - i, yPos);
+                        coordinateList.add(coordinate);
+                    } else if (playerTurn == 1 && xPos - i > 11) {
+                        coordinate = new Coordinate(xPos - i, yPos);
+                        coordinateList.add(coordinate);
+                    }
+                }
+            }
+        }
+        else if (direction)                     //North
+        {
+            for (int i = 1; i <= numOfMoves; i++) {
+                if(board[yPos - i][xPos] != null) {
+                    if (yPos - i > 0) {
+                        coordinate = new Coordinate(xPos, yPos - i);
+                        coordinateList.add(coordinate);
+                    }
+                }
+            }
+        }
+        else                                    //South
+        {
+            for (int i = 1; i <= numOfMoves; i++) {
+                if(board[yPos + i][xPos] != null) {
+                    if (yPos + i < 16) {
+                        coordinate = new Coordinate(xPos, yPos + i);
+                        coordinateList.add(coordinate);
+                    }
+                }
+            }
+        }
+
+        return coordinateList;
+    }
     /**
      * A method to move the ships in the board
      */
