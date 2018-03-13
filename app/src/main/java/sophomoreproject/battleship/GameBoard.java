@@ -341,23 +341,67 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
     /**
-     * Need to find out in what respect the ship rotates. NOT DONE
-     *
-     *
      * checkRotate(Ship aShip),
      * @param aShip The ship that will be rotated
-     * @return coordinateList, an Array of Point in which its size depends on the shipSize
+     * @return coordinateList, an Array of Point in which its size depends on the shipSize.
+     *          The contents of the array are the points in which the ship can possibly rotate to depending on isHorizontal boolean
+     *
+     *
      */
     public Point[] checkRotate(Ship aShip) {
         int shipSize = aShip.getShipSize();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
         Point[] pointsArray = new Point[2*shipSize];
+        Point point;
 
 
+            if (isHorizontal) {
+                if (nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (yPos + i < 16) {
+                            point = new Point(xPos, yPos + i); //If the ship is facing west, then this is rotate left Points
+                            pointsArray[i] = point;
+                        }
+                    }
+                }
+                if(nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, !direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (yPos - i >= 0) {
+                            point = new Point(xPos, yPos - i); //If the ship is facing west, then this is rotate right Points
+                            if(pointsArray[i] != null) {
+                                pointsArray[shipSize + i] = point;
+                            } else {
+                                pointsArray[i] = point;
+                            }
+                        }
+                    }
+                }
 
+            } else if (!isHorizontal) {
+                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, !direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        point = new Point(xPos + i, yPos); //If the ship is facing North, then this is rotate right Points
+                        pointsArray[i] = point;
 
+                    }
+                }
+                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (xPos - i >= 0) {
+                            point = new Point(xPos - i, yPos); //If the ship is facing North, then this is the rotate left Points
+                            if(pointsArray[i] != null) {
+                                pointsArray[shipSize + i] = point;
+                            } else {
+                                pointsArray[i] = point;
+                            }
+                        }
+                    }
+                }
 
+            }
 
         return pointsArray;
     }
