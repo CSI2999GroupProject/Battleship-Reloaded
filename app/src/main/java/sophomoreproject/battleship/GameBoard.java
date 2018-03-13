@@ -106,6 +106,45 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void setPlayerTurn(int playerTurn) { this.playerTurn = playerTurn; }
 
+
+    /**
+     * A method that runs identically to the addShip method, but costs points to place.
+     * Intended to be used only when placing the ships from the FleetBuildPanel.
+     */
+    public void addShipWithCost(Ship aShip, int xPos, int yPos)
+    {
+        if(playerTurn == 0) {
+            if(hasEnoughPoints(aShip, p1)) {
+                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getShipCost());
+            } else {
+                throw new IllegalStateException("player 1 doesn't have enough points");
+            }
+        }
+        if(playerTurn == 1) {
+            if(hasEnoughPoints(aShip, p2)) {
+                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getShipCost());
+            }else {
+                throw new IllegalStateException("player 2 doesn't have enough points");
+            }
+        }
+
+        addShip(aShip, xPos, yPos);
+    }
+
+    /**
+     * A method that runs identically to the removeShip method, except it refunds points to the player.
+     * Intended to be used only when removing ships when first creating a fleet using FleetBuildPanel.
+     */
+    public void removeShipWithCost(Ship aShip)
+    {
+        if(playerTurn == 0)
+            p1.setAvailablePoints(p1.getAvailablePoints() + aShip.getShipCost());
+        else
+            p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
+
+        removeShip(aShip);
+    }
+
     /**
      * A method to add a cruiser to the board. If the shipSize is greater than 1, then depending on the direction of the Ship,
      * the Ship[][] will add multiple of the same object in the corresponding spot.
@@ -143,23 +182,8 @@ public class GameBoard implements GameBoardInterface, Panel {
             throw new IllegalStateException("There is already a ship there");
         }
 
-
         aShip.setRowCoord(yPos);
         aShip.setColumnCoord(xPos);
-        if(playerTurn == 0) {
-            if(hasEnoughPoints(aShip, p1)) {
-                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getShipCost());
-            } else {
-                throw new IllegalStateException("player 1 doesn't have enough points");
-            }
-        }
-        if(playerTurn == 1) {
-            if(hasEnoughPoints(aShip, p2)) {
-                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getShipCost());
-            }else {
-                throw new IllegalStateException("player 2 doesn't have enough points");
-            }
-        }
 
         if (shipSize > 1) {
             if (isHorizontal) {
@@ -211,6 +235,12 @@ public class GameBoard implements GameBoardInterface, Panel {
         int yPos =aShip.getRowCoord();
 
         shipSet.remove(aShip);
+
+        if(playerTurn == 0) {
+            p1.getPlayerSet().remove(aShip);
+        } else {
+            p2.getPlayerSet().remove(aShip);
+        }
 
         if (isHorizontal && direction)          //Facing East
         {
@@ -672,8 +702,8 @@ public class GameBoard implements GameBoardInterface, Panel {
 
                     //update the locator to the current position of the finger
                     locator.set((int) event.getX(), (int) event.getY());
-                    break;
                 }
+                break;
             case MotionEvent.ACTION_UP:
                 if(!isScrolling && ready) //User only clicked a ship, didn't swipe screen over one
                 {
@@ -690,6 +720,15 @@ public class GameBoard implements GameBoardInterface, Panel {
 
                         ShipPanel sp = new ShipPanel(context, selected, gp);
                         gp.panels.add(sp);
+                    }
+                }
+                else if (!isScrolling) //User clicks on a ship while still building a fleet
+                {
+                    Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
+
+                    if(selected != null)
+                    {
+                        removeShipWithCost(selected);
                     }
                 }
 

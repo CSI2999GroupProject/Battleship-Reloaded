@@ -335,7 +335,7 @@ public class FleetBuildPanel implements Panel
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
                             ship.applyRotate();
-                            board.addShip(ship, row, column);
+                            board.addShipWithCost(ship, row, column);
                             System.out.println("Added an aircraft carrier at (" + row + ", " + column + ")");
                             break;
                         case "Battleship":
@@ -343,7 +343,7 @@ public class FleetBuildPanel implements Panel
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
                             ship.applyRotate();
-                            board.addShip(ship, row, column);
+                            board.addShipWithCost(ship, row, column);
                             System.out.println("Added a battleship at (" + row + ", " + column + ")");
                             break;
                         case "cruiser":
@@ -351,7 +351,7 @@ public class FleetBuildPanel implements Panel
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
                             ship.applyRotate();
-                            board.addShip(ship, row, column);
+                            board.addShipWithCost(ship, row, column);
                             System.out.println("Added a cruiser at (" + row + ", " + column + ")");
                             break;
                         case "destroyer":
@@ -359,7 +359,7 @@ public class FleetBuildPanel implements Panel
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
                             ship.applyRotate();
-                            board.addShip(ship, row, column);
+                            board.addShipWithCost(ship, row, column);
                             System.out.println("Added a destroyer at (" + row + ", " + column + ")");
                             break;
                         case "submarine":
@@ -367,7 +367,7 @@ public class FleetBuildPanel implements Panel
                             ship.setHorizontal(isHorizontal);
                             ship.setDirection(direction);
                             ship.applyRotate();
-                            board.addShip(ship, row, column);
+                            board.addShipWithCost(ship, row, column);
                             System.out.println("Added a submarine at (" + row + ", " + column + ")");
                             break;
                     }
