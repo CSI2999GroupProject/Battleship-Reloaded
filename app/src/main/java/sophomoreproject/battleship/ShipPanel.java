@@ -104,19 +104,19 @@ public class ShipPanel implements Panel
                                 int pmove = ship.getpmove();
                                 System.out.println(pmove);
 
-                                if (pmove < ship.getnMove()) {
+                                //if (pmove < ship.getnMove()) {
                                     gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
                                     System.out.println("Move!");
 
 
-                                } else {
+                                //} else {
                                     System.out.println("You have moved this ship its maximum number of spaces!");
-                                }
+                                //}
                                 ship.setpmove(pmove = pmove + 1);
                                 break;
                             case 2: //Rotate left button pressed this is the rotate that we currently have
 
-                                if (ship.getpmove() == 0) {
+                                //if (ship.getpmove() == 0) {
                                     ship.setpmove(ship.getnMove());
                                     gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
                                     System.out.println("Rotate Left!");
@@ -124,9 +124,9 @@ public class ShipPanel implements Panel
                                         gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
                                     }
 
-                                } else {
+                               // } else {
                                     System.out.println("You cannot rotate and move");
-                                }
+                                //}
                                 break;
                             case 3: //Rotate Right button pressed this is currently in not here but it needs to be
                                 gp.getBoard().rotateRight(ship, ship.getRowCoord(), ship.getColumnCoord());
