@@ -350,6 +350,8 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public Point[] checkRotate(Ship aShip) {
         int shipSize = aShip.getShipSize();
+        int xPos = aShip.getColumnCoord();
+        int yPos = aShip.getRowCoord();
         Point[] pointsArray = new Point[2*shipSize];
 
 
