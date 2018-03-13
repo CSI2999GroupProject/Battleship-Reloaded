@@ -127,6 +127,7 @@ public class ShipPanel implements Panel
                                // } else {
                                     System.out.println("You cannot rotate and move");
                                 //}
+
                                 break;
                             case 3: //Rotate Right button pressed this is currently in not here but it needs to be
                                 gp.getBoard().rotateRight(ship, ship.getRowCoord(), ship.getColumnCoord());
