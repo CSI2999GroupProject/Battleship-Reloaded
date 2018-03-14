@@ -320,19 +320,31 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public ArrayList<Point> possibleFireLoc(Ship aShip) {
         ArrayList<Point> coordinateList = new ArrayList<>();
-        Point point;
+        Point pointBottomRight, pointBottomLeft, pointUpperRight, pointUpperLeft;
         int fireRange = aShip.getFrange();
         int shipSize = aShip.getShipSize();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
 
-        if(playerTurn == 0 && xPos + fireRange > 11) {
-            for(int i = 0; i < fireRange; i++) {
+        for(int i = 0; i <= fireRange; i++) {
+            for(int j = 0; j <= fireRange; j++) {
 
-            }
-        } else if (playerTurn == 1 && xPos - fireRange < 12) {
-            for(int i = 0; i < fireRange; i++) {
-
+                pointBottomRight = new Point(xPos + i, yPos + j);
+                if(pointBottomRight.y <= 15 && pointBottomRight.y >= 0 && pointBottomRight.x >= 0 && pointBottomRight.x <= 23) {
+                    coordinateList.add(pointBottomRight);
+                }
+                pointBottomLeft = new Point(xPos - i, yPos + j);
+                if(pointBottomLeft.y <= 15 && pointBottomLeft.y >= 0 && pointBottomLeft.x >= 0 && pointBottomLeft.x <= 23) {
+                    coordinateList.add(pointBottomLeft);
+                }
+                pointUpperRight = new Point(xPos + i, yPos - j);
+                if(pointUpperRight.y <= 15 && pointUpperRight.y >= 0 && pointUpperRight.x >= 0 && pointUpperRight.x <= 23) {
+                    coordinateList.add(pointUpperRight);
+                }
+                pointUpperLeft = new Point(xPos - i, yPos - j);
+                if(pointUpperLeft.y <= 15 && pointUpperLeft.y >= 0 && pointUpperLeft.x >= 0 && pointUpperLeft.x <= 23) {
+                    coordinateList.add(pointUpperLeft);
+                }
             }
         }
 
