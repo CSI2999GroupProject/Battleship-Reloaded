@@ -3,8 +3,11 @@ package sophomoreproject.battleship.ships;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 
 /**
  * Created by isaac on 1/31/2018.
@@ -13,9 +16,9 @@ import android.graphics.Point;
 public class Ship {
 
     /**
-     * @param direction = true corresponds to positive directions (right or up)
-     *                  depending on if horizontal is true or false
-     *                  if direction is false, then it corresponds to facing down or left
+     * A word on direction: true corresponds to positive directions (right or up)
+     *                      depending on if horizontal is true or false
+     *                      if direction is false, then it corresponds to facing down or left
      */
     private int shipSize;
     private String name;
@@ -36,6 +39,9 @@ public class Ship {
     private int range;
     private int Frange;
     private int pmove;
+    private int player;
+    Rect shipBox;
+    private Paint boxPaint = new Paint();
     Bitmap shipImage;
     private Point masterPoint;
 
@@ -113,6 +119,26 @@ public class Ship {
         this.shipSize = shipSize;
     }
 
+    public void setPlayer(int player)
+    {
+        this.player = player;
+
+        if(player == 1)
+        {
+            boxPaint.setColor(Color.RED);
+        }
+        else
+        {
+            boxPaint.setColor(Color.BLUE);
+        }
+
+        boxPaint.setAlpha(128);
+    }
+
+    public int getPlayer()
+    {
+        return player;
+    }
 
     public int getRowCoord() {
         return rowCoord;
@@ -243,15 +269,29 @@ public class Ship {
      */
     public void draw(Canvas canvas)
     {
+        Point topLeft = new Point();
+
         if(isHorizontal)
             if(direction)
-                canvas.drawBitmap(shipImage, masterPoint.x + 128*(columnCoord-getShipSize() + 1), masterPoint.y + 128*rowCoord, null);
+            {
+                topLeft.set(masterPoint.x + 128*(columnCoord-getShipSize() + 1), masterPoint.y + 128*rowCoord);
+            }
             else
-                canvas.drawBitmap(shipImage, masterPoint.x + 128*columnCoord, masterPoint.y + 128*rowCoord, null);
+            {
+                topLeft.set(masterPoint.x + 128*columnCoord, masterPoint.y + 128*rowCoord);
+            }
         else
             if(direction)
-                canvas.drawBitmap(shipImage, masterPoint.x + 128*columnCoord, masterPoint.y + 128*rowCoord, null);
+            {
+                topLeft.set(masterPoint.x + 128*columnCoord, masterPoint.y + 128*rowCoord);
+            }
             else
-                canvas.drawBitmap(shipImage, masterPoint.x + 128*columnCoord, masterPoint.y + 128*(rowCoord-getShipSize() + 1), null);
+            {
+                topLeft.set(masterPoint.x + 128*columnCoord, masterPoint.y + 128*(rowCoord-getShipSize() + 1));
+            }
+
+            shipBox.set(topLeft.x, topLeft.y, topLeft.x + shipImage.getWidth(), topLeft.y + shipImage.getHeight());
+            canvas.drawRect(shipBox, boxPaint);
+            canvas.drawBitmap(shipImage, topLeft.x, topLeft.y, null);
     }
 }

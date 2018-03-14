@@ -3,6 +3,7 @@ package sophomoreproject.battleship.ships;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 import sophomoreproject.battleship.R;
 
@@ -25,6 +26,7 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         setnShots(3);
         setRange(24);
         setpmove(0);
+        shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.aircraftcarrier), 128*getShipSize(), 128, false);
     }
 

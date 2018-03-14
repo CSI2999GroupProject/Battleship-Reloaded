@@ -113,9 +113,17 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public void addShipWithCost(Ship aShip, int xPos, int yPos)
     {
+
+        if(playerTurn == 0 && xPos > 11) {
+            throw new IllegalArgumentException("It's player 1's turn and you're trying to place into player 2's territory");
+        } else if(playerTurn == 1 && xPos < 12) {
+            throw new IllegalArgumentException("It's player 2's turn and you're trying to place into player 1's territory");
+        }
+
         if(playerTurn == 0) {
             if(hasEnoughPoints(aShip, p1)) {
                 p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getShipCost());
+                aShip.setPlayer(1);
             } else {
                 throw new IllegalStateException("player 1 doesn't have enough points");
             }
@@ -123,12 +131,23 @@ public class GameBoard implements GameBoardInterface, Panel {
         if(playerTurn == 1) {
             if(hasEnoughPoints(aShip, p2)) {
                 p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getShipCost());
+                aShip.setPlayer(2);
             }else {
                 throw new IllegalStateException("player 2 doesn't have enough points");
             }
         }
 
-        addShip(aShip, xPos, yPos);
+        try
+        {
+            addShip(aShip, xPos, yPos);
+        }
+        catch(Exception e) //Ship couldn't be added, refund the points
+        {
+            if(playerTurn == 0)
+                p1.setAvailablePoints(p1.getAvailablePoints() + aShip.getShipCost());
+            else
+                p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
+        }
     }
 
     /**
@@ -137,12 +156,12 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public void removeShipWithCost(Ship aShip)
     {
+        removeShip(aShip);
+
         if(playerTurn == 0)
             p1.setAvailablePoints(p1.getAvailablePoints() + aShip.getShipCost());
         else
             p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
-
-        removeShip(aShip);
     }
 
     /**
@@ -170,11 +189,6 @@ public class GameBoard implements GameBoardInterface, Panel {
         if (!checkIndexBoundaries(aShip)) {
             throw new IllegalStateException("Can't place a ship beyond the board's boundaries B");
         }*/
-        if(playerTurn == 0 && xPos > 11) {
-            throw new IllegalArgumentException("It's player 1's turn and you're trying to place into player 2's territory");
-        } else if(playerTurn == 1 && xPos < 12) {
-            throw new IllegalArgumentException("It's player 2's turn and you're trying to place into player 1's territory");
-        }
         if(!checkPlacementInEnemy(aShip, xPos)) {
             throw new IllegalArgumentException("checkPlacementInEnemy returns false");
         }
@@ -193,7 +207,7 @@ public class GameBoard implements GameBoardInterface, Panel {
                             board[yPos][xPos - i] = aShip;
                         }
                     }
-                } else if (!direction) {
+                } else {
                     for (int i = 0; i < shipSize; i++) {
                         if(board[yPos][xPos + i] == null) {
                             board[yPos][xPos + i] = aShip;
@@ -570,21 +584,21 @@ public class GameBoard implements GameBoardInterface, Panel {
                         counter++;
                     }
                 }
-            } else if(!direction) {
+            } else {
                 for (int i = 0; i < shipSize; i++) {
                     if (board[startY][startX + i] == null) {
                         counter++;
                     }
                 }
             }
-        } else if(!isHorizontal) {
+        } else {
             if(direction) {
                 for (int i = 0; i < shipSize; i++) {
                     if (board[startY + i][startX] == null) {
                         counter++;
                     }
                 }
-            } else if(!direction) {
+            } else {
                 for (int i = 0; i < shipSize; i++) {
                     if (board[startY - i][startX] == null) {
                         counter++;
@@ -709,17 +723,20 @@ public class GameBoard implements GameBoardInterface, Panel {
                 {
                     Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
 
-                    for (Object next : gp.panels) {
+                    for (Object next : gp.panels) //Remove all ShipPanels from the display (in case they click on a new ship, the old ShipPanel should disappear)
+                    {
                         if (next instanceof ShipPanel)
                             gp.panels.remove(next);
                     }
 
-                    if(selected != null)
+                    if(selected != null) //Player clicked on a ship, not empty space
                     {
                         System.out.println("Selected a " + selected.getName());
-
-                        ShipPanel sp = new ShipPanel(context, selected, gp);
-                        gp.panels.add(sp);
+                        if(selected.getPlayer() == this.playerTurn + 1) //Player selected their own ship, not opponent's. Isaac defined player 1 as 0 and player 2 as 1 for some reason so I needed to readjust this value by 1
+                        {
+                            ShipPanel sp = new ShipPanel(context, selected, gp);
+                            gp.panels.add(sp);
+                        }
                     }
                 }
                 else if (!isScrolling) //User clicks on a ship while still building a fleet
