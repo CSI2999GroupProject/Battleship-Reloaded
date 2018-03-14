@@ -254,10 +254,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos + numOfMoves < 24) {
                     if (board[yPos][xPos + i] != null) {
-                        if (playerTurn == 0 && xPos + i < 12) {
-                            point = new Point(xPos + i, yPos);
-                            coordinateList.add(point);
-                        } else if (playerTurn == 1 && xPos + i < 24) {
+                        if (xPos + i < 24) {
                             point = new Point(xPos + i, yPos);
                             coordinateList.add(point);
                         }
@@ -270,10 +267,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos - numOfMoves >= 0) {
                     if (board[yPos][xPos - i] != null) {
-                        if (playerTurn == 0 && xPos - i > 0) {
-                            point = new Point(xPos - i, yPos);
-                            coordinateList.add(point);
-                        } else if (playerTurn == 1 && xPos - i > 11) {
+                        if (xPos - i > 0) {
                             point = new Point(xPos - i, yPos);
                             coordinateList.add(point);
                         }
