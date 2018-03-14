@@ -298,10 +298,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos + numOfMoves < 24) {
                     if (board[yPos][xPos + i] != null) {
-                        if (playerTurn == 0 && xPos + i < 12) {
-                            point = new Point(xPos + i, yPos);
-                            coordinateList.add(point);
-                        } else if (playerTurn == 1 && xPos + i < 24) {
+                        if (xPos + i < 24) {
                             point = new Point(xPos + i, yPos);
                             coordinateList.add(point);
                         }
@@ -314,10 +311,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos - numOfMoves >= 0) {
                     if (board[yPos][xPos - i] != null) {
-                        if (playerTurn == 0 && xPos - i > 0) {
-                            point = new Point(xPos - i, yPos);
-                            coordinateList.add(point);
-                        } else if (playerTurn == 1 && xPos - i > 11) {
+                        if (xPos - i > 0) {
                             point = new Point(xPos - i, yPos);
                             coordinateList.add(point);
                         }
@@ -364,19 +358,31 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public ArrayList<Point> possibleFireLoc(Ship aShip) {
         ArrayList<Point> coordinateList = new ArrayList<>();
-        Point point;
+        Point pointBottomRight, pointBottomLeft, pointUpperRight, pointUpperLeft;
         int fireRange = aShip.getFrange();
         int shipSize = aShip.getShipSize();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
 
-        if(playerTurn == 0 && xPos + fireRange > 11) {
-            for(int i = 0; i < fireRange; i++) {
+        for(int i = 0; i <= fireRange; i++) {
+            for(int j = 0; j <= fireRange; j++) {
 
-            }
-        } else if (playerTurn == 1 && xPos - fireRange < 12) {
-            for(int i = 0; i < fireRange; i++) {
-
+                pointBottomRight = new Point(xPos + i, yPos + j);
+                if(pointBottomRight.y <= 15 && pointBottomRight.y >= 0 && pointBottomRight.x >= 0 && pointBottomRight.x <= 23) {
+                    coordinateList.add(pointBottomRight);
+                }
+                pointBottomLeft = new Point(xPos - i, yPos + j);
+                if(pointBottomLeft.y <= 15 && pointBottomLeft.y >= 0 && pointBottomLeft.x >= 0 && pointBottomLeft.x <= 23) {
+                    coordinateList.add(pointBottomLeft);
+                }
+                pointUpperRight = new Point(xPos + i, yPos - j);
+                if(pointUpperRight.y <= 15 && pointUpperRight.y >= 0 && pointUpperRight.x >= 0 && pointUpperRight.x <= 23) {
+                    coordinateList.add(pointUpperRight);
+                }
+                pointUpperLeft = new Point(xPos - i, yPos - j);
+                if(pointUpperLeft.y <= 15 && pointUpperLeft.y >= 0 && pointUpperLeft.x >= 0 && pointUpperLeft.x <= 23) {
+                    coordinateList.add(pointUpperLeft);
+                }
             }
         }
 
@@ -385,21 +391,67 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
     /**
-     * Need to find out in what respect the ship rotates. NOT DONE
-     *
-     *
      * checkRotate(Ship aShip),
      * @param aShip The ship that will be rotated
-     * @return coordinateList, an Array of Point in which its size depends on the shipSize
+     * @return coordinateList, an Array of Point in which its size depends on the shipSize.
+     *          The contents of the array are the points in which the ship can possibly rotate to depending on isHorizontal boolean
+     *
+     *
      */
     public Point[] checkRotate(Ship aShip) {
         int shipSize = aShip.getShipSize();
+        int xPos = aShip.getColumnCoord();
+        int yPos = aShip.getRowCoord();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
         Point[] pointsArray = new Point[2*shipSize];
+        Point point;
 
 
+            if (isHorizontal) {
+                if (nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (yPos + i < 16) {
+                            point = new Point(xPos, yPos + i); //If the ship is facing west, then this is rotate left Points
+                            pointsArray[i] = point;
+                        }
+                    }
+                }
+                if(nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, !direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (yPos - i >= 0) {
+                            point = new Point(xPos, yPos - i); //If the ship is facing west, then this is rotate right Points
+                            if(pointsArray[i] != null) {
+                                pointsArray[shipSize + i] = point;
+                            } else {
+                                pointsArray[i] = point;
+                            }
+                        }
+                    }
+                }
 
+            } else if (!isHorizontal) {
+                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, !direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        point = new Point(xPos + i, yPos); //If the ship is facing North, then this is rotate right Points
+                        pointsArray[i] = point;
 
+                    }
+                }
+                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (xPos - i >= 0) {
+                            point = new Point(xPos - i, yPos); //If the ship is facing North, then this is the rotate left Points
+                            if(pointsArray[i] != null) {
+                                pointsArray[shipSize + i] = point;
+                            } else {
+                                pointsArray[i] = point;
+                            }
+                        }
+                    }
+                }
 
+            }
 
         return pointsArray;
     }
