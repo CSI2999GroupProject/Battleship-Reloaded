@@ -35,6 +35,7 @@ public class Ship {
     private int DamageCost;
     private int FDamageCost;
     private int BDamageCost;
+    public  int maxHealth;
     private int Hitpoints;
     private int range;
     private int Frange;
@@ -200,11 +201,33 @@ public class Ship {
      *only used on destroyer and battleship
      */
 
+    /**
+     * A method to get the current health of the ship.
+     * @return
+     */
     public int getHitpoints() {
         return Hitpoints;
     }
+
+    /**
+     * A method to be used when initializing a ship's health; DO NOT USE IF THE SHIP IS TAKING DAMAGE
+     * @param Hitpoints the maximum health of the ship. Will set current health to max health.
+     */
     public void setHitpoints(int Hitpoints) {
         this.Hitpoints = Hitpoints;
+        maxHealth = Hitpoints;
+    }
+
+    /**
+     *  A method to damage a ship. Note: Health may be negative after using this method.
+     *  Wherever you call it, make sure you handle a negative health appropriately.
+     * @param damage the amount of damage applied to the ship.
+     * @return the remaining health of the ship. May be negative, so handle appropriately.
+     */
+    public int applyDamage(int damage)
+    {
+        Hitpoints -= damage;
+        return Hitpoints;
     }
     //ships Hitpoints
 
