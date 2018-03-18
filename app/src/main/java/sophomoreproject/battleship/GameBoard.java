@@ -482,6 +482,50 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
+    public void RaddShip(Ship aShip, int xPos, int yPos) throws IndexOutOfBoundsException {
+        int shipSize = aShip.getShipSize();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        aShip.setRowCoord(yPos);
+        aShip.setColumnCoord(xPos);
+        if (shipSize > 1){
+            if (isHorizontal){
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+
+                        board[yPos][xPos - i] = aShip;
+
+                    }
+                }else if (!direction){
+                    for (int i = 0; i < shipSize; i++){
+
+                        board[yPos][xPos + i] = aShip;
+
+                    }
+                }
+            }else{
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+
+                        board[yPos + i][xPos] = aShip;
+
+
+                    }
+                } else {
+                    for (int i = 0; i < shipSize; i++) {
+
+                        board[yPos - i][xPos] = aShip;
+
+                    }
+                }}
+        } else {
+            board[yPos][xPos] = aShip;
+        }
+        shipSet.add(aShip);
+
+    }
+
     @Override
     public void rotateLeft(Ship aShip, int xPos, int yPos) {
         int shipX = aShip.getColumnCoord();
@@ -492,23 +536,29 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean direction = aShip.getDirection();
 
         removeShip(aShip);
-
-        if (isHorizontal)                //Facing West or East
+        if (isHorizontal && direction)                //Facing  East
         {
             aShip.setHorizontal(false);
+            aShip.setDirection(true);
+            shipY=shipY-shipSize+1;
+        }else if (isHorizontal)                //Facing West
+        {
+            aShip.setHorizontal(false);
+            shipY=shipY+shipSize-1;
         } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
             aShip.setDirection(false);
+            shipX=shipX-shipSize+1;
         } else                            //Facing South
         {
             aShip.setHorizontal(true);
             aShip.setDirection(true);
+            shipX=shipX+shipSize-1;
         }
-
         aShip.applyRotateL(-90);
 
-        addShip(aShip, shipX, shipY);
+        RaddShip(aShip, shipX, shipY);
 
         System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
@@ -528,27 +578,34 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean direction = aShip.getDirection();
 
         removeShip(aShip);
-
-        if (!isHorizontal)                //Facing West or East
-        {
-            aShip.setHorizontal(true);
-        } else if (!direction)             //Facing North
-        {
-            aShip.setHorizontal(false);
-            aShip.setDirection(true);
-        } else                            //Facing South
+        if (isHorizontal && direction)                //Facing West or East
         {
             aShip.setHorizontal(false);
             aShip.setDirection(false);
+            shipY=shipY+shipSize-1;
+        }else if (isHorizontal)                //Facing West or East
+        {
+            aShip.setHorizontal(false);
+            aShip.setDirection(true);
+            shipY=shipY-shipSize+1;
+        } else if (direction)             //Facing North
+        {
+            aShip.setHorizontal(true);
+
+            shipX=shipX+shipSize-1;
+        } else                            //Facing South
+        {
+            aShip.setHorizontal(true);
+
+            shipX=shipX-shipSize+1;
         }
 
         aShip.applyRotateL(90);
 
-        addShip(aShip, shipX, shipY);
+        RaddShip(aShip, shipX, shipY);
 
         System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
-
     /**
      * A method to see if a player has enough points to place a ship on the board
      * @param aShip the ship to be placed so we can get it's cost
