@@ -149,7 +149,23 @@ public class GameBoard implements GameBoardInterface, Panel {
                 p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
         }
     }
+public int getPoints(){
+    if(playerTurn == 0) {
+        p1.getAvailablePoints() ;
+        return  p1.getAvailablePoints();
+    }else{
+        p2.getAvailablePoints();
+        return p2.getAvailablePoints();
+    }
+}
+public void setPoints(int points){
+    if(playerTurn == 0) {
+        p1.setAvailablePoints(points);
 
+    }else{
+        p2.setAvailablePoints(points);
+    }
+}
     /**
      * A method that runs identically to the removeShip method, except it refunds points to the player.
      * Intended to be used only when removing ships when first creating a fleet using FleetBuildPanel.

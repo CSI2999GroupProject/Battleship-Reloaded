@@ -10,6 +10,11 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import java.util.HashSet;
+
+import sophomoreproject.battleship.ships.Cruiser;
+import sophomoreproject.battleship.ships.Ship;
+
 /**
  * Created by isaac on 3/4/2018.
  */
@@ -79,9 +84,13 @@ public class HudPanel implements Panel {
                     switch(board.getPlayerTurn()) {
                         case 0:
                             board.setPlayerTurn(1);
+                            board.setPoints(12);
+
                             break;
                         case 1:
                             board.setPlayerTurn(0);
+                            board.setPoints(12);
+
                             break;
                     }
                 }
@@ -98,4 +107,5 @@ public class HudPanel implements Panel {
         }
         return str;
     }
+
 }

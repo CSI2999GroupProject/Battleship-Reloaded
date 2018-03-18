@@ -30,6 +30,8 @@ public class ShipPanel implements Panel
     private Ship ship;
     private GamePanel gp;
 
+
+
     public ShipPanel(Context context, Ship ship, GamePanel gp)
     {
         this.ship = ship;
@@ -98,69 +100,77 @@ public class ShipPanel implements Panel
     }
 
     @Override
-    public void onTouchEvent(MotionEvent event)
-    {
+    public void onTouchEvent(MotionEvent event) {
         //Find which button got pressed
         int i = 0;
-        while(i < BUTTON_TOTAL)
-            if(buttonBoxes[i].contains((int)event.getX(), (int)event.getY()))
+        while (i < BUTTON_TOTAL)
+            if (buttonBoxes[i].contains((int) event.getX(), (int) event.getY()))
                 break;
             else
                 i++;
 
-        if(i != BUTTON_TOTAL) //Event happened on one of the buttons
+        if (i != BUTTON_TOTAL) //Event happened on one of the buttons
         {
-            switch(event.getAction())
-            {
+            switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     lastButtonClicked = i;
                     break;
                 case MotionEvent.ACTION_UP:
-                    if(lastButtonClicked == i) //The button the player let go of was the same button they last pressed
+                    if (lastButtonClicked == i) //The button the player let go of was the same button they last pressed
                     {
-                        switch (i) {
-                            case 0: //Fire button pressed
-                                System.out.println("Fire!");
 
-                                break;
-                            case 1:
-                                int pmove = ship.getpmove();
-                                System.out.println(pmove);
+                        int points=gp.getBoard().getPoints();
+                        if (points > 0) {
+                            switch (i) {
+                                case 0: //Fire button pressed
+                                    System.out.println("Fire!");
 
-                                if (pmove < ship.getnMove()) {
-                                    gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
-                                    System.out.println("Move!");
+                                    break;
+                                case 1:
+                                    int pmove = ship.getpmove();
+                                    System.out.println(pmove);
 
+                                    if (pmove < ship.getnMove()) {
+                                        gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
+                                        System.out.println("Move!");
+                                        gp.getBoard().setPoints(points-1);
 
-                                } else {
-                                    System.out.println("You have moved this ship its maximum number of spaces!");
-                                }
-                                ship.setpmove(pmove = pmove + 1);
-                                break;
-                            case 2: //Rotate left button pressed this is the rotate that we currently have
+                                    } else {
+                                        System.out.println("You have moved this ship its maximum number of spaces!");
+                                    }
+                                    ship.setpmove(pmove = pmove + 1);
+                                    break;
+                                case 2: //Rotate left button pressed this is the rotate that we currently have
 
-                                if (ship.getpmove() == 0) {
-                                    ship.setpmove(ship.getnMove());
-                                    gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
-                                    System.out.println("Rotate Left!");
+                                    if (ship.getpmove() == 0) {
+                                        ship.setpmove(ship.getnMove());
+                                        gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
+                                        System.out.println("Rotate Left!");
+                                        gp.getBoard().setPoints( points - ship.getShipSize() - 1);
 
-                                } else {
-                                    System.out.println("You cannot rotate and move");
-                                }
-                                break;
-                            case 3: //Debug test button
-                                ship.applyDamage(100);
-                                break;
-                            default:
-                                System.out.println("Something unexpected happened.");
+                                    } else {
+                                        System.out.println("You cannot rotate and move");
+                                    }
+                                    break;
+                                case 3: //Debug test button
+                                    ship.applyDamage(100);
+                                    break;
+                                default:
+                                    System.out.println("Something unexpected happened.");
+                            }
+                            System.out.println(points);
+                        } else {
+                            System.out.println("you are out of points");
                         }
 
                         gp.panels.remove(this);
                     }
+
                     lastButtonClicked = -1;
                     break;
             }
         }
     }
+
 
 }

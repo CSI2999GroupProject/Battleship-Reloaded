@@ -305,6 +305,7 @@ public class FleetBuildPanel implements Panel
                     } else if(board.getPlayerTurn() == 1) {
                         board.setPlayerTurn(0);
                         initialSeq = 2;
+                        board.setPoints(12);
                     }
 
                 }
