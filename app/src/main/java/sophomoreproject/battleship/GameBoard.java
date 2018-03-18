@@ -466,19 +466,19 @@ public class GameBoard implements GameBoardInterface, Panel {
 
         if (isHorizontal && direction)          //Facing East
         {
-            addShip(aShip, xPos + pmove, yPos);
+            RaddShip(aShip, xPos + pmove, yPos);
         }
         else if (isHorizontal)                  //West
         {
-            addShip(aShip, xPos - pmove, yPos);
+            RaddShip(aShip, xPos - pmove, yPos);
         }
         else if (direction)                     //North
         {
-            addShip(aShip, xPos, yPos - pmove);
+            RaddShip(aShip, xPos, yPos - pmove);
         }
         else                                    //South
         {
-            addShip(aShip, xPos, yPos + pmove);
+            RaddShip(aShip, xPos, yPos + pmove);
         }
     }
 
