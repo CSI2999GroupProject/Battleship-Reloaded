@@ -20,6 +20,7 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         setShipSize(5);
         setShipCost(4);
         setnMove(1);
+        setpShots(0);
         setHitpoints(4000);
         setdamage(350);
         setDamageCost(1);

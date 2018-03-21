@@ -123,8 +123,18 @@ public class ShipPanel implements Panel
                         if (points > 0) {
                             switch (i) {
                                 case 0: //Fire button pressed
-                                    System.out.println("Fire!");
 
+                                    if (ship.getnShots()>ship.getpShots()) {
+                                        int xPos=0;//this needs to be the xpos of the attacked spot
+                                        int yPos=0;//this needs to be the ypos of the attacked spot
+                                        int n=ship.getnShots();
+                                        Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
+                                        gp.getBoard().HitShips(aship, ship.getdamage());
+                                        System.out.println("Fire!");
+                                        ship.setpShots(n++);
+                                    }else{
+                                    System.out.println("Maximum amount of shots");
+                                    }
                                     break;
                                 case 1:
                                     int pmove = ship.getpmove();

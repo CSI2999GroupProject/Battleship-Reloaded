@@ -885,7 +885,9 @@ public void setPoints(int points){
      * */
 
     public boolean HitShips(Ship AttackedShip, int Hits){
+        removeShip(AttackedShip);
         AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
+        RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
             shipSet.remove(AttackedShip);
             return true;
@@ -910,5 +912,10 @@ public void setPoints(int points){
 
     public boolean hasWon(HashSet<Ship> OpponentsShips){
         return OpponentsShips.isEmpty();
+    }
+
+    public Ship AttackedShip(int xPos,int yPos) {
+        Ship aship=board[xPos][yPos];
+        return aship;
     }
 }
