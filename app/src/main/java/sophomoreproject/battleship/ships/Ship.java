@@ -41,6 +41,7 @@ public class Ship {
     private int Frange;
     private int pmove;
     private int player;
+
     Rect shipBox;
     private Paint boxPaint = new Paint();
     Bitmap shipImage;
@@ -248,6 +249,8 @@ public class Ship {
     public void setnShots(int nShots) {
         this.nShots = nShots;
     }
+
+
     //number of shots a ship specific damage can shoot per turn
 
     public int getpmove(){return pmove;}

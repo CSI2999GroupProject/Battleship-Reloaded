@@ -123,8 +123,38 @@ public class ShipPanel implements Panel
                         if (points > 0) {
                             switch (i) {
                                 case 0: //Fire button pressed
-                                    System.out.println("Fire!");
 
+                                    if (ship.getnShots()==1) {
+                                        int xPos;
+                                        int yPos;
+                                        Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
+                                        gp.getBoard().HitShips(aship, ship.getdamage());
+                                        System.out.println("Fire!");
+                                    }else if(ship.getnShots()==2){
+                                        int xPos;
+                                        int yPos;
+                                        int xPos2;
+                                        int yPos2;
+                                        Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
+                                        gp.getBoard().HitShips(aship, ship.getdamage());
+                                        Ship aship2 = gp.getBoard().AttackedShip(xPos2, yPos2);
+                                        gp.getBoard().HitShips(aship2, ship.getdamage());
+                                        System.out.println("Fire!");
+                                    }else if(ship.getnShots()==3){
+                                        int xPos;
+                                        int yPos;
+                                        int xPos2;
+                                        int yPos2;
+                                        int xPos3;
+                                        int yPos3;
+                                        Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
+                                        gp.getBoard().HitShips(aship, ship.getdamage());
+                                        Ship aship2 = gp.getBoard().AttackedShip(xPos2, yPos2);
+                                        gp.getBoard().HitShips(aship2, ship.getdamage());
+                                        Ship aship3 = gp.getBoard().AttackedShip(xPos3, yPos3);
+                                        gp.getBoard().HitShips(aship3, ship.getdamage());
+                                        System.out.println("Fire!");
+                                    }
                                     break;
                                 case 1:
                                     int pmove = ship.getpmove();

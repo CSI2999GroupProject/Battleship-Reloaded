@@ -29,6 +29,7 @@ public class HudPanel implements Panel {
     private Bitmap lastButtonPress;
     private Point lastMotion = new Point(0, 0);
 
+
     public HudPanel(Context context, GameBoard board) {
         this.context = context;
         this.board = board;
