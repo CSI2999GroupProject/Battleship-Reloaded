@@ -914,7 +914,7 @@ public void setPoints(int points){
         return OpponentsShips.isEmpty();
     }
 
-    public Object AttackedShip(int xPos,int yPos) {
+    public Ship AttackedShip(int xPos,int yPos) {
         Ship aship=board[xPos][yPos];
         return aship;
     }
