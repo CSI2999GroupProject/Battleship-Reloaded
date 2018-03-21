@@ -22,7 +22,7 @@ public class Cruiser extends Ship implements ShipInterface{
         setHitpoints(800);
         setRange(3);
         setpmove(0);
-        //mines are thier own thing
+        //mines are their own thing
         shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.cruiser), 128*getShipSize(), 128, false);
     }
