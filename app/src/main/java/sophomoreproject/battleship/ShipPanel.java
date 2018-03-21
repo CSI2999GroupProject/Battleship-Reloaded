@@ -125,8 +125,8 @@ public class ShipPanel implements Panel
                                 case 0: //Fire button pressed
 
                                     if (ship.getnShots()>ship.getpShots()) {
-                                        int xPos=0;
-                                        int yPos=0;
+                                        int xPos=0;//this needs to be the xpos of the attacked spot
+                                        int yPos=0;//this needs to be the ypos of the attacked spot
                                         int n=ship.getnShots();
                                         Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
                                         gp.getBoard().HitShips(aship, ship.getdamage());
