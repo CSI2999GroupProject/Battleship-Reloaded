@@ -32,6 +32,7 @@ public class Ship {
     private int fDamage;
     private int bDamage;
     private int nShots;
+    private int pShots;
     private int DamageCost;
     private int FDamageCost;
     private int BDamageCost;
@@ -249,7 +250,10 @@ public class Ship {
     public void setnShots(int nShots) {
         this.nShots = nShots;
     }
-
+    public int getpShots() { return pShots;}
+    public void setpShots(int pShots) {
+        this.pShots = pShots;
+    }
 
     //number of shots a ship specific damage can shoot per turn
 

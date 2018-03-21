@@ -86,12 +86,12 @@ public class HudPanel implements Panel {
                         case 0:
                             board.setPlayerTurn(1);
                             board.setPoints(12);
-
+                            //pmove and pshots need to be set to 0
                             break;
                         case 1:
                             board.setPlayerTurn(0);
                             board.setPoints(12);
-
+                            //pmove and pshots need to be set to 0
                             break;
                     }
                 }
