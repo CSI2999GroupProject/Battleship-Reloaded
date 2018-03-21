@@ -3,6 +3,7 @@ package sophomoreproject.battleship.ships;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 import sophomoreproject.battleship.R;
 
@@ -22,6 +23,7 @@ public class Submarine extends Ship implements ShipInterface{
         setRange(3);
         setFrange(5);
         setpmove(0);
+        shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128*getShipSize(), 128, false);
     }
 

@@ -3,6 +3,8 @@ package sophomoreproject.battleship.ships;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+
 import sophomoreproject.battleship.R;
 /**
  * Created by isaac on 1/31/2018.
@@ -26,6 +28,7 @@ public class Destroyer extends Ship implements ShipInterface{
         setRange(8);
         setFrange(4);
         setpmove(0);
+        shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.destroyer), 128*getShipSize(), 128, false);
     }
 

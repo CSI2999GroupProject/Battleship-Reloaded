@@ -106,6 +106,64 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void setPlayerTurn(int playerTurn) { this.playerTurn = playerTurn; }
 
+
+    /**
+     * A method that runs identically to the addShip method, but costs points to place.
+     * Intended to be used only when placing the ships from the FleetBuildPanel.
+     */
+    public void addShipWithCost(Ship aShip, int xPos, int yPos)
+    {
+
+        if(playerTurn == 0 && xPos > 11) {
+            throw new IllegalArgumentException("It's player 1's turn and you're trying to place into player 2's territory");
+        } else if(playerTurn == 1 && xPos < 12) {
+            throw new IllegalArgumentException("It's player 2's turn and you're trying to place into player 1's territory");
+        }
+
+        if(playerTurn == 0) {
+            if(hasEnoughPoints(aShip, p1)) {
+                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getShipCost());
+                aShip.setPlayer(1);
+            } else {
+                throw new IllegalStateException("player 1 doesn't have enough points");
+            }
+        }
+        if(playerTurn == 1) {
+            if(hasEnoughPoints(aShip, p2)) {
+                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getShipCost());
+                aShip.setPlayer(2);
+            }else {
+                throw new IllegalStateException("player 2 doesn't have enough points");
+            }
+        }
+
+        try
+        {
+            addShip(aShip, xPos, yPos);
+        }
+        catch(Exception e) //Ship couldn't be added, refund the points
+        {
+            if(playerTurn == 0)
+                p1.setAvailablePoints(p1.getAvailablePoints() + aShip.getShipCost());
+            else
+                p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
+        }
+    }
+
+    /**
+     * A method that runs identically to the removeShip method, except it refunds points to the player.
+     * Intended to be used only when removing ships when first creating a fleet using FleetBuildPanel.
+     */
+    public void removeShipWithCost(Ship aShip)
+    {
+        removeShip(aShip);
+
+        if(playerTurn == 0)
+            p1.setAvailablePoints(p1.getAvailablePoints() + aShip.getShipCost());
+        else
+            p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
+    }
+
     /**
      * A method to add a cruiser to the board. If the shipSize is greater than 1, then depending on the direction of the Ship,
      * the Ship[][] will add multiple of the same object in the corresponding spot.
@@ -131,11 +189,6 @@ public class GameBoard implements GameBoardInterface, Panel {
         if (!checkIndexBoundaries(aShip)) {
             throw new IllegalStateException("Can't place a ship beyond the board's boundaries B");
         }*/
-        if(playerTurn == 0 && xPos > 11) {
-            throw new IllegalArgumentException("It's player 1's turn and you're trying to place into player 2's territory");
-        } else if(playerTurn == 1 && xPos < 12) {
-            throw new IllegalArgumentException("It's player 2's turn and you're trying to place into player 1's territory");
-        }
         if(!checkPlacementInEnemy(aShip, xPos)) {
             throw new IllegalArgumentException("checkPlacementInEnemy returns false");
         }
@@ -143,23 +196,8 @@ public class GameBoard implements GameBoardInterface, Panel {
             throw new IllegalStateException("There is already a ship there");
         }
 
-
         aShip.setRowCoord(yPos);
         aShip.setColumnCoord(xPos);
-        if(playerTurn == 0) {
-            if(hasEnoughPoints(aShip, p1)) {
-                p1.setAvailablePoints(p1.getAvailablePoints() - aShip.getShipCost());
-            } else {
-                throw new IllegalStateException("player 1 doesn't have enough points");
-            }
-        }
-        if(playerTurn == 1) {
-            if(hasEnoughPoints(aShip, p2)) {
-                p2.setAvailablePoints(p2.getAvailablePoints() - aShip.getShipCost());
-            }else {
-                throw new IllegalStateException("player 2 doesn't have enough points");
-            }
-        }
 
         if (shipSize > 1) {
             if (isHorizontal) {
@@ -169,7 +207,7 @@ public class GameBoard implements GameBoardInterface, Panel {
                             board[yPos][xPos - i] = aShip;
                         }
                     }
-                } else if (!direction) {
+                } else {
                     for (int i = 0; i < shipSize; i++) {
                         if(board[yPos][xPos + i] == null) {
                             board[yPos][xPos + i] = aShip;
@@ -211,6 +249,12 @@ public class GameBoard implements GameBoardInterface, Panel {
         int yPos =aShip.getRowCoord();
 
         shipSet.remove(aShip);
+
+        if(playerTurn == 0) {
+            p1.getPlayerSet().remove(aShip);
+        } else {
+            p2.getPlayerSet().remove(aShip);
+        }
 
         if (isHorizontal && direction)          //Facing East
         {
@@ -254,10 +298,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos + numOfMoves < 24) {
                     if (board[yPos][xPos + i] != null) {
-                        if (playerTurn == 0 && xPos + i < 12) {
-                            point = new Point(xPos + i, yPos);
-                            coordinateList.add(point);
-                        } else if (playerTurn == 1 && xPos + i < 24) {
+                        if (xPos + i < 24) {
                             point = new Point(xPos + i, yPos);
                             coordinateList.add(point);
                         }
@@ -270,10 +311,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos - numOfMoves >= 0) {
                     if (board[yPos][xPos - i] != null) {
-                        if (playerTurn == 0 && xPos - i > 0) {
-                            point = new Point(xPos - i, yPos);
-                            coordinateList.add(point);
-                        } else if (playerTurn == 1 && xPos - i > 11) {
+                        if (xPos - i > 0) {
                             point = new Point(xPos - i, yPos);
                             coordinateList.add(point);
                         }
@@ -320,19 +358,31 @@ public class GameBoard implements GameBoardInterface, Panel {
      */
     public ArrayList<Point> possibleFireLoc(Ship aShip) {
         ArrayList<Point> coordinateList = new ArrayList<>();
-        Point point;
+        Point pointBottomRight, pointBottomLeft, pointUpperRight, pointUpperLeft;
         int fireRange = aShip.getFrange();
         int shipSize = aShip.getShipSize();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
 
-        if(playerTurn == 0 && xPos + fireRange > 11) {
-            for(int i = 0; i < fireRange; i++) {
+        for(int i = 0; i <= fireRange; i++) {
+            for(int j = 0; j <= fireRange; j++) {
 
-            }
-        } else if (playerTurn == 1 && xPos - fireRange < 12) {
-            for(int i = 0; i < fireRange; i++) {
-
+                pointBottomRight = new Point(xPos + i, yPos + j);
+                if(pointBottomRight.y <= 15 && pointBottomRight.y >= 0 && pointBottomRight.x >= 0 && pointBottomRight.x <= 23) {
+                    coordinateList.add(pointBottomRight);
+                }
+                pointBottomLeft = new Point(xPos - i, yPos + j);
+                if(pointBottomLeft.y <= 15 && pointBottomLeft.y >= 0 && pointBottomLeft.x >= 0 && pointBottomLeft.x <= 23) {
+                    coordinateList.add(pointBottomLeft);
+                }
+                pointUpperRight = new Point(xPos + i, yPos - j);
+                if(pointUpperRight.y <= 15 && pointUpperRight.y >= 0 && pointUpperRight.x >= 0 && pointUpperRight.x <= 23) {
+                    coordinateList.add(pointUpperRight);
+                }
+                pointUpperLeft = new Point(xPos - i, yPos - j);
+                if(pointUpperLeft.y <= 15 && pointUpperLeft.y >= 0 && pointUpperLeft.x >= 0 && pointUpperLeft.x <= 23) {
+                    coordinateList.add(pointUpperLeft);
+                }
             }
         }
 
@@ -341,21 +391,67 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
     /**
-     * Need to find out in what respect the ship rotates. NOT DONE
-     *
-     *
      * checkRotate(Ship aShip),
      * @param aShip The ship that will be rotated
-     * @return coordinateList, an Array of Point in which its size depends on the shipSize
+     * @return coordinateList, an Array of Point in which its size depends on the shipSize.
+     *          The contents of the array are the points in which the ship can possibly rotate to depending on isHorizontal boolean
+     *
+     *
      */
     public Point[] checkRotate(Ship aShip) {
         int shipSize = aShip.getShipSize();
+        int xPos = aShip.getColumnCoord();
+        int yPos = aShip.getRowCoord();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
         Point[] pointsArray = new Point[2*shipSize];
+        Point point;
 
 
+            if (isHorizontal) {
+                if (nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (yPos + i < 16) {
+                            point = new Point(xPos, yPos + i); //If the ship is facing west, then this is rotate left Points
+                            pointsArray[i] = point;
+                        }
+                    }
+                }
+                if(nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, !direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (yPos - i >= 0) {
+                            point = new Point(xPos, yPos - i); //If the ship is facing west, then this is rotate right Points
+                            if(pointsArray[i] != null) {
+                                pointsArray[shipSize + i] = point;
+                            } else {
+                                pointsArray[i] = point;
+                            }
+                        }
+                    }
+                }
 
+            } else if (!isHorizontal) {
+                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, !direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        point = new Point(xPos + i, yPos); //If the ship is facing North, then this is rotate right Points
+                        pointsArray[i] = point;
 
+                    }
+                }
+                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) == shipSize) {
+                    for (int i = 0; i < shipSize; i++) {
+                        if (xPos - i >= 0) {
+                            point = new Point(xPos - i, yPos); //If the ship is facing North, then this is the rotate left Points
+                            if(pointsArray[i] != null) {
+                                pointsArray[shipSize + i] = point;
+                            } else {
+                                pointsArray[i] = point;
+                            }
+                        }
+                    }
+                }
 
+            }
 
         return pointsArray;
     }
@@ -370,20 +466,64 @@ public class GameBoard implements GameBoardInterface, Panel {
 
         if (isHorizontal && direction)          //Facing East
         {
-            addShip(aShip, xPos + pmove, yPos);
+            RaddShip(aShip, xPos + pmove, yPos);
         }
         else if (isHorizontal)                  //West
         {
-            addShip(aShip, xPos - pmove, yPos);
+            RaddShip(aShip, xPos - pmove, yPos);
         }
         else if (direction)                     //North
         {
-            addShip(aShip, xPos, yPos - pmove);
+            RaddShip(aShip, xPos, yPos - pmove);
         }
         else                                    //South
         {
-            addShip(aShip, xPos, yPos + pmove);
+            RaddShip(aShip, xPos, yPos + pmove);
         }
+    }
+
+    public void RaddShip(Ship aShip, int xPos, int yPos) throws IndexOutOfBoundsException {
+        int shipSize = aShip.getShipSize();
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+
+        aShip.setRowCoord(yPos);
+        aShip.setColumnCoord(xPos);
+        if (shipSize > 1){
+            if (isHorizontal){
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+
+                        board[yPos][xPos - i] = aShip;
+
+                    }
+                }else if (!direction){
+                    for (int i = 0; i < shipSize; i++){
+
+                        board[yPos][xPos + i] = aShip;
+
+                    }
+                }
+            }else{
+                if (direction) {
+                    for (int i = 0; i < shipSize; i++) {
+
+                        board[yPos + i][xPos] = aShip;
+
+
+                    }
+                } else {
+                    for (int i = 0; i < shipSize; i++) {
+
+                        board[yPos - i][xPos] = aShip;
+
+                    }
+                }}
+        } else {
+            board[yPos][xPos] = aShip;
+        }
+        shipSet.add(aShip);
+
     }
 
     @Override
@@ -396,23 +536,29 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean direction = aShip.getDirection();
 
         removeShip(aShip);
-
-        if (isHorizontal)                //Facing West or East
+        if (isHorizontal && direction)                //Facing  East
         {
             aShip.setHorizontal(false);
+            aShip.setDirection(true);
+            shipY=shipY-shipSize+1;
+        }else if (isHorizontal)                //Facing West
+        {
+            aShip.setHorizontal(false);
+            shipY=shipY+shipSize-1;
         } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
             aShip.setDirection(false);
+            shipX=shipX-shipSize+1;
         } else                            //Facing South
         {
             aShip.setHorizontal(true);
             aShip.setDirection(true);
+            shipX=shipX+shipSize-1;
         }
-
         aShip.applyRotateL(-90);
 
-        addShip(aShip, shipX, shipY);
+        RaddShip(aShip, shipX, shipY);
 
         System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
@@ -432,27 +578,34 @@ public class GameBoard implements GameBoardInterface, Panel {
         boolean direction = aShip.getDirection();
 
         removeShip(aShip);
-
-        if (!isHorizontal)                //Facing West or East
-        {
-            aShip.setHorizontal(true);
-        } else if (!direction)             //Facing North
-        {
-            aShip.setHorizontal(false);
-            aShip.setDirection(true);
-        } else                            //Facing South
+        if (isHorizontal && direction)                //Facing West or East
         {
             aShip.setHorizontal(false);
             aShip.setDirection(false);
+            shipY=shipY+shipSize-1;
+        }else if (isHorizontal)                //Facing West or East
+        {
+            aShip.setHorizontal(false);
+            aShip.setDirection(true);
+            shipY=shipY-shipSize+1;
+        } else if (direction)             //Facing North
+        {
+            aShip.setHorizontal(true);
+
+            shipX=shipX+shipSize-1;
+        } else                            //Facing South
+        {
+            aShip.setHorizontal(true);
+
+            shipX=shipX-shipSize+1;
         }
 
         aShip.applyRotateL(90);
 
-        addShip(aShip, shipX, shipY);
+        RaddShip(aShip, shipX, shipY);
 
         System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
-
     /**
      * A method to see if a player has enough points to place a ship on the board
      * @param aShip the ship to be placed so we can get it's cost
@@ -540,21 +693,21 @@ public class GameBoard implements GameBoardInterface, Panel {
                         counter++;
                     }
                 }
-            } else if(!direction) {
+            } else {
                 for (int i = 0; i < shipSize; i++) {
                     if (board[startY][startX + i] == null) {
                         counter++;
                     }
                 }
             }
-        } else if(!isHorizontal) {
+        } else {
             if(direction) {
                 for (int i = 0; i < shipSize; i++) {
                     if (board[startY + i][startX] == null) {
                         counter++;
                     }
                 }
-            } else if(!direction) {
+            } else {
                 for (int i = 0; i < shipSize; i++) {
                     if (board[startY - i][startX] == null) {
                         counter++;
@@ -672,24 +825,36 @@ public class GameBoard implements GameBoardInterface, Panel {
 
                     //update the locator to the current position of the finger
                     locator.set((int) event.getX(), (int) event.getY());
-                    break;
                 }
+                break;
             case MotionEvent.ACTION_UP:
                 if(!isScrolling && ready) //User only clicked a ship, didn't swipe screen over one
                 {
                     Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
 
-                    for (Object next : gp.panels) {
+                    for (Object next : gp.panels) //Remove all ShipPanels from the display (in case they click on a new ship, the old ShipPanel should disappear)
+                    {
                         if (next instanceof ShipPanel)
                             gp.panels.remove(next);
                     }
 
-                    if(selected != null)
+                    if(selected != null) //Player clicked on a ship, not empty space
                     {
                         System.out.println("Selected a " + selected.getName());
+                        if(selected.getPlayer() == this.playerTurn + 1) //Player selected their own ship, not opponent's. Isaac defined player 1 as 0 and player 2 as 1 for some reason so I needed to readjust this value by 1
+                        {
+                            ShipPanel sp = new ShipPanel(context, selected, gp);
+                            gp.panels.add(sp);
+                        }
+                    }
+                }
+                else if (!isScrolling) //User clicks on a ship while still building a fleet
+                {
+                    Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
 
-                        ShipPanel sp = new ShipPanel(context, selected, gp);
-                        gp.panels.add(sp);
+                    if(selected != null)
+                    {
+                        removeShipWithCost(selected);
                     }
                 }
 

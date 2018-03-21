@@ -18,12 +18,14 @@ import sophomoreproject.battleship.ships.Ship;
 
 public class ShipPanel implements Panel
 {
-    private final int BUTTON_TOTAL = 3;                                     //The total number of buttons on the panel
+    private final int BUTTON_TOTAL = 4;                             //The total number of buttons on the panel
     private Rect panel;                                             //The back panel of the selection screen
     private Rect[] buttonBoxes = new Rect[BUTTON_TOTAL];            //Rects representing the dimensions and positions of the buttons
     private Bitmap[] buttonImages = new Bitmap[BUTTON_TOTAL];       //The images of the buttons (must match buttonBoxes perfectly)
-    private Paint panelPaint = new Paint(), testPaint = new Paint();
-    private int lastButtonClicked = -1;
+    private Paint panelPaint = new Paint(), maxHealthPaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint();
+    private int lastButtonClicked = -1;                             //Keeps track of what button the user pressed down on. If it's not the same as the button they let go over, don't do anything.
+
+    private Rect maxHealthDisp, healthDisp;
 
     private Ship ship;
     private GamePanel gp;
@@ -43,18 +45,31 @@ public class ShipPanel implements Panel
             buttonBoxes[i] = new Rect(panel.left + panel.width()/6, panel.width()/6 + i*panel.width()*5/6, panel.width()*5/6, panel.width()*5/6 + i*panel.width()*5/6);
         }
 
+        maxHealthDisp = new Rect(panel.width()/6, buttonBoxes[BUTTON_TOTAL-1].bottom + panel.width()/6, panel.width()*5/6, buttonBoxes[BUTTON_TOTAL-1].bottom + panel.width()*2/6);
+        healthDisp = new Rect();
+
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(panel.width()/12);
+
         buttonImages[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_left_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+        buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
 
         panelPaint.setColor(Color.GRAY);
-        testPaint.setColor(Color.RED);
+        maxHealthPaint.setColor(Color.BLACK);
     }
 
     @Override
     public void draw(Canvas canvas)
     {
+        update();
+
         canvas.drawRect(panel, panelPaint);
+        canvas.drawRect(maxHealthDisp, maxHealthPaint);
+        canvas.drawRect(healthDisp, healthPaint);
+        canvas.drawText("Health: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.left, maxHealthDisp.bottom + panel.width()/12, textPaint);
+
         for(int i = 0; i < BUTTON_TOTAL; i++)
         {
             canvas.drawBitmap(buttonImages[i], buttonBoxes[i].left, buttonBoxes[i].top, null);
@@ -64,7 +79,16 @@ public class ShipPanel implements Panel
     @Override
     public void update()
     {
+        double healthPercent = (double)ship.getHitpoints() / (double)ship.maxHealth;
 
+        if(healthPercent > .5)
+            healthPaint.setColor(Color.argb(255, 0, 140, 0)); //Green
+        else if(healthPercent > .2)
+            healthPaint.setColor(Color.YELLOW);
+        else
+            healthPaint.setColor(Color.RED);
+
+        healthDisp.set(maxHealthDisp.left, maxHealthDisp.top, maxHealthDisp.left + (int)(healthPercent*(maxHealthDisp.right - maxHealthDisp.left)), maxHealthDisp.bottom);
     }
 
     @Override
@@ -99,8 +123,7 @@ public class ShipPanel implements Panel
                                 System.out.println("Fire!");
 
                                 break;
-                            case 1: //Move button pressed
-
+                            case 1:
                                 int pmove = ship.getpmove();
                                 System.out.println(pmove);
 
@@ -120,19 +143,13 @@ public class ShipPanel implements Panel
                                     ship.setpmove(ship.getnMove());
                                     gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
                                     System.out.println("Rotate Left!");
-                                    for (int j = 0; j < ship.getShipSize() - 1; j++) {
-                                        gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
-                                    }
+
                                 } else {
                                     System.out.println("You cannot rotate and move");
                                 }
                                 break;
-                            case 3: //Rotate Right button pressed this is currently in not here but it needs to be
-                                gp.getBoard().rotateRight(ship, ship.getRowCoord(), ship.getColumnCoord());
-                                System.out.println("Rotate Right!");
-                                for (int j = 0; j < ship.getShipSize() - 1; j++) {
-                                    gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
-                                }
+                            case 3: //Debug test button
+                                ship.applyDamage(100);
                                 break;
                             default:
                                 System.out.println("Something unexpected happened.");
