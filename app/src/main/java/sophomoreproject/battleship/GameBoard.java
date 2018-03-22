@@ -660,6 +660,9 @@ public class GameBoard implements GameBoardInterface, Panel {
         if (hasShips(player.getPlayerSet()) == false) {
             setWinText(player2);
         }
+        if(hasShips(player2.getPlayerSet())==false){
+            setWinText(player);
+        }
     }
     /**
      * Use this method to display the text for who won the game
