@@ -29,13 +29,13 @@ public class Ship {
     private int ShipCost;
     private int nMove;
     private int damage;
-    private int fDamage;
-    private int bDamage;
+    //private int fDamage;
+    //private int bDamage;
     private int nShots;
     private int pShots;
     private int DamageCost;
-    private int FDamageCost;
-    private int BDamageCost;
+    //private int FDamageCost;
+    //private int BDamageCost;
     public  int maxHealth;
     private int Hitpoints;
     private int range;
@@ -186,20 +186,21 @@ public class Ship {
     * cruiser: main gun damage
     * destroyer: damage out sides
     */
-
+/*
     public int getfdamage() {
         return fDamage;
     }
     public void setfdamage(int fdamage) {this.fDamage = fdamage; }
-    /*damage from front of ships
+    /
+            *damage from front of ships
      *only used on destroyer and battleship
-     */
+     *
 
     public int getbdamage() {
         return bDamage;
     }
     public void setbdamage(int bdamage) {this.bDamage = bdamage; }
-    /*damage from back of ship
+    *damage from back of ship
      *only used on destroyer and battleship
      */
 
@@ -265,7 +266,7 @@ public class Ship {
     }
     public void setDamageCost(int DamageCost) {this.DamageCost = DamageCost; }
     //damage cost
-
+/*
     public int getFDamageCost() {
         return FDamageCost;
     }
@@ -277,7 +278,7 @@ public class Ship {
     }
     public void setBDamageCost(int BDamageCost) {this.BDamageCost = BDamageCost; }
     //back damage cost
-
+*/
 
 
 

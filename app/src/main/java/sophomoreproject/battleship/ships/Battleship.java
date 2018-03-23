@@ -18,12 +18,12 @@ public class Battleship extends Ship implements ShipInterface{
         setShipCost(2);
         setnMove(2);
         setHitpoints(1500);
-        setfdamage(100);
-        setFDamageCost(1);
+        //setfdamage(100);
+        //setFDamageCost(1);
         setdamage(300);
         setDamageCost(2);
-        setbdamage(50);
-        setBDamageCost(1);
+        //setbdamage(50);
+        //setBDamageCost(1);
         setRange(5);
         setnShots(2);
         setpShots(0);
