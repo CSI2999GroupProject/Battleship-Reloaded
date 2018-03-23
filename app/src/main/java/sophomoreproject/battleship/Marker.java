@@ -1,4 +1,4 @@
-package sophomoreproject.battleship.ships;
+package sophomoreproject.battleship;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,9 +8,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-import sophomoreproject.battleship.GameBoard;
-import sophomoreproject.battleship.Panel;
-import sophomoreproject.battleship.R;
+import sophomoreproject.battleship.ships.Ship;
 
 /**
  * Created by isaac on 1/31/2018.
@@ -21,6 +19,7 @@ public class Marker implements Panel { // extends Ship {
     private Ship originalShip;
     private Bitmap image;
     private GameBoard gb;
+    private GamePanel gp;
     private Rect imageBox = new Rect(0,0,128,128);
 
     /**
@@ -36,17 +35,34 @@ public class Marker implements Panel { // extends Ship {
      * @param y the y coordinate of the marker icon
      * @param data Specific data to be held to be used by the marker when clicked. Might hold cost, or something else when necessary.
      */
-    public Marker(Context context, GameBoard gb, int type, Ship originalShip, int x, int y, int data, int cost) {
+    public Marker(Context context, GamePanel gp, int type, Ship originalShip, int x, int y, int cost) {
 
         this.type = type;
-        this.gb = gb;
+        this.gp = gp;
+        this.gb = gp.getBoard();
         this.originalShip = originalShip;
         this.x = x;
         this.y = y;
-        this.data = data;
+        //this.data = data;
         this.cost = cost;
 
-        image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+        switch (type)
+        {
+            case 0:     //Fire
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), 128, 128, false);
+                break;
+            case 1:     //Move
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                break;
+            case 2:     //Rotate
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                break;
+            case 3:     //Rotate
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                break;
+            default:
+                break;
+        }
 
         //TEMPORARY CODE BEGINS HERE
 
@@ -61,19 +77,14 @@ public class Marker implements Panel { // extends Ship {
 
     @Override
     public void update() {
-        //Unused update method so game wont complain about not importing everything from the interface
-    }
-
-
-    public void update(Point masterPoint)
-    {
+        Point masterPoint = gb.getMasterPoint();
         imageBox.set(masterPoint.x + 128*x, masterPoint.y + 128*y, masterPoint.x + 128*x + imageBox.width(), masterPoint.y + 128*y + imageBox.height());
     }
 
     @Override
     public boolean contains(Point point)
     {
-        return false;
+        return imageBox.contains(point.x, point.y);
     }
 
     @Override
@@ -84,10 +95,10 @@ public class Marker implements Panel { // extends Ship {
         switch (type)
         {
             case 0:     //Fire
-                //Insert fire code here when it is completed
+                //Insert code for fire method here
                 break;
             case 1:     //Move
-                gb.move(originalShip, x, y, data);
+                gb.move(originalShip, x, y, cost);
                 break;
             case 2:     //Rotate
                 gb.rotateLeft(originalShip, x, y);
@@ -98,5 +109,7 @@ public class Marker implements Panel { // extends Ship {
             default:
                 break;
         }
+
+        gp.getBoard().purgeOldPanels();
     }
 }

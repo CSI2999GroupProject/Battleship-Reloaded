@@ -34,7 +34,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Context context;
     private GamePanel gp;
     private int playerTurn;
-    private Player p1, p2;
+    public Player p1, p2;
 
 
     public GameBoard(Context context, GamePanel gp)
@@ -380,7 +380,18 @@ public void setPoints(int points){
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
 
-        for(int i = 0; i <= fireRange; i++) {
+        for(int i = Math.max(xPos - fireRange, 0); i <= Math.min(xPos + fireRange, 23); i++) //Search within a horizontal range of fireRange from front of ship, unless it's off the board
+        {
+            for(int j = Math.max(yPos - fireRange, 0); j <= Math.min(yPos + fireRange, 15); j++) //Same thing as the previous for() statement, but vertical.
+            {
+                if(board[j][i] != null && board[j][i].getPlayer() != getPlayerTurn()+1)
+                {
+                    coordinateList.add(new Point(i, j));
+                }
+            }
+        }
+
+        /*for(int i = 0; i <= fireRange; i++) {
             for(int j = 0; j <= fireRange; j++) {
 
                 pointBottomRight = new Point(xPos + i, yPos + j);
@@ -400,8 +411,7 @@ public void setPoints(int points){
                     coordinateList.add(pointUpperLeft);
                 }
             }
-        }
-
+        }*/
 
         return coordinateList;
     }
@@ -773,6 +783,19 @@ public void setPoints(int points){
 
     }
 
+    /**
+     * Removes all ShipPanels and Markers off the screen.
+     */
+    public void purgeOldPanels()
+    {
+        ArrayList<Panel> panels = (ArrayList<Panel>)gp.panels.clone(); //Must create a clone to prevent the iterator from skipping items after it deletes something
+        for (Panel next : panels)
+        {
+            if (next instanceof ShipPanel || next instanceof Marker)
+                gp.panels.remove(next);
+        }
+    }
+
     public boolean contains(Point point)
     {
         return waterBox.contains(point.x, point.y);
@@ -848,15 +871,10 @@ public void setPoints(int points){
                 {
                     Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
 
-                    for (Object next : gp.panels) //Remove all ShipPanels from the display (in case they click on a new ship, the old ShipPanel should disappear)
-                    {
-                        if (next instanceof ShipPanel)
-                            gp.panels.remove(next);
-                    }
+                    purgeOldPanels();
 
                     if(selected != null) //Player clicked on a ship, not empty space
                     {
-                        System.out.println("Selected a " + selected.getName());
                         if(selected.getPlayer() == this.playerTurn + 1) //Player selected their own ship, not opponent's. Isaac defined player 1 as 0 and player 2 as 1 for some reason so I needed to readjust this value by 1
                         {
                             ShipPanel sp = new ShipPanel(context, selected, gp);
