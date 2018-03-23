@@ -27,7 +27,7 @@ public class Destroyer extends Ship implements ShipInterface{
         //setbdamage(400);
         //setBDamageCost(3);
         setRange(8);
-        setFrange(4);
+        setFrange(8);
         setpmove(0);
         shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.destroyer), 128*getShipSize(), 128, false);

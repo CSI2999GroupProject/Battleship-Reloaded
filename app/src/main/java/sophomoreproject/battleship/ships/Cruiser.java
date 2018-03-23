@@ -21,6 +21,7 @@ public class Cruiser extends Ship implements ShipInterface{
         setDamageCost(1);
         setHitpoints(800);
         setRange(3);
+        setFrange(3);
         setpmove(0);
         setnShots(1);
         setpShots(0);
