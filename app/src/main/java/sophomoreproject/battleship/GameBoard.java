@@ -6,9 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,6 +41,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private int playerTurn;
     private Player p1, p2;
     private TextView winningText = null;
+    private Layout winningScreen = null;
     public GameBoard(Context context, GamePanel gp) {
         this.context = context;
         this.gp = gp;
@@ -656,12 +660,13 @@ public class GameBoard implements GameBoardInterface, Panel {
      * out of ships
      */
     public void endGame(Player player, Player player2) {
-        WinScreen winner = new WinScreen();
-        if (hasShips(player.getPlayerSet()) == false) {
-            setWinText(player2);
-        }
-        if(hasShips(player2.getPlayerSet())==false){
-            setWinText(player);
+        if(hasShips(player.getPlayerSet())==false || hasShips(player2.getPlayerSet())==false) {
+            if (hasShips(player.getPlayerSet()) == false) {
+                setWinText(player2);
+            }
+            if (hasShips(player2.getPlayerSet()) == false) {
+                setWinText(player);
+            }
         }
     }
     /**
@@ -676,5 +681,8 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
     public TextView getWinText(){
         return winningText;
+    }
+    public Layout displayWinScreen(TextView winningText){
+
     }
 }
