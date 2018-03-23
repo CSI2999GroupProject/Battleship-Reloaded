@@ -132,6 +132,7 @@ public class ShipPanel implements Panel
 
                                             gp.getBoard().setPoints(points - ship.getDamageCost());
                                             Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
+                                            System.out.println("damage="+ship.getdamage());
                                             gp.getBoard().HitShips(aship, ship.getdamage());
                                             System.out.println("Fire!");
                                             ship.setpShots(n++);
