@@ -10,6 +10,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import java.util.ArrayList;
+
 import sophomoreproject.battleship.ships.Ship;
 
 /**
@@ -18,7 +20,7 @@ import sophomoreproject.battleship.ships.Ship;
 
 public class ShipPanel implements Panel
 {
-    private final int BUTTON_TOTAL = 4;                             //The total number of buttons on the panel
+    private final int BUTTON_TOTAL = 3;                             //The total number of buttons on the panel
     private Rect panel;                                             //The back panel of the selection screen
     private Rect[] buttonBoxes = new Rect[BUTTON_TOTAL];            //Rects representing the dimensions and positions of the buttons
     private Bitmap[] buttonImages = new Bitmap[BUTTON_TOTAL];       //The images of the buttons (must match buttonBoxes perfectly)
@@ -54,7 +56,6 @@ public class ShipPanel implements Panel
         buttonImages[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_left_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
-        buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
 
         panelPaint.setColor(Color.GRAY);
         maxHealthPaint.setColor(Color.BLACK);
@@ -118,38 +119,64 @@ public class ShipPanel implements Panel
                 case MotionEvent.ACTION_UP:
                     if(lastButtonClicked == i) //The button the player let go of was the same button they last pressed
                     {
+                        ArrayList<Point> validLocations;
+                        int cost;
+                        int player = gp.getBoard().getPlayerTurn(); //0 for p1, 1 for p2
+                        int pointsLeft;
+
+                        if(player == 0)
+                            pointsLeft = gp.getBoard().p1.getAvailablePoints();
+                        else
+                            pointsLeft = gp.getBoard().p2.getAvailablePoints();
+
                         switch (i) {
                             case 0: //Fire button pressed
-                                System.out.println("Fire!");
-
-                                break;
-                            case 1:
-                                int pmove = ship.getpmove();
-                                System.out.println(pmove);
-
-                                if (pmove < ship.getnMove()) {
-                                    gp.getBoard().move(ship, ship.getColumnCoord(), ship.getRowCoord(), 1);
-                                    System.out.println("Move!");
-
-
-                                } else {
-                                    System.out.println("You have moved this ship its maximum number of spaces!");
+                                validLocations = gp.getBoard().possibleFireLoc(ship);
+                                cost = 1; // ALAN Put the actual fire cost here.
+                                for(Point point : validLocations)
+                                {
+                                    if(cost <= pointsLeft)
+                                    {
+                                        gp.panels.add(new Marker(gp.getContext(), gp, 0, ship, point.x, point.y, cost) );
+                                    }
                                 }
-                                ship.setpmove(pmove = pmove + 1);
+                                break;
+                            case 1: //Move button pressed
+                                if (ship.getpmove() < ship.getnMove())
+                                {
+                                    validLocations = gp.getBoard().possibleMoveLoc(ship);
+
+                                    for(Point point : validLocations)
+                                    {
+                                        cost = Math.abs(ship.getColumnCoord() - point.x) + Math.abs(ship.getRowCoord() - point.y); //finds the distance the ship is travelling
+
+                                        if(cost <= pointsLeft)
+                                        {
+                                            gp.panels.add(new Marker(gp.getContext(), gp, 1, ship, point.x, point.y, cost));
+                                        }
+                                    }
+                                }
                                 break;
                             case 2: //Rotate left button pressed this is the rotate that we currently have
+                                if (ship.getpmove() == 0)
+                                {
+                                    // JACOB To set cost in marker: ship.setpmove(ship.getnMove());
+                                    Point[] turnLocations = gp.getBoard().checkRotate(ship);
+                                    cost = 1; //ALAN put the actual cost to turn a ship here
 
-                                if (ship.getpmove() == 0) {
-                                    ship.setpmove(ship.getnMove());
-                                    gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
-                                    System.out.println("Rotate Left!");
-
-                                } else {
+                                    if(turnLocations[0] != null) //player can turn left
+                                    {
+                                        gp.panels.add(new Marker(gp.getContext(), gp, 2, ship, turnLocations[0].x, turnLocations[0].y, cost));
+                                    }
+                                    if(turnLocations[1] != null) //player can turn right
+                                    {
+                                        gp.panels.add(new Marker(gp.getContext(), gp, 3, ship, turnLocations[1].x, turnLocations[1].y, cost));
+                                    }
+                                }
+                                else
+                                {
                                     System.out.println("You cannot rotate and move");
                                 }
-                                break;
-                            case 3: //Debug test button
-                                ship.applyDamage(100);
                                 break;
                             default:
                                 System.out.println("Something unexpected happened.");
