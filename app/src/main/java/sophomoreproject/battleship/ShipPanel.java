@@ -124,7 +124,7 @@ public class ShipPanel implements Panel
                             switch (i) {
                                 case 0: //Fire button pressed
 
-                                    if (ship.getnShots()>ship.getpShots()) {
+                                    if (ship.getnShots()>ship.getpShots()&& gp.getBoard().getPoints()>=ship.getDamageCost()) {
 
                                         int xPos=0;//this needs to be the xpos of the attacked spot
                                         int yPos=0;//this needs to be the ypos of the attacked spot
@@ -135,6 +135,7 @@ public class ShipPanel implements Panel
                                         }
                                         System.out.println("Fire!");
                                         ship.setpShots(n++);
+                                        gp.getBoard().setPoints(points-ship.getDamageCost());
                                     }else{
                                     System.out.println("Maximum amount of shots");
                                     }
