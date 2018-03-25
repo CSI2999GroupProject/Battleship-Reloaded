@@ -125,11 +125,14 @@ public class ShipPanel implements Panel
                                 case 0: //Fire button pressed
 
                                     if (ship.getnShots()>ship.getpShots()) {
+
                                         int xPos=0;//this needs to be the xpos of the attacked spot
                                         int yPos=0;//this needs to be the ypos of the attacked spot
                                         int n=ship.getnShots();
                                         Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
-                                        gp.getBoard().HitShips(aship, ship.getdamage());
+                                        if (aship !=null) {
+                                            gp.getBoard().HitShips(aship, ship.getdamage());
+                                        }
                                         System.out.println("Fire!");
                                         ship.setpShots(n++);
                                     }else{
@@ -163,7 +166,39 @@ public class ShipPanel implements Panel
                                     }
                                     break;
                                 case 3: //Debug test button
-                                    ship.applyDamage(100);
+                                    if (ship.getnShots()>ship.getpShots()) {
+                                        switch (event.getAction()) {
+                                            case MotionEvent.ACTION_DOWN:
+
+                                                lastButtonClicked = i;
+                                                break;
+                                            case MotionEvent.ACTION_UP:
+                                                if (lastButtonClicked == i) //The button the player let go of was the same button they last pressed
+                                                {
+                                                    int xPos=(int)event.getX();//this needs to be the xpos of the attacked spot
+
+                                                    int yPos=(int)event.getY();//this needs to be the ypos of the attacked spot
+
+                                        // xPos=0;//this needs to be the xpos of the attacked spot
+
+                                        // yPos=0;//this needs to be the ypos of the attacked spot
+
+                                        int n=ship.getnShots();
+
+                                        Ship aship = gp.getBoard().AttackedShip(xPos, yPos);
+                                        if (aship !=null) {
+                                            gp.getBoard().HitShips(aship, ship.getdamage());
+                                        }
+
+                                        System.out.println("Fire!");
+                                        ship.setpShots(n++);
+                                                }
+                                                break;
+                                        }
+                                    }else{
+                                        System.out.println("Maximum amount of shots");
+                                    }
+
                                     break;
                                 default:
                                     System.out.println("Something unexpected happened.");

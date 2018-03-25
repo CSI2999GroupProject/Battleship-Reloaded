@@ -885,11 +885,15 @@ public void setPoints(int points){
      * */
 
     public boolean HitShips(Ship AttackedShip, int Hits){
+
         removeShip(AttackedShip);
+
         AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
+
         RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
+
         if(AttackedShip.getHitpoints()<=0){
-            shipSet.remove(AttackedShip);
+            removeShip(AttackedShip);
             return true;
         }else{
             return false;
