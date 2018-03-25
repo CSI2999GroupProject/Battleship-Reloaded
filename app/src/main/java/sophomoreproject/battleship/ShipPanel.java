@@ -132,7 +132,7 @@ public class ShipPanel implements Panel
                         switch (i) {
                             case 0: //Fire button pressed
                                 validLocations = gp.getBoard().possibleFireLoc(ship);
-                                cost = 1; // ALAN Put the actual fire cost here.
+                                cost = ship.getDamageCost(); // ALAN Put the actual fire cost here.
                                 for(Point point : validLocations)
                                 {
                                     if(cost <= pointsLeft)
@@ -162,7 +162,7 @@ public class ShipPanel implements Panel
                                 {
                                     // JACOB To set cost in marker: ship.setpmove(ship.getnMove());
                                     Point[] turnLocations = gp.getBoard().checkRotate(ship);
-                                    cost = 1; //ALAN put the actual cost to turn a ship here
+                                    cost = ship.getShipSize() +1; //ALAN put the actual cost to turn a ship here
 
                                     if(turnLocations[0] != null) //player can turn left
                                     {
