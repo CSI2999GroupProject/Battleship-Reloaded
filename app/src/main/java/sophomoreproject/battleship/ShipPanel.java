@@ -125,9 +125,9 @@ public class ShipPanel implements Panel
                         int pointsLeft;
 
                         if(player == 0)
-                            pointsLeft = gp.getBoard().p1.getAvailablePoints();
+                            pointsLeft = gp.getBoard().getP1().getAvailablePoints();
                         else
-                            pointsLeft = gp.getBoard().p2.getAvailablePoints();
+                            pointsLeft = gp.getBoard().getP2().getAvailablePoints();
 
                         switch (i) {
                             case 0: //Fire button pressed

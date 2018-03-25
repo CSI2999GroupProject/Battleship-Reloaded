@@ -30,11 +30,13 @@ public class GameBoard implements GameBoardInterface, Panel {
     private boolean isScrolling = false;
     public boolean ready = false; //ready should be set to true when it is the user's turn, and they aren't placing ships anymore. Otherwise be false
     private Point locator = new Point(0, 0);
-    private Point masterPoint = new Point(0, 0);
+    private Point masterPoint;
     private Context context;
     private GamePanel gp;
     private int playerTurn;
-    public Player p1, p2;
+    private Player p1, p2;
+    public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 
     public GameBoard(Context context, GamePanel gp)
@@ -45,6 +47,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
         shipSet = new HashSet<>();
+        masterPoint = new Point(0, 0);
         waterBox = new Rect();
         waterBox.set(0, 0, 128*24, 128*16);
         waterImage = context.getResources().getDrawable(R.drawable.water_old);
@@ -311,22 +314,31 @@ public void setPoints(int points){
 
         if (isHorizontal && direction)          //Facing East
         {
-            for (int i = 1; i <= numOfMoves; i++) {
+            for (int i = 0; i <= numOfMoves; i++) {
                 if(xPos + numOfMoves < 24) {
-                    if (board[yPos][xPos + i] != null) {
+                    System.out.println("xPos + numOfMoves is < 24");
+                    if (board[yPos][xPos + i] == null) {
+                        System.out.println("board is not null, i = " + i);
                         if (xPos + i < 24) {
+                            System.out.println("xPos + i is less than 24, i = " + i);
                             point = new Point(xPos + i, yPos);
                             coordinateList.add(point);
+                            System.out.println("point added");
+                        } else
+                        {
+                            System.out.println("xPos + i is > 24, i = " + i);
                         }
+                    } else {
+                        System.out.println("board is null, i = " + i);
                     }
                 }
             }
         }
-        else if (isHorizontal)                  //West
+        else if (isHorizontal && !direction)                  //West
         {
-            for (int i = 1; i <= numOfMoves; i++) {
+            for (int i = 0; i <= numOfMoves; i++) {
                 if(xPos - numOfMoves >= 0) {
-                    if (board[yPos][xPos - i] != null) {
+                    if (board[yPos][xPos - i] == null) {
                         if (xPos - i > 0) {
                             point = new Point(xPos - i, yPos);
                             coordinateList.add(point);
@@ -337,9 +349,9 @@ public void setPoints(int points){
         }
         else if (direction)                     //North
         {
-            for (int i = 1; i <= numOfMoves; i++) {
-                if (yPos - i > 0) {
-                    if(board[yPos - i][xPos] != null) {
+            for (int i = 0; i <= numOfMoves; i++) {
+                if (yPos - i >= 0) {
+                    if(board[yPos - i][xPos] == null) {
                         point = new Point(xPos, yPos - i);
                         coordinateList.add(point);
                     }
@@ -348,9 +360,9 @@ public void setPoints(int points){
         }
         else                                    //South
         {
-            for (int i = 1; i <= numOfMoves; i++) {
+            for (int i = 0; i <= numOfMoves; i++) {
                 if (yPos + i < 16) {
-                    if(board[yPos + i][xPos] != null) {
+                    if(board[yPos + i][xPos] == null) {
                         point = new Point(xPos, yPos + i);
                         coordinateList.add(point);
                     }
@@ -362,10 +374,6 @@ public void setPoints(int points){
     }
 
     /**
-     * Need to find out how the shooting mechanic works. NOT DONE
-     *
-     *
-     *
      * possibleFireLoc(Ship aShip)
      * @param aShip The ship that is going to shoot
      * @return an ArrayList of Coordinates, every coordinate where you can shoot to.
@@ -376,7 +384,6 @@ public void setPoints(int points){
         ArrayList<Point> coordinateList = new ArrayList<>();
         Point pointBottomRight, pointBottomLeft, pointUpperRight, pointUpperLeft;
         int fireRange = aShip.getFrange();
-        int shipSize = aShip.getShipSize();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
 
@@ -744,6 +751,34 @@ public void setPoints(int points){
         return counter;
     }
 
+    /**
+     * xPosofShip(Player player) is an int method that goes the inputted player's playerSet and returns an int value
+     *                           that represents the ship's x position that is closest to the boarder down the middle of the board.
+     * @param player The player that you want to get the set from.
+     *               If you want the rightmost x position, then player should be p1.
+     *               If you want the leftmost x position, then player should be p2.
+     * @return xPos, the rightmost x position of p1's ships OR the leftmost x position of p2's ships.
+     */
+    public int xPosOfShip(Player player) {
+        int xPos = 0;
+        Ship ship;
+        Iterator<Ship> shipIterator = player.getPlayerSet().iterator();
+        while(shipIterator.hasNext()) {
+            ship = player.getPlayerSet().iterator().next();
+            int shipX = ship.getColumnCoord();
+            if(playerTurn == 0) {
+                if(shipX > xPos) {
+                    xPos = shipX;
+                }
+            } else if(playerTurn == 1) {
+                if(shipX < xPos) {
+                    xPos = shipX;
+                }
+            }
+        }
+        return xPos;
+    }
+
 
 
 
@@ -847,8 +882,7 @@ public void setPoints(int points){
                         || isScrolling) {
                     isScrolling = true;
                     masterPoint.set(masterPoint.x + (int) event.getX() - locator.x, masterPoint.y + (int) event.getY() - locator.y);
-                    final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
-                    final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
+
                     final int MIN_GRID_SPACES = 5;
 
 

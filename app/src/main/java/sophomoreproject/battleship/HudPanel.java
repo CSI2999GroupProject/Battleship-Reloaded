@@ -10,10 +10,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-import java.util.HashSet;
-
-import sophomoreproject.battleship.ships.Cruiser;
-import sophomoreproject.battleship.ships.Ship;
 
 /**
  * Created by isaac on 3/4/2018.
@@ -28,7 +24,6 @@ public class HudPanel implements Panel {
     private Bitmap endTurn;
     private Bitmap lastButtonPress;
     private Point lastMotion = new Point(0, 0);
-
 
     public HudPanel(Context context, GameBoard board) {
         this.context = context;
@@ -87,11 +82,13 @@ public class HudPanel implements Panel {
                             board.setPlayerTurn(1);
                             board.setPoints(12);
                             //pmove and pshots need to be set to 0
+                            board.getMasterPoint().set(board.SCREEN_WIDTH * -1 + 384, 256);
                             break;
                         case 1:
                             board.setPlayerTurn(0);
                             board.setPoints(12);
                             //pmove and pshots need to be set to 0
+                            board.getMasterPoint().set(0, 256);
                             break;
                     }
                 }
@@ -108,5 +105,4 @@ public class HudPanel implements Panel {
         }
         return str;
     }
-
 }
