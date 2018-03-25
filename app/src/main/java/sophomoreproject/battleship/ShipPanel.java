@@ -159,15 +159,19 @@ public class ShipPanel implements Panel
                                     ship.setpmove(pmove = pmove + 1);
                                     break;
                                 case 2: //Rotate left button pressed this is the rotate that we currently have
+                                    if(gp.getBoard().checkRotate(ship, "left")==1) {
 
-                                    if (ship.getpmove() == 0) {
-                                        ship.setpmove(ship.getnMove());
-                                        gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
-                                        System.out.println("Rotate Left!");
-                                        gp.getBoard().setPoints( points - ship.getShipSize() - 1);
+                                        if (ship.getpmove() == 0) {
+                                            ship.setpmove(ship.getnMove());
+                                            gp.getBoard().rotateLeft(ship, ship.getRowCoord(), ship.getColumnCoord());
+                                            System.out.println("Rotate Left!");
+                                            gp.getBoard().setPoints(points - ship.getShipSize() - 1);
 
-                                    } else {
-                                        System.out.println("You cannot rotate and move");
+                                        } else {
+                                            System.out.println("You cannot rotate and move");
+                                        }
+                                    }else{
+                                    System.out.println("not possible");
                                     }
                                     break;
                                 case 3: //Debug test button
