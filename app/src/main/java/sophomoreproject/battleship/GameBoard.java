@@ -429,6 +429,9 @@ public void setPoints(int points){
      * @return coordinateList, an Array of Point in which its size depends on the shipSize.
      *          The contents of the array are the points in which the ship can possibly rotate to depending on isHorizontal boolean
      *
+     *          The size is 2. so pointsArray[0] is left, and pointsArray[1] is right.
+     *          By left and right, I mean if you are facing the same direction as the ship. AKA from the Ships point of view: left and right.
+     *
      *
      */
     public Point[] checkRotate(Ship aShip) {
@@ -437,55 +440,98 @@ public void setPoints(int points){
         int yPos = aShip.getRowCoord();
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
-        Point[] pointsArray = new Point[2*shipSize];
-        Point point;
+        Point[] pointsArray = new Point[2];
+        int count = 0;
 
-
-            if (isHorizontal) {
-                if (nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, direction) == shipSize) {
-                    for (int i = 0; i < shipSize; i++) {
-                        if (yPos + i < 16) {
-                            point = new Point(xPos, yPos + i); //If the ship is facing west, then this is rotate left Points
-                            pointsArray[i] = point;
-                        }
+        if(isHorizontal && direction) { //east
+            for(int i = 1; i < shipSize; i++) {
+                if(yPos - i >= 0) {
+                    if (board[yPos - i][xPos] != null) {
+                        count++;
                     }
                 }
-                if(nullCountOfShipSize(shipSize, xPos, yPos, !isHorizontal, !direction) == shipSize) {
-                    for (int i = 0; i < shipSize; i++) {
-                        if (yPos - i >= 0) {
-                            point = new Point(xPos, yPos - i); //If the ship is facing west, then this is rotate right Points
-                            if(pointsArray[i] != null) {
-                                pointsArray[shipSize + i] = point;
-                            } else {
-                                pointsArray[i] = point;
-                            }
-                        }
-                    }
-                }
-
-            } else if (!isHorizontal) {
-                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, !direction) == shipSize) {
-                    for (int i = 0; i < shipSize; i++) {
-                        point = new Point(xPos + i, yPos); //If the ship is facing North, then this is rotate right Points
-                        pointsArray[i] = point;
-
-                    }
-                }
-                if(nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) == shipSize) {
-                    for (int i = 0; i < shipSize; i++) {
-                        if (xPos - i >= 0) {
-                            point = new Point(xPos - i, yPos); //If the ship is facing North, then this is the rotate left Points
-                            if(pointsArray[i] != null) {
-                                pointsArray[shipSize + i] = point;
-                            } else {
-                                pointsArray[i] = point;
-                            }
-                        }
-                    }
-                }
-
             }
-
+            if(count == 0 && yPos - shipSize + 1 >= 0) {
+                pointsArray[0] = new Point(xPos, yPos - 1);
+            }
+            count = 0;
+            for(int i = 1; i < shipSize; i++) {
+                if(yPos + i < 16){
+                    if (board[yPos + i][xPos] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && yPos + shipSize - 1 < 16) {
+                pointsArray[1] = new Point(xPos, yPos + 1);
+            }
+        } else if(!isHorizontal && !direction) { //south
+            for(int i = 1; i <= shipSize; i++) {
+                if(xPos + 1 < 24) {
+                    if (board[yPos][xPos + i] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && xPos + shipSize - 1 < 24) {
+                pointsArray[0] = new Point(xPos + 1, yPos);
+            }
+            count = 0;
+            for(int i = 1; i <= shipSize; i++) {
+                if(xPos - 1 >= 0) {
+                    if (board[yPos][xPos - i] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && xPos - shipSize + 1 >= 0) {
+                pointsArray[1] = new Point(xPos - 1, yPos);
+            }
+        } else if(isHorizontal && !direction) { //west
+            for(int i = 1; i <= shipSize; i++) {
+                if(yPos + 1 < 16) {
+                    if (board[yPos + i][xPos] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && yPos + shipSize - 1 < 16) {
+                pointsArray[0] = new Point(xPos, yPos + 1);
+            }
+            count = 0;
+            for(int i = 1; i <= shipSize; i++) {
+                if(yPos - 1 >= 0) {
+                    if (board[yPos - i][xPos] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && yPos - shipSize + 1 >= 0) {
+                pointsArray[1] = new Point(xPos, yPos - 1);
+            }
+        } else if(!isHorizontal && direction) { //north
+            for(int i = 1; i <= shipSize; i++) {
+                if(xPos - 1 >= 0) {
+                    if (board[yPos][xPos - i] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && xPos - shipSize + 1 >= 0) {
+                pointsArray[0] = new Point(xPos - 1, yPos);
+            }
+            count = 0;
+            for(int i = 1; i <= shipSize; i++) {
+                if(xPos + 1 < 24) {
+                    if (board[yPos][xPos + i] != null) {
+                        count++;
+                    }
+                }
+            }
+            if(count == 0 && xPos + shipSize - 1 < 24) {
+                pointsArray[1] = new Point(xPos + 1, yPos);
+            }
+        }
         return pointsArray;
     }
     /**
