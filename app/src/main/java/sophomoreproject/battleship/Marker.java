@@ -99,13 +99,17 @@ public class Marker implements Panel { // extends Ship {
                 break;
             case 1:     //Move
 
+                gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
+
+
                 if(cost<=originalShip.getnMove()-originalShip.getpmove()) {
                     originalShip.setpmove(originalShip.getpmove() + cost);
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
                     System.out.println(cost + "=cost");
                 }else{
-                System.out.println("to much movement");
+                    System.out.println("to much movement");
                 }
+
                 break;
             case 2:     //Rotate
                 gb.rotateLeft(originalShip, x, y);
@@ -116,6 +120,7 @@ public class Marker implements Panel { // extends Ship {
                 originalShip.setpmove(originalShip.getnMove());
                 break;
             default:
+
                 break;
         }
 
