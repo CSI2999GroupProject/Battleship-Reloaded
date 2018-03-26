@@ -312,24 +312,13 @@ public void setPoints(int points){
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
 
-        if (isHorizontal && direction)          //Facing East
-        {
+        if (isHorizontal && direction) {       //Facing East
             for (int i = 0; i <= numOfMoves; i++) {
-                if(xPos + numOfMoves < 24) {
-                    System.out.println("xPos + numOfMoves is < 24");
+                if (xPos + numOfMoves < 24) {
                     if (board[yPos][xPos + i] == null) {
-                        System.out.println("board is not null, i = " + i);
                         if (xPos + i < 24) {
-                            System.out.println("xPos + i is less than 24, i = " + i);
-                            point = new Point(xPos + i, yPos);
-                            coordinateList.add(point);
-                            System.out.println("point added");
-                        } else
-                        {
-                            System.out.println("xPos + i is > 24, i = " + i);
+                            coordinateList.add(new Point(xPos + i, yPos));
                         }
-                    } else {
-                        System.out.println("board is null, i = " + i);
                     }
                 }
             }
@@ -466,8 +455,8 @@ public void setPoints(int points){
                 pointsArray[1] = new Point(xPos, yPos + 1);
             }
         } else if(!isHorizontal && !direction) { //south
-            for(int i = 1; i <= shipSize; i++) {
-                if(xPos + 1 < 24) {
+            for(int i = 1; i < shipSize; i++) {
+                if(xPos + i < 24) {
                     if (board[yPos][xPos + i] != null) {
                         count++;
                     }
@@ -477,8 +466,8 @@ public void setPoints(int points){
                 pointsArray[0] = new Point(xPos + 1, yPos);
             }
             count = 0;
-            for(int i = 1; i <= shipSize; i++) {
-                if(xPos - 1 >= 0) {
+            for(int i = 1; i < shipSize; i++) {
+                if(xPos - i >= 0) {
                     if (board[yPos][xPos - i] != null) {
                         count++;
                     }
@@ -488,8 +477,8 @@ public void setPoints(int points){
                 pointsArray[1] = new Point(xPos - 1, yPos);
             }
         } else if(isHorizontal && !direction) { //west
-            for(int i = 1; i <= shipSize; i++) {
-                if(yPos + 1 < 16) {
+            for(int i = 1; i < shipSize; i++) {
+                if(yPos + i < 16) {
                     if (board[yPos + i][xPos] != null) {
                         count++;
                     }
@@ -499,8 +488,8 @@ public void setPoints(int points){
                 pointsArray[0] = new Point(xPos, yPos + 1);
             }
             count = 0;
-            for(int i = 1; i <= shipSize; i++) {
-                if(yPos - 1 >= 0) {
+            for(int i = 1; i < shipSize; i++) {
+                if(yPos - i >= 0) {
                     if (board[yPos - i][xPos] != null) {
                         count++;
                     }
@@ -510,8 +499,8 @@ public void setPoints(int points){
                 pointsArray[1] = new Point(xPos, yPos - 1);
             }
         } else if(!isHorizontal && direction) { //north
-            for(int i = 1; i <= shipSize; i++) {
-                if(xPos - 1 >= 0) {
+            for(int i = 1; i < shipSize; i++) {
+                if(xPos - i >= 0) {
                     if (board[yPos][xPos - i] != null) {
                         count++;
                     }
@@ -521,8 +510,8 @@ public void setPoints(int points){
                 pointsArray[0] = new Point(xPos - 1, yPos);
             }
             count = 0;
-            for(int i = 1; i <= shipSize; i++) {
-                if(xPos + 1 < 24) {
+            for(int i = 1; i < shipSize; i++) {
+                if(xPos + i < 24) {
                     if (board[yPos][xPos + i] != null) {
                         count++;
                     }
