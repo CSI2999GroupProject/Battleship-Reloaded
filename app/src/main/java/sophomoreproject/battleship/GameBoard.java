@@ -659,6 +659,7 @@ public class GameBoard implements GameBoardInterface, Panel {
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
      */
+
     public void endGame(Player player, Player player2) {
         if(hasShips(player.getPlayerSet())==false || hasShips(player2.getPlayerSet())==false) {
             if (hasShips(player.getPlayerSet()) == false) {
