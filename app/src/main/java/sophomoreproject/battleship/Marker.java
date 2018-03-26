@@ -98,7 +98,7 @@ public class Marker implements Panel { // extends Ship {
                 //Insert code for fire method here
                 break;
             case 1:     //Move
-                gb.move(originalShip, x, y, cost);
+                gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
                 break;
             case 2:     //Rotate
                 gb.rotateLeft(originalShip, x, y);
