@@ -991,15 +991,12 @@ public void setPoints(int points){
      * @param Hits the amount of damage the ship from the shipSet is about to take
      * */
 
-    public boolean HitShips(Ship AttackedShip, int Hits){
+    public void HitShips(Ship AttackedShip, int Hits){
         removeShip(AttackedShip);
         AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
         RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
-            shipSet.remove(AttackedShip);
-            return true;
-        }else{
-            return false;
+           removeShip(AttackedShip);
         }
     }
 

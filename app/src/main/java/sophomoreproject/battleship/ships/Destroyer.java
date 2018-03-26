@@ -21,7 +21,7 @@ public class Destroyer extends Ship implements ShipInterface{
         setdamage(125);
         setnShots(4);
         setpShots(0);
-        setDamageCost(1);
+        setDamageCost(5);
         //setfdamage(600);
         //setFDamageCost(4);
         //setbdamage(400);
