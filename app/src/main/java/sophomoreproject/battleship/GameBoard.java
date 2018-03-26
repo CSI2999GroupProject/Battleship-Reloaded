@@ -313,19 +313,21 @@ public void setPoints(int points){
         int yPos = aShip.getRowCoord();
 
         if (isHorizontal && direction) {       //Facing East
-            for (int i = 0; i <= numOfMoves; i++) {
+            for (int i = 1; i <= numOfMoves; i++) {
                 if (xPos + numOfMoves < 24) {
                     if (board[yPos][xPos + i] == null) {
                         if (xPos + i < 24) {
                             coordinateList.add(new Point(xPos + i, yPos));
                         }
                     }
+                    else
+                        break;
                 }
             }
         }
         else if (isHorizontal && !direction)                  //West
         {
-            for (int i = 0; i <= numOfMoves; i++) {
+            for (int i = 1; i <= numOfMoves; i++) {
                 if(xPos - numOfMoves >= 0) {
                     if (board[yPos][xPos - i] == null) {
                         if (xPos - i > 0) {
@@ -333,31 +335,39 @@ public void setPoints(int points){
                             coordinateList.add(point);
                         }
                     }
+                    else
+                        break;
                 }
             }
         }
         else if (direction)                     //North
         {
-            for (int i = 0; i <= numOfMoves; i++) {
+            for (int i = 1; i <= numOfMoves; i++) {
                 if (yPos - i >= 0) {
                     if(board[yPos - i][xPos] == null) {
                         point = new Point(xPos, yPos - i);
                         coordinateList.add(point);
                     }
                 }
+                else
+                    break;
             }
         }
         else                                    //South
         {
-            for (int i = 0; i <= numOfMoves; i++) {
+            for (int i = 1; i <= numOfMoves; i++) {
                 if (yPos + i < 16) {
                     if(board[yPos + i][xPos] == null) {
                         point = new Point(xPos, yPos + i);
                         coordinateList.add(point);
                     }
                 }
+                else
+                    break;
             }
         }
+
+        System.out.println("Found " + coordinateList.size() + " valid locations");
 
         return coordinateList;
     }

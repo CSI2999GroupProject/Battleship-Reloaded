@@ -92,6 +92,7 @@ public class HudPanel implements Panel {
                             break;
                     }
                 }
+                board.purgeOldPanels();
                 break;
         }
     }
