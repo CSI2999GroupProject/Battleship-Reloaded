@@ -318,7 +318,7 @@ public void setPoints(int points){
                     if(board[yPos][xPos + i] == null){
                         if(xPos + i < 24) {
                             coordinateList.add(new Point(xPos + i, yPos));
-                            System.out.println("point added");
+                            System.out.println("point addedfg");
                         }
                     } else if (board[yPos][xPos + i] != null) {
                         System.out.println("gonna break. i = " + i);
