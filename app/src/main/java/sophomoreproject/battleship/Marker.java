@@ -99,9 +99,6 @@ public class Marker implements Panel { // extends Ship {
                 break;
             case 1:     //Move
 
-                gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
-
-
                 if(cost<=originalShip.getnMove()-originalShip.getpmove()) {
                     originalShip.setpmove(originalShip.getpmove() + cost);
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
