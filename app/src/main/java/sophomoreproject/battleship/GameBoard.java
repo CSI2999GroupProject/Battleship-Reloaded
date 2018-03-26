@@ -324,6 +324,8 @@ public void setPoints(int points){
                         System.out.println("gonna break. i = " + i);
                         break;
                     }
+                    else
+                        break;
                 }
             }
         }
@@ -339,6 +341,8 @@ public void setPoints(int points){
                     } else if (board[yPos][xPos - i] != null) {
                         break;
                     }
+                    else
+                        break;
                 }
             }
         }
@@ -353,6 +357,8 @@ public void setPoints(int points){
                         break;
                     }
                 }
+                else
+                    break;
             }
         }
         else                                    //South
@@ -366,8 +372,12 @@ public void setPoints(int points){
                         break;
                     }
                 }
+                else
+                    break;
             }
         }
+
+        System.out.println("Found " + coordinateList.size() + " valid locations");
 
         return coordinateList;
     }
