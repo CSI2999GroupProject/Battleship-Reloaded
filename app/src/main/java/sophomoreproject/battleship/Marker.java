@@ -98,13 +98,22 @@ public class Marker implements Panel { // extends Ship {
                 //Insert code for fire method here
                 break;
             case 1:     //Move
-                gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
+
+                if(cost<=originalShip.getnMove()-originalShip.getpmove()) {
+                    originalShip.setpmove(originalShip.getpmove() + cost);
+                    gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
+                    System.out.println(cost + "=cost");
+                }else{
+                System.out.println("to much movement");
+                }
                 break;
             case 2:     //Rotate
                 gb.rotateLeft(originalShip, x, y);
+                originalShip.setpmove(originalShip.getnMove());
                 break;
             case 3:     //Rotate
                 gb.rotateRight(originalShip, x, y);
+                originalShip.setpmove(originalShip.getnMove());
                 break;
             default:
                 break;
