@@ -659,6 +659,7 @@ public class GameBoard implements GameBoardInterface, Panel {
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
      */
+
     public void endGame(Player player1, Player player2) {
         if(hasShips(player1.getPlayerSet())==false || hasShips(player2.getPlayerSet())==false) {
             if (hasShips(player1.getPlayerSet()) == false) {
@@ -669,7 +670,13 @@ public class GameBoard implements GameBoardInterface, Panel {
             }
         }
     }
+
+
+
+
+
     // * Use this method to display the text for who won the game
+
     public void setWinText(Player player){
         if(player == p1){
             winningText.setText("Player 1 Wins!");
@@ -677,7 +684,11 @@ public class GameBoard implements GameBoardInterface, Panel {
             winningText.setText("Player 2 Wins!");
         }
     }
+
+
     public TextView getWinText(){
         return winningText;
     }
+
+
 }
