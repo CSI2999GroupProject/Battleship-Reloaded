@@ -85,12 +85,14 @@ public class HudPanel implements Panel {
                             board.setPlayerTurn(1);
                             board.setPoints(12);
                             board.getP2().resetPMove();
+                            board.getP1().resetPMove();
                             board.getMasterPoint().set(board.SCREEN_WIDTH * -1 + 384, 256);
                             break;
                         case 1:
                             board.setPlayerTurn(0);
                             board.setPoints(12);
                             board.getP1().resetPMove();
+                            board.getP2().resetPMove();
                             board.getMasterPoint().set(0, 256);
                             break;
                     }
