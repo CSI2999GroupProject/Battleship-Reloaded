@@ -24,7 +24,7 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         setHitpoints(4000);
         setdamage(350);
         setDamageCost(1);
-        setnShots(3);
+        setnShots(1);
         setRange(24);
         setFrange(24);
         setpmove(0);

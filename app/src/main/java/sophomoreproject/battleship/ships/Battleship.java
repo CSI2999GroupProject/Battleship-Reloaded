@@ -26,7 +26,7 @@ public class Battleship extends Ship implements ShipInterface{
         //setBDamageCost(1);
         setRange(5);
         setFrange(5);
-        setnShots(2);
+        setnShots(1);
         setpShots(0);
         setpmove(0);
         shipBox = new Rect(0, 0, 128*getShipSize(), 128);

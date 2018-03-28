@@ -33,7 +33,7 @@ public class Marker implements Panel { // extends Ship {
      * @param originalShip the ship that was originally clicked on to create this marker
      * @param x the x coordinate of the marker icon
      * @param y the y coordinate of the marker icon
-     * @param data Specific data to be held to be used by the marker when clicked. Might hold cost, or something else when necessary.
+     * @param //data Specific data to be held to be used by the marker when clicked. Might hold cost, or something else when necessary.
      */
     public Marker(Context context, GamePanel gp, int type, Ship originalShip, int x, int y, int cost) {
 
@@ -95,7 +95,13 @@ public class Marker implements Panel { // extends Ship {
         switch (type)
         {
             case 0:     //Fire
-                //Insert code for fire method here
+
+                    gb.Fire(originalShip.getdamage(),x,y);
+
+                gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
+                originalShip.setpShots(originalShip.getpShots()+1);
+
+
                 break;
             case 1:     //Move
 
