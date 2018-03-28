@@ -660,19 +660,23 @@ public class GameBoard implements GameBoardInterface, Panel {
      * out of ships
      */
 
-    public void endGame(Player player, Player player2) {
-        if(hasShips(player.getPlayerSet())==false || hasShips(player2.getPlayerSet())==false) {
-            if (hasShips(player.getPlayerSet()) == false) {
+    public void endGame(Player player1, Player player2) {
+        if(hasShips(player1.getPlayerSet())==false || hasShips(player2.getPlayerSet())==false) {
+            if (hasShips(player1.getPlayerSet()) == false) {
                 setWinText(player2);
             }
             if (hasShips(player2.getPlayerSet()) == false) {
-                setWinText(player);
+                setWinText(player1);
             }
         }
     }
-    /**
-     * Use this method to display the text for who won the game
-     * */
+
+
+
+
+
+    // * Use this method to display the text for who won the game
+
     public void setWinText(Player player){
         if(player == p1){
             winningText.setText("Player 1 Wins!");
@@ -680,10 +684,10 @@ public class GameBoard implements GameBoardInterface, Panel {
             winningText.setText("Player 2 Wins!");
         }
     }
+
+
     public TextView getWinText(){
         return winningText;
     }
-    public Layout displayWinScreen(TextView winningText){
 
-    }
 }
