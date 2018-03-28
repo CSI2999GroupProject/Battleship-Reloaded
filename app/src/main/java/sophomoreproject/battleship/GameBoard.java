@@ -996,13 +996,22 @@ public void setPoints(int points){
      * @param Hits the amount of damage the ship from the shipSet is about to take
      * */
 
-    public void HitShips(Ship AttackedShip, int Hits){
+
+    public void Fire(Ship AttackedShip, int Hits){
         removeShip(AttackedShip);
+        System.out.println(AttackedShip.getShipSize());
         AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
         RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
            removeShip(AttackedShip);
         }
+    }
+    public Ship AttackedShip(int xPos,int yPos) {
+        if(board[xPos][yPos]!=null) {
+            Ship attackedship = board[xPos][yPos];
+            return attackedship;
+        }
+        return null;
     }
 
     /**
@@ -1023,8 +1032,5 @@ public void setPoints(int points){
         return OpponentsShips.isEmpty();
     }
 
-    public Ship AttackedShip(int xPos,int yPos) {
-        Ship aship=board[xPos][yPos];
-        return aship;
-    }
+
 }

@@ -95,7 +95,15 @@ public class Marker implements Panel { // extends Ship {
         switch (type)
         {
             case 0:     //Fire
-                //Insert code for fire method here
+
+                Point masterPoint = gb.getMasterPoint();
+
+                Ship Hship=gb.AttackedShip(13, 0);
+                System.out.println("3");
+                if(Hship!=null) {
+                    gb.Fire(Hship, originalShip.getdamage());
+                }
+                System.out.println("4");
                 break;
             case 1:     //Move
 
