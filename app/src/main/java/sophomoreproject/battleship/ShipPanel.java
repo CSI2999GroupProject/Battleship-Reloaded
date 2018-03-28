@@ -138,6 +138,7 @@ public class ShipPanel implements Panel
                                     if(cost <= pointsLeft)
                                     {
                                         gp.panels.add(new Marker(gp.getContext(), gp, 0, ship, point.x, point.y, cost) );
+
                                     }
                                 }
                                 break;

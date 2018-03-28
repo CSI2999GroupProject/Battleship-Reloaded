@@ -992,27 +992,22 @@ public void setPoints(int points){
 
     /**
      * Use this method when a ship is Hit or Missed
-     * @param AttackedShip the ship from shipSet that is being attacked
+     * //@param AttackedShip the ship from shipSet that is being attacked
      * @param Hits the amount of damage the ship from the shipSet is about to take
      * */
 
 
-    public void Fire(Ship AttackedShip, int Hits){
-        removeShip(AttackedShip);
-        System.out.println(AttackedShip.getShipSize());
-        AttackedShip.setHitpoints(AttackedShip.getHitpoints()-Hits);
-        RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
+    public void Fire( int Hits,int x,int y){
+        Ship AttackedShip=board[y][x];
+        //removeShip(AttackedShip);
+        AttackedShip.applyDamage(Hits);
+       // RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
            removeShip(AttackedShip);
         }
     }
-    public Ship AttackedShip(int xPos,int yPos) {
-        if(board[xPos][yPos]!=null) {
-            Ship attackedship = board[xPos][yPos];
-            return attackedship;
-        }
-        return null;
-    }
+
+
 
     /**
      * Use this method to calculate the number of ships lost in order to determine if the player
