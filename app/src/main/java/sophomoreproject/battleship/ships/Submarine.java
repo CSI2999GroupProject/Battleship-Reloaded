@@ -20,7 +20,7 @@ public class Submarine extends Ship implements ShipInterface{
         setShipSize(3);//the length of the ship
         setShipCost(2);//the amount it costs to place a ship
         setnMove(3);//number of total spaces a ship can move
-        setHitpoints(1400);//the ships health
+        setHitpoints(1200);//the ships health
         setdamage(300);//the amount of damage a ship deals per ship
         setnShots(1);//number of total shots per ship
         setpShots(0);//number of shots used per ship

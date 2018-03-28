@@ -20,7 +20,7 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         setShipSize(5);//the length of the ship
         setShipCost(4);//the amount it costs to place a ship
         setnMove(1);//number of total spaces a ship can move
-        setHitpoints(4000);//the ships health
+        setHitpoints(3400);//the ships health
         setdamage(350);//the amount of damage a ship deals per ship
         setnShots(1);//number of total shots per ship
         setpShots(0);//number of shots used per ship
