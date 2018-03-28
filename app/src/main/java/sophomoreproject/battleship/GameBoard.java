@@ -1000,6 +1000,7 @@ public void setPoints(int points){
     public void Fire( int Hits,int x,int y){
         Ship AttackedShip=board[y][x];
         //removeShip(AttackedShip);
+
         AttackedShip.applyDamage(Hits);
        // RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
