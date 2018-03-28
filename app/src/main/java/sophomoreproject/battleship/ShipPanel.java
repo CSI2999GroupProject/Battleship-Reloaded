@@ -59,19 +59,19 @@ public class ShipPanel implements Panel
         //switch on type of ship
         switch(ship.getName()) {
             case "cruiser":
-                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.mine_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "Aircraft Carrier":
                 buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "submarine":
-                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.torpedo_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "Battleship":
                 buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "destroyer":
-                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_2x2), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
 
         }
@@ -198,6 +198,43 @@ public class ShipPanel implements Panel
                                 }
                                 break;
                             case 3: //Ship ability button
+                                switch(ship.getName()) {
+                                    case "cruiser":
+                                        break;
+                                    case "Aircraft Carrier":
+                                        break;
+                                    case "submarine":
+                                        int x = ship.getColumnCoord();
+                                        int y = ship.getRowCoord();
+                                        boolean isHorizontal = ship.getHorizontal();
+                                        boolean direction = ship.getDirection();
+                                        if(isHorizontal) {
+                                            if(direction) { //east
+                                                while(x < 24) {
+
+                                                }
+                                            } else { //west
+                                                while(x >= 0) {
+
+                                                }
+                                            }
+                                        } else {
+                                            if(direction) { //north
+                                                while(y >= 0) {
+
+                                                }
+                                            } else { //south
+                                                while(y < 16) {
+
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case "Battleship":
+                                        break;
+                                    case "destroyer":
+                                        break;
+                                }
                                 break;
                             default:
                                 System.out.println("Something unexpected happened.");
