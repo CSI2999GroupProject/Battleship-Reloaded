@@ -684,11 +684,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             winningText.setText("Player 2 Wins!");
         }
     }
-
-
     public TextView getWinText(){
         return winningText;
     }
-
-
 }
