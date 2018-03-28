@@ -161,7 +161,7 @@ public int getPoints(){
         return p2.getAvailablePoints();
     }
 }
-public void setPoints(int points){
+    public void setPoints(int points){
     if(playerTurn == 0) {
         p1.setAvailablePoints(points);
 
@@ -259,43 +259,7 @@ public void setPoints(int points){
         }
     }
 
-    public void removeShip(Ship aShip)
-    {
-        boolean isHorizontal = aShip.getHorizontal();
-        boolean direction = aShip.getDirection();
-        int shipSize = aShip.getShipSize();
-        int xPos = aShip.getColumnCoord();
-        int yPos =aShip.getRowCoord();
 
-        shipSet.remove(aShip);
-
-        if(playerTurn == 0) {
-            p1.getPlayerSet().remove(aShip);
-        } else {
-            p2.getPlayerSet().remove(aShip);
-        }
-
-        if (isHorizontal && direction)          //Facing East
-        {
-            for (int i = 0; i < shipSize; i++)
-                board[yPos][xPos - i] = null;
-        }
-        else if (isHorizontal)                  //West
-        {
-            for (int i = 0; i < shipSize; i++)
-                board[yPos][xPos + i] = null;
-        }
-        else if (direction)                     //North
-        {
-            for (int i = 0; i < shipSize; i++)
-                board[yPos + i][xPos] = null;
-        }
-        else                                    //South
-        {
-            for (int i = 0; i < shipSize; i++)
-                board[yPos - i][xPos] = null;
-        }
-    }
 
     /**
      * possibleMoveLoc(Ship aShip)
@@ -543,8 +507,54 @@ public void setPoints(int points){
         }
         return pointsArray;
     }
+
     /**
-     * A method to move the ships in the board
+     * this method removes the ship fro the board so that the other methods can adjust its location or sink it
+     * @param aShip the ship that gets removed
+     */
+    public void removeShip(Ship aShip)
+    {
+        boolean isHorizontal = aShip.getHorizontal();
+        boolean direction = aShip.getDirection();
+        int shipSize = aShip.getShipSize();
+        int xPos = aShip.getColumnCoord();
+        int yPos =aShip.getRowCoord();
+
+        shipSet.remove(aShip);
+
+        if(playerTurn == 0) {
+            p1.getPlayerSet().remove(aShip);
+        } else {
+            p2.getPlayerSet().remove(aShip);
+        }
+
+        if (isHorizontal && direction)          //Facing East
+        {
+            for (int i = 0; i < shipSize; i++)
+                board[yPos][xPos - i] = null;
+        }
+        else if (isHorizontal)                  //West
+        {
+            for (int i = 0; i < shipSize; i++)
+                board[yPos][xPos + i] = null;
+        }
+        else if (direction)                     //North
+        {
+            for (int i = 0; i < shipSize; i++)
+                board[yPos + i][xPos] = null;
+        }
+        else                                    //South
+        {
+            for (int i = 0; i < shipSize; i++)
+                board[yPos - i][xPos] = null;
+        }
+    }
+    /**
+     * method that moves the ship on the board
+     * @param aShip the ship that gets placed
+     * @param xPos the position of the head of the ships X
+     * @param yPos the position of the head of the ships Y
+     * @param pmove the amount of spaces the ship will move
      */
     public void move(Ship aShip, int xPos, int yPos, int pmove) {
         boolean isHorizontal = aShip.getHorizontal();
@@ -570,6 +580,13 @@ public void setPoints(int points){
         }
     }
 
+    /**
+     * adds the ships to the board after move and rotate
+     * @param aShip the ship that gets placed
+     * @param xPos the position of the head of the ships X
+     * @param yPos the position of the head of the ships Y
+     * @throws IndexOutOfBoundsException
+     */
     public void RaddShip(Ship aShip, int xPos, int yPos) throws IndexOutOfBoundsException {
         int shipSize = aShip.getShipSize();
         boolean isHorizontal = aShip.getHorizontal();
@@ -619,6 +636,12 @@ public void setPoints(int points){
 
     }
 
+    /**
+     * method that rotates the ship left
+     * @param aShip the ship that gets placed
+     * @param xPos the position of the head of the ships X
+     * @param yPos the position of the head of the ships Y
+     */
     @Override
     public void rotateLeft(Ship aShip, int xPos, int yPos) {
         int shipX = aShip.getColumnCoord();
@@ -657,9 +680,10 @@ public void setPoints(int points){
     }
 
     /**
-     * A method to move the ships in the board.
-     *
-     *
+     * method that rotates the ship Right
+     * @param aShip the ship that gets placed
+     * @param xPos the position of the head of the ships X
+     * @param yPos the position of the head of the ships Y
      */
     @Override
     public void rotateRight(Ship aShip, int xPos, int yPos) {
@@ -999,10 +1023,7 @@ public void setPoints(int points){
 
     public void Fire( int Hits,int x,int y){
         Ship AttackedShip=board[y][x];
-        //removeShip(AttackedShip);
-
         AttackedShip.applyDamage(Hits);
-       // RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
            removeShip(AttackedShip);
         }

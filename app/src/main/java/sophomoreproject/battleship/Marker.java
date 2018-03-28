@@ -95,34 +95,26 @@ public class Marker implements Panel { // extends Ship {
         switch (type)
         {
             case 0:     //Fire
-
-                    gb.Fire(originalShip.getdamage(),x,y);
-
+                gb.Fire(originalShip.getdamage(),x,y);
                 gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
                 originalShip.setpShots(originalShip.getpShots()+1);
-
-
                 break;
             case 1:     //Move
-
                 if(cost<=originalShip.getnMove()-originalShip.getpmove()) {
                     originalShip.setpmove(originalShip.getpmove() + cost);
                     gb.setPoints(gb.getPoints()-1);
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
-
                 }
-
                 break;
-            case 2:     //Rotate
+            case 2:     //Rotate Left
                 gb.rotateLeft(originalShip, x, y);
                 originalShip.setpmove(originalShip.getnMove());
                 break;
-            case 3:     //Rotate
+            case 3:     //Rotate Right
                 gb.rotateRight(originalShip, x, y);
                 originalShip.setpmove(originalShip.getnMove());
                 break;
             default:
-
                 break;
         }
 
