@@ -671,10 +671,6 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
-
-
-
-
     // * Use this method to display the text for who won the game
 
     public void setWinText(Player player){
