@@ -52,13 +52,13 @@ public class Marker implements Panel { // extends Ship {
                 image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), 128, 128, false);
                 break;
             case 1:     //Move
-                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
             case 2:     //Rotate
-                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
             case 3:     //Rotate
-                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
             default:
                 break;
