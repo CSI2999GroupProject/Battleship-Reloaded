@@ -49,6 +49,7 @@ public class Player {
         for(Ship ship : playerSet ) {
 
             ship.setpmove(0);
+            ship.setpShots(0);
         }
     }
 

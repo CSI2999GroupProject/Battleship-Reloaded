@@ -96,14 +96,10 @@ public class Marker implements Panel { // extends Ship {
         {
             case 0:     //Fire
 
-
-
-
-
-
-
-
                     gb.Fire(originalShip.getdamage(),x,y);
+
+                gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
+                originalShip.setpShots(originalShip.getpShots()+1);
 
 
                 break;

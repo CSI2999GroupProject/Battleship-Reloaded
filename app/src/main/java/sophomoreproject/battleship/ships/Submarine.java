@@ -24,6 +24,8 @@ public class Submarine extends Ship implements ShipInterface{
         setRange(3);
         setFrange(5);
         setpmove(0);
+        setpShots(0);
+        setnShots(1);
         setnMove(3);
         setHitpoints(1400);
         shipBox = new Rect(0, 0, 128*getShipSize(), 128);

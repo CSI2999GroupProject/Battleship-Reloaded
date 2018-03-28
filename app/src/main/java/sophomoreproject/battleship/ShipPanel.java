@@ -131,14 +131,14 @@ public class ShipPanel implements Panel
 
                         switch (i) {
                             case 0: //Fire button pressed
-                                validLocations = gp.getBoard().possibleFireLoc(ship);
-                                cost = ship.getDamageCost(); // ALAN Put the actual fire cost here.
-                                for(Point point : validLocations)
-                                {
-                                    if(cost <= pointsLeft)
-                                    {
-                                        gp.panels.add(new Marker(gp.getContext(), gp, 0, ship, point.x, point.y, cost) );
+                                if(ship.getpShots()<ship.getnShots()) {
+                                    validLocations = gp.getBoard().possibleFireLoc(ship);
+                                    cost = ship.getDamageCost(); // ALAN Put the actual fire cost here.
+                                    for (Point point : validLocations) {
+                                        if (cost <= pointsLeft) {
+                                            gp.panels.add(new Marker(gp.getContext(), gp, 0, ship, point.x, point.y, cost));
 
+                                        }
                                     }
                                 }
                                 break;
