@@ -20,7 +20,7 @@ import sophomoreproject.battleship.ships.Ship;
 
 public class ShipPanel implements Panel
 {
-    private final int BUTTON_TOTAL = 3;                             //The total number of buttons on the panel
+    private final int BUTTON_TOTAL = 4;                             //The total number of buttons on the panel
     private Rect panel;                                             //The back panel of the selection screen
     private Rect[] buttonBoxes = new Rect[BUTTON_TOTAL];            //Rects representing the dimensions and positions of the buttons
     private Bitmap[] buttonImages = new Bitmap[BUTTON_TOTAL];       //The images of the buttons (must match buttonBoxes perfectly)
@@ -56,7 +56,25 @@ public class ShipPanel implements Panel
         buttonImages[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_left_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+        //switch on type of ship
+        switch(ship.getName()) {
+            case "cruiser":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "Aircraft Carrier":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "submarine":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "Battleship":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "destroyer":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
 
+        }
         panelPaint.setColor(Color.GRAY);
         maxHealthPaint.setColor(Color.BLACK);
     }
@@ -178,6 +196,8 @@ public class ShipPanel implements Panel
                                 {
                                     System.out.println("You cannot rotate and move");
                                 }
+                                break;
+                            case 3: //Ship ability button
                                 break;
                             default:
                                 System.out.println("Something unexpected happened.");

@@ -314,35 +314,33 @@ public void setPoints(int points){
 
         if (isHorizontal && direction) {       //Facing East
             for (int i = 1; i <= numOfMoves; i++) {
-                if (xPos + numOfMoves < 24) {
+                if(xPos + i < 24) {
                     if(board[yPos][xPos + i] == null){
-                        if(xPos + i < 24) {
-                            coordinateList.add(new Point(xPos + i, yPos));
-                            System.out.println("point addedfg");
-                        }
+                        coordinateList.add(new Point(xPos + i, yPos));
+                        System.out.println("point addedfg");
                     } else if (board[yPos][xPos + i] != null) {
                         System.out.println("gonna break. i = " + i);
                         break;
                     }
-                    else
-                        break;
+                } else {
+                    break;
                 }
+
+
             }
         }
         else if (isHorizontal && !direction)                  //West
         {
             for (int i = 1; i <= numOfMoves; i++) {
-                if(xPos - numOfMoves >= 0) {
+                if (xPos - i >= 0) {
                     if (board[yPos][xPos - i] == null) {
-                        if (xPos - i > 0) {
-                            point = new Point(xPos - i, yPos);
-                            coordinateList.add(point);
-                        }
+                        point = new Point(xPos - i, yPos);
+                        coordinateList.add(point);
                     } else if (board[yPos][xPos - i] != null) {
                         break;
                     }
-                    else
-                        break;
+                } else {
+                    break;
                 }
             }
         }
@@ -391,7 +389,6 @@ public void setPoints(int points){
      */
     public ArrayList<Point> possibleFireLoc(Ship aShip) {
         ArrayList<Point> coordinateList = new ArrayList<>();
-        Point pointBottomRight, pointBottomLeft, pointUpperRight, pointUpperLeft;
         int fireRange = aShip.getFrange();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
@@ -821,10 +818,9 @@ public void setPoints(int points){
      */
     public int xPosOfShip(Player player) {
         int xPos = 0;
-        Ship ship;
-        Iterator<Ship> shipIterator = player.getPlayerSet().iterator();
-        while(shipIterator.hasNext()) {
-            ship = player.getPlayerSet().iterator().next();
+
+        for(Ship ship : player.getPlayerSet()) {
+
             int shipX = ship.getColumnCoord();
             if(playerTurn == 0) {
                 if(shipX > xPos) {
