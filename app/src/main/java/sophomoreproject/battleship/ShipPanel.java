@@ -125,14 +125,14 @@ public class ShipPanel implements Panel
                         int pointsLeft;
 
                         if(player == 0)
-                            pointsLeft = gp.getBoard().p1.getAvailablePoints();
+                            pointsLeft = gp.getBoard().getP1().getAvailablePoints();
                         else
-                            pointsLeft = gp.getBoard().p2.getAvailablePoints();
+                            pointsLeft = gp.getBoard().getP2().getAvailablePoints();
 
                         switch (i) {
                             case 0: //Fire button pressed
                                 validLocations = gp.getBoard().possibleFireLoc(ship);
-                                cost = 1; // ALAN Put the actual fire cost here.
+                                cost = ship.getDamageCost(); // ALAN Put the actual fire cost here.
                                 for(Point point : validLocations)
                                 {
                                     if(cost <= pointsLeft)
@@ -144,25 +144,25 @@ public class ShipPanel implements Panel
                             case 1: //Move button pressed
                                 if (ship.getpmove() < ship.getnMove())
                                 {
-                                    validLocations = gp.getBoard().possibleMoveLoc(ship);
 
-                                    for(Point point : validLocations)
-                                    {
-                                        cost = Math.abs(ship.getColumnCoord() - point.x) + Math.abs(ship.getRowCoord() - point.y); //finds the distance the ship is travelling
+                                       validLocations = gp.getBoard().possibleMoveLoc(ship);
 
-                                        if(cost <= pointsLeft)
-                                        {
-                                            gp.panels.add(new Marker(gp.getContext(), gp, 1, ship, point.x, point.y, cost));
-                                        }
-                                    }
+                                       for (Point point : validLocations) {
+                                           cost = Math.abs(ship.getColumnCoord() - point.x) + Math.abs(ship.getRowCoord() - point.y); //finds the distance the ship is travelling
+
+                                           if (cost <= pointsLeft) {
+                                               gp.panels.add(new Marker(gp.getContext(), gp, 1, ship, point.x, point.y, cost));
+                                           }
+
+                                   }
                                 }
                                 break;
                             case 2: //Rotate left button pressed this is the rotate that we currently have
                                 if (ship.getpmove() == 0)
                                 {
-                                    // JACOB To set cost in marker: ship.setpmove(ship.getnMove());
+                                    // JACOB To set cost in marker:
                                     Point[] turnLocations = gp.getBoard().checkRotate(ship);
-                                    cost = 1; //ALAN put the actual cost to turn a ship here
+                                    cost = ship.getShipSize() +1; //ALAN put the actual cost to turn a ship here
 
                                     if(turnLocations[0] != null) //player can turn left
                                     {

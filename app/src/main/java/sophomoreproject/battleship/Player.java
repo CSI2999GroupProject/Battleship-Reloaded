@@ -1,6 +1,7 @@
 package sophomoreproject.battleship;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 
 import sophomoreproject.battleship.ships.Ship;
@@ -40,6 +41,15 @@ public class Player {
 
     public HashSet<Ship> getPlayerSet() {
         return playerSet;
+    }
+
+    public void resetPMove() {
+        Ship ship;
+        Iterator<Ship> shipIterator = playerSet.iterator();
+        while(shipIterator.hasNext()) {
+            ship = playerSet.iterator().next();
+            ship.setpmove(0);
+        }
     }
 
 }
