@@ -150,7 +150,8 @@ public class ShipPanel implements Panel
                                        for (Point point : validLocations) {
                                            cost = Math.abs(ship.getColumnCoord() - point.x) + Math.abs(ship.getRowCoord() - point.y); //finds the distance the ship is travelling
 
-                                           if (cost <= pointsLeft) {
+
+                                           if (cost <= pointsLeft && cost <= ship.getnMove() - ship.getpmove()) {
                                                gp.panels.add(new Marker(gp.getContext(), gp, 1, ship, point.x, point.y, cost));
                                            }
 

@@ -103,9 +103,7 @@ public class Marker implements Panel { // extends Ship {
                     originalShip.setpmove(originalShip.getpmove() + cost);
                     gb.setPoints(gb.getPoints()-1);
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
-                    System.out.println(cost + "=cost");
-                }else{
-                    System.out.println("to much movement");
+
                 }
 
                 break;

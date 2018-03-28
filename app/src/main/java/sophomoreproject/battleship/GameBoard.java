@@ -611,6 +611,11 @@ public void setPoints(int points){
             board[yPos][xPos] = aShip;
         }
         shipSet.add(aShip);
+        if(playerTurn == 0) {
+            p1.getPlayerSet().add(aShip);
+        } else {
+            p2.getPlayerSet().add(aShip);
+        }
 
     }
 

@@ -44,10 +44,10 @@ public class Player {
     }
 
     public void resetPMove() {
-        Ship ship;
-        Iterator<Ship> shipIterator = playerSet.iterator();
-        while(shipIterator.hasNext()) {
-            ship = playerSet.iterator().next();
+        System.out.println("Reset " + playerSet.size() + " ships in the set");
+
+        for(Ship ship : playerSet ) {
+
             ship.setpmove(0);
         }
     }
