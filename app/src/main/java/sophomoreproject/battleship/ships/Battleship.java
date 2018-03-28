@@ -3,6 +3,8 @@ package sophomoreproject.battleship.ships;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+
 import sophomoreproject.battleship.R;
 /**
  * Created by isaac on 1/31/2018.
@@ -16,12 +18,18 @@ public class Battleship extends Ship implements ShipInterface{
         setShipCost(2);
         setnMove(2);
         setHitpoints(1500);
-        setfdamage(100);
-        setFDamageCost(1);
+        //setfdamage(100);
+        //setFDamageCost(1);
         setdamage(300);
-        setDamageCost(2);
-        setbdamage(50);
-        setBDamageCost(1);
+        setDamageCost(1);
+        //setbdamage(50);
+        //setBDamageCost(1);
+        setRange(5);
+        setFrange(5);
+        setnShots(1);
+        setpShots(0);
+        setpmove(0);
+        shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.battleship), 128*getShipSize(), 128, false);
     }
 

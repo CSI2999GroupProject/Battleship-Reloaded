@@ -16,12 +16,11 @@ import sophomoreproject.battleship.ships.Ship;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     private MainThread thread;
-    public ArrayList<Ship> boardObjects = new ArrayList<Ship>();
-    public ArrayList<Panel> panels = new ArrayList<Panel>();
+    public ArrayList<Ship> boardObjects = new ArrayList<>();
+    public ArrayList<Panel> panels = new ArrayList<>();
     private GameBoard board;
     private FleetBuildPanel fbp;
     private HudPanel hudPanel;
-    private ShipPanel sp;
 
     private Point masterPoint; //The top-left corner of the map. Can be moved about the screen.
     private Point historicPoint = new Point(); //A point that represents the origin of a finger moving across the screen.
@@ -40,7 +39,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         board = new GameBoard(context, this);
         fbp = new FleetBuildPanel(context, board);
         hudPanel = new HudPanel(context, board);
-        sp = new ShipPanel(context, null, this);
         masterPoint = new Point(0, 0); //Starts the game with the map's top-left corner being on the screen's top-left corner
         locator = new Point(0,0);
         seq = 0;
@@ -53,6 +51,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void setSeq(int seq) {
         this.seq = seq;
 
+    }
+
+    public GameBoard getBoard() {
+        return board;
     }
 
     @Override
@@ -143,7 +145,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             historicPoint.set((int)event.getX(), (int)event.getY());
         boolean foundTarget = false;
 
-        for(Panel panel : panels)
+        ArrayList<Panel> tempPanels = (ArrayList<Panel>) panels.clone();
+        for(Panel panel : tempPanels)
         {
             if(panel.contains(historicPoint) && !(historicPoint.x == 0 && historicPoint.y == 0))
             {
@@ -153,7 +156,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP)
+        {
             historicPoint.set(0, 0);
+        }
 
         if(!foundTarget) //If user didn't click in the bounds of an open panel, delegate it to the game board
         {

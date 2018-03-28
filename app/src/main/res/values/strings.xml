@@ -5,4 +5,51 @@
     <string name="test123">Test123</string>
     <string name="background_water_texture_for_the_string_open_map">background water texture for the @string/open_map</string>
     <string name="app_title">Battleship Reloaded</string>
+    <string name="large_text">
+        "\t\t\t\t\t\t\t\t\t\tBattleship Reloaded \n\n"
+
+        "Welcome to Battleshships Reloaded\n\n"
+
+        "\t\tEver played Battleships before? Well, this Battleship Reloaded is just as the same as it"
+        "sounds. Its \t\tcompletely Reloaded, with its own twists and turns!! So, buckle up for excitement!\n\n"
+
+        "\t\tBattleships Reloaded Game Method: \n\n"
+        "\t\tWith the new version of Battleships you can do some of the following stuff: \n\n"
+
+        "\t\tStarting the game, both the players of the game will have a choice of placing their ships on the"
+        "gameboard. \t\tEach player will be having 12 points in total in their account and each ships are"
+        "worth specific points. You \t\twill be able place any number of ships on the gameboard as long as"
+        "the sum of the points of the ships does \t\tnot exceed 12 points. You can always see how many"
+        "points are left in the score panel placed in the center \t\tbottom of the screen. To place the ships on "
+        "the gameboard screen you simply drag and drop the ships on \t\tthe gameboard panel at whatever"
+        "spot you want. You cannot place the ships anywhere beyond the red line \t\tthat will appear on the"
+        "Gameboard screen. After you are done placing ships you simply hit the “Done Placing \t\tShips”"
+        "button found on the bottom left corner screen below the ship images. The second player will"
+        "perform \t\tthe same task and place his ships on the Gameboard grid. The game will start as soon"
+        "as the second player \t\twill hit the Done Placing Ships button.\n\n "
+
+        "\tNow it’s time for some fun! Let’s have some! \n\n"
+
+        "\t\tTo play the game further you will have to strategies your game in such a way that the opposite "
+        "player will \t\thave a really hard time figuring out where you placed your ships. During the game, "
+        "you can perform many \t\ttasks such as moving the ships, rotating the ships, firing on the opponent"
+        "ships. The game will go on until one \t\tof the player’s all ships get totally destroyed. To destroy the "
+        "ships you will have to guess where the opponent \t\tships might be located. To Fire, you simply "
+        "have to click on the ship that you want to use to fire. On pointing \t\tout the ship, you can select the"
+        "co-ordinate and then simply hit the fire button. If the opponent has a ship \t\tplaced at the same "
+        "coordinate then Congratulations!! You successfully guessed the place for the opponents \t\tship"
+        "and you made damage to the ship that is hit. Now player two will have a choice of moving the "
+        "coordinate \t\tof the ships, rotate the ships, and also Firing back on the player 1 ships. After you "
+        "get done with your turn you \t\tjust hit the “End Turn” button. The game will continue till all of the "
+        "ships of the either player gets destroyed.\t\t Sounds fun right? \n\n"
+
+        "\t\tNow Each ship has its own firing and move ability. (Subject to change) \n\n"
+        "\t\tMoves: 	(Subject to change) \n"
+        "\t\tCruiser: 3 blocks per move\n"
+        "\t\tBattleships: 2 blocks per move\n"
+        "\t\tDestroyer: 2 blocks per move\n"
+        "\t\tAir-Craft Carrier: 1 block per move\n"
+        "\t\tSubmarine: 2 blocks per move\n"
+
+    </string>
 </resources>

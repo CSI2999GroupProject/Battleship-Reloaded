@@ -10,6 +10,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+
 /**
  * Created by isaac on 3/4/2018.
  */
@@ -24,11 +25,14 @@ public class HudPanel implements Panel {
     private Bitmap lastButtonPress;
     private Point lastMotion = new Point(0, 0);
 
+
     public HudPanel(Context context, GameBoard board) {
+        final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
+
         this.context = context;
         this.board = board;
 
-        hud = new Rect(0, 0, 1800, 230);
+        hud = new Rect(SCREEN_WIDTH/8, 0, SCREEN_WIDTH, 230);
         hudPaint = new Paint();
         hudPaint.setColor(Color.DKGRAY);
 
@@ -45,7 +49,7 @@ public class HudPanel implements Panel {
         canvas.drawRect(hud, hudPaint);
         canvas.drawBitmap(endTurn, endTurnBox.left, endTurnBox.top, null);
 
-        canvas.drawText(playerTurnText(), 200, 75, textStuff);
+        canvas.drawText(playerTurnText(), 600, 75, textStuff);
     }
 
     @Override
@@ -79,12 +83,21 @@ public class HudPanel implements Panel {
                     switch(board.getPlayerTurn()) {
                         case 0:
                             board.setPlayerTurn(1);
+                            board.setPoints(12);
+                            board.getP2().resetPMove();
+                            board.getP1().resetPMove();
+                            board.getMasterPoint().set(board.SCREEN_WIDTH * -1 + 384, 256);
                             break;
                         case 1:
                             board.setPlayerTurn(0);
+                            board.setPoints(12);
+                            board.getP1().resetPMove();
+                            board.getP2().resetPMove();
+                            board.getMasterPoint().set(0, 256);
                             break;
                     }
                 }
+                board.purgeOldPanels();
                 break;
         }
     }

@@ -1,6 +1,7 @@
 package sophomoreproject.battleship;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 
 import sophomoreproject.battleship.ships.Ship;
@@ -18,8 +19,8 @@ public class Player {
 
 
     public Player() {
-        playerSet = null;
-        availablePoints = 12; // the cost of 1 of every ship
+        playerSet = new HashSet<>();
+        availablePoints = 100; // the cost of 1 of every ship
     }
 
     public int getAvailablePoints() {
@@ -40,6 +41,16 @@ public class Player {
 
     public HashSet<Ship> getPlayerSet() {
         return playerSet;
+    }
+
+    public void resetPMove() {
+        System.out.println("Reset " + playerSet.size() + " ships in the set");
+
+        for(Ship ship : playerSet ) {
+
+            ship.setpmove(0);
+            ship.setpShots(0);
+        }
     }
 
 }
