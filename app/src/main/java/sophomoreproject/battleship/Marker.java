@@ -63,9 +63,6 @@ public class Marker implements Panel { // extends Ship {
             default:
                 break;
         }
-
-        //TEMPORARY CODE BEGINS HERE
-
     }
 
 
