@@ -24,10 +24,9 @@ public class ShipPanel implements Panel
     private Rect panel;                                             //The back panel of the selection screen
     private Rect[] buttonBoxes = new Rect[BUTTON_TOTAL];            //Rects representing the dimensions and positions of the buttons
     private Bitmap[] buttonImages = new Bitmap[BUTTON_TOTAL];       //The images of the buttons (must match buttonBoxes perfectly)
-    private Paint panelPaint = new Paint(), maxHealthPaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint();
+    private Paint panelPaint = new Paint(), blackPaint = new Paint(), bluePaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint();
     private int lastButtonClicked = -1;                             //Keeps track of what button the user pressed down on. If it's not the same as the button they let go over, don't do anything.
-
-    private Rect maxHealthDisp, healthDisp;
+    private Rect maxHealthDisp, healthDisp, maxMoveDisp, moveDisp;
 
     private Ship ship;
     private GamePanel gp;
@@ -50,15 +49,19 @@ public class ShipPanel implements Panel
         maxHealthDisp = new Rect(panel.width()/6, buttonBoxes[BUTTON_TOTAL-1].bottom + panel.width()/6, panel.width()*5/6, buttonBoxes[BUTTON_TOTAL-1].bottom + panel.width()*2/6);
         healthDisp = new Rect();
 
+        maxMoveDisp = new Rect(panel.width()/6, maxHealthDisp.bottom + panel.width()/6, panel.width()*5/6, maxHealthDisp.bottom + panel.width()*2/6);
+        moveDisp = new Rect();
+
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(panel.width()/12);
+        textPaint.setTextSize(panel.width()/10);
 
         buttonImages[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_left_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
 
         panelPaint.setColor(Color.GRAY);
-        maxHealthPaint.setColor(Color.BLACK);
+        blackPaint.setColor(Color.BLACK);
+        bluePaint.setColor(Color.BLUE);
     }
 
     @Override
@@ -67,9 +70,14 @@ public class ShipPanel implements Panel
         update();
 
         canvas.drawRect(panel, panelPaint);
-        canvas.drawRect(maxHealthDisp, maxHealthPaint);
+
+        canvas.drawRect(maxHealthDisp, blackPaint);
         canvas.drawRect(healthDisp, healthPaint);
-        canvas.drawText("Health: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.left, maxHealthDisp.bottom + panel.width()/12, textPaint);
+        canvas.drawText("HP: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.left, maxHealthDisp.bottom + panel.width()/10, textPaint);
+
+        canvas.drawRect(maxMoveDisp, blackPaint);
+        canvas.drawRect(moveDisp, bluePaint);
+        canvas.drawText("Moves: " + (ship.getnMove() - ship.getpmove()) + "/" + ship.getnMove(), maxMoveDisp.left, maxMoveDisp.bottom + panel.width()/10, textPaint);
 
         for(int i = 0; i < BUTTON_TOTAL; i++)
         {
@@ -81,15 +89,17 @@ public class ShipPanel implements Panel
     public void update()
     {
         double healthPercent = (double)ship.getHitpoints() / (double)ship.maxHealth;
+        double movePercent = (double)(ship.getnMove() - ship.getpmove()) / (double)ship.getnMove();
 
         if(healthPercent > .5)
             healthPaint.setColor(Color.argb(255, 0, 140, 0)); //Green
-        else if(healthPercent > .2)
+        else if(healthPercent > .25)
             healthPaint.setColor(Color.YELLOW);
         else
             healthPaint.setColor(Color.RED);
 
         healthDisp.set(maxHealthDisp.left, maxHealthDisp.top, maxHealthDisp.left + (int)(healthPercent*(maxHealthDisp.right - maxHealthDisp.left)), maxHealthDisp.bottom);
+        moveDisp.set(maxMoveDisp.left, maxMoveDisp.top, maxMoveDisp.left + (int)(movePercent*(maxMoveDisp.right - maxMoveDisp.left)), maxMoveDisp.bottom);
     }
 
     @Override

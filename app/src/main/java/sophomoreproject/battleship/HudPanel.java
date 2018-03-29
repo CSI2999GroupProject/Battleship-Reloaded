@@ -25,7 +25,6 @@ public class HudPanel implements Panel {
     private Bitmap lastButtonPress;
     private Point lastMotion = new Point(0, 0);
 
-
     public HudPanel(Context context, GameBoard board) {
         final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
 
