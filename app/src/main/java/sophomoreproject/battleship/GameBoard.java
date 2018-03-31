@@ -39,12 +39,13 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Point masterPoint;
     private Context context;
     private GamePanel gp;
-    private int playerTurn;
+    private int playerTurn = 0;
     private Player p1, p2;
     private TextView winningText = null;
     private Layout winningScreen = null;
     public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
     public final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
+    public final int VIEW_RANGE = 128*3;
 
 
     public GameBoard(Context context, GamePanel gp)
@@ -165,10 +166,8 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 public int getPoints(){
     if(playerTurn == 0) {
-        p1.getAvailablePoints() ;
         return  p1.getAvailablePoints();
     }else{
-        p2.getAvailablePoints();
         return p2.getAvailablePoints();
     }
 }
@@ -281,11 +280,9 @@ public void setPoints(int points){
 
         shipSet.remove(aShip);
 
-        if(playerTurn == 0) {
-            p1.getPlayerSet().remove(aShip);
-        } else {
-            p2.getPlayerSet().remove(aShip);
-        }
+        //We must remove it from both players' sets; Current player if they deleted their ship, and the opponent's if they just fired and sunk a ship.
+        p1.getPlayerSet().remove(aShip);
+        p2.getPlayerSet().remove(aShip);
 
         if (isHorizontal && direction)          //Facing East
         {
@@ -829,16 +826,14 @@ public void setPoints(int points){
      */
     public int xPosOfShip(Player player) {
         int xPos = 0;
-        Ship ship;
-        Iterator<Ship> shipIterator = player.getPlayerSet().iterator();
-        while(shipIterator.hasNext()) {
-            ship = player.getPlayerSet().iterator().next();
+        for(Ship ship : player.getPlayerSet()) {
             int shipX = ship.getColumnCoord();
             if(playerTurn == 0) {
                 if(shipX > xPos) {
                     xPos = shipX;
                 }
             } else if(playerTurn == 1) {
+                xPos = 24;
                 if(shipX < xPos) {
                     xPos = shipX;
                 }
@@ -947,9 +942,47 @@ public void setPoints(int points){
                     isScrolling = true;
                     masterPoint.set(masterPoint.x + (int) event.getX() - locator.x, masterPoint.y + (int) event.getY() - locator.y);
 
-                    final int MIN_GRID_SPACES = 5;
+                    if (masterPoint.y > 256)
+                        masterPoint.y = 256;
+                    else if (masterPoint.y < -128*16 + SCREEN_HEIGHT)
+                        masterPoint.y = -128*16 + SCREEN_HEIGHT;
+                    
+                    if(ready)
+                    {
+                        if(playerTurn == 0)
+                        {
+                            if (masterPoint.x > SCREEN_WIDTH)
+                                masterPoint.x = SCREEN_WIDTH;
+                            else if (masterPoint.x < -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH)
+                                masterPoint.x = -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH;
+                        }
+                        else
+                        {
+                            if (masterPoint.x > -128*xPosOfShip(p2) + VIEW_RANGE - 128)
+                                masterPoint.x = -128*xPosOfShip(p2) + VIEW_RANGE - 128;
+                            else if (masterPoint.x < -128*24)
+                                masterPoint.x = -128*24;
+                        }
+                    }
+                    else
+                    {
+                        if(playerTurn == 0)
+                        {
+                            if (masterPoint.x > SCREEN_WIDTH)
+                                masterPoint.x = SCREEN_WIDTH;
+                            else if (masterPoint.x < -128*12 + SCREEN_WIDTH)
+                                masterPoint.x = -128*12 + SCREEN_WIDTH;
+                        }
+                        else
+                        {
+                            if (masterPoint.x > -128*12 + SCREEN_WIDTH/4)
+                                masterPoint.x = -128*12 + SCREEN_WIDTH/4;
+                            else if (masterPoint.x < -128*24)
+                                masterPoint.x = -128*24;
+                        }
+                    }
 
-
+                    /*
                     //Will not let the user scroll anymore if there are only MIN_GRID_SPACES left on the screen.
                     if (masterPoint.x > SCREEN_WIDTH - 128 * MIN_GRID_SPACES)
                         masterPoint.x = SCREEN_WIDTH - 128 * MIN_GRID_SPACES;
@@ -959,6 +992,7 @@ public void setPoints(int points){
                         masterPoint.y = SCREEN_HEIGHT - 128 * MIN_GRID_SPACES;
                     else if (masterPoint.y < -128 * (16 - MIN_GRID_SPACES))
                         masterPoint.y = -128 * (16 - MIN_GRID_SPACES);
+                    */
 
                     //update the locator to the current position of the finger
                     locator.set((int) event.getX(), (int) event.getY());
@@ -1035,11 +1069,12 @@ public void setPoints(int points){
      * to determine if the player still has any ships left
      */
     public boolean hasShips(HashSet<Ship> PlayerShips) {
-        if (PlayerShips.isEmpty()) {
+        if (PlayerShips.isEmpty())
+        {
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
       
     /**
@@ -1047,13 +1082,11 @@ public void setPoints(int points){
      * out of ships
      */
     public void endGame(Player player1, Player player2) {
-        if(hasShips(player1.getPlayerSet())==false || hasShips(player2.getPlayerSet())==false) {
-            if (hasShips(player1.getPlayerSet()) == false) {
-                setWinText(player2);
-            }
-            if (hasShips(player2.getPlayerSet()) == false) {
-                setWinText(player1);
-            }
+        if (!hasShips(player1.getPlayerSet())) {
+            setWinText(player2);
+        }
+        if (!hasShips(player2.getPlayerSet())) {
+            setWinText(player1);
         }
     }
 
