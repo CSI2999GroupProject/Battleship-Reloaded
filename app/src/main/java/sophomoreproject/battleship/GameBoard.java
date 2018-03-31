@@ -825,16 +825,18 @@ public int getPoints(){
      * @return xPos, the rightmost x position of p1's ships OR the leftmost x position of p2's ships.
      */
     public int xPosOfShip(Player player) {
-        int xPos = 0;
+        int xPos = playerTurn*24; //Will make it so that the first player's default is at 0, and player 2's default is at 24.
         for(Ship ship : player.getPlayerSet()) {
             int shipX = ship.getColumnCoord();
             if(playerTurn == 0) {
                 if(shipX > xPos) {
                     xPos = shipX;
                 }
-            } else if(playerTurn == 1) {
-                xPos = 24;
-                if(shipX < xPos) {
+            }
+            else
+            {
+                if(shipX < xPos)
+                {
                     xPos = shipX;
                 }
             }
