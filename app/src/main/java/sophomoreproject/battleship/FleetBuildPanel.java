@@ -339,7 +339,6 @@ public class FleetBuildPanel implements Panel
                             ship.setDirection(direction);
                             ship.applyRotate();
                             board.addShipWithCost(ship, row, column);
-                            System.out.println("Added an aircraft carrier at (" + row + ", " + column + ")");
                             break;
                         case "Battleship":
                             ship = new Battleship(context, row, column);
@@ -347,7 +346,6 @@ public class FleetBuildPanel implements Panel
                             ship.setDirection(direction);
                             ship.applyRotate();
                             board.addShipWithCost(ship, row, column);
-                            System.out.println("Added a battleship at (" + row + ", " + column + ")");
                             break;
                         case "cruiser":
                             ship = new Cruiser(context, row, column);
@@ -355,7 +353,6 @@ public class FleetBuildPanel implements Panel
                             ship.setDirection(direction);
                             ship.applyRotate();
                             board.addShipWithCost(ship, row, column);
-                            System.out.println("Added a cruiser at (" + row + ", " + column + ")");
                             break;
                         case "destroyer":
                             ship = new Destroyer(context, row, column);
@@ -363,7 +360,6 @@ public class FleetBuildPanel implements Panel
                             ship.setDirection(direction);
                             ship.applyRotate();
                             board.addShipWithCost(ship, row, column);
-                            System.out.println("Added a destroyer at (" + row + ", " + column + ")");
                             break;
                         case "submarine":
                             ship = new Submarine(context, row, column);
@@ -371,7 +367,6 @@ public class FleetBuildPanel implements Panel
                             ship.setDirection(direction);
                             ship.applyRotate();
                             board.addShipWithCost(ship, row, column);
-                            System.out.println("Added a submarine at (" + row + ", " + column + ")");
                             break;
                     }
                 }
@@ -380,12 +375,7 @@ public class FleetBuildPanel implements Panel
                     System.out.println("Failed to place a ship at (" + row + ", " + column + ") because: " + e.getMessage());
                 }
 
-
-
-
-
                 selectedShip = "";
-
         }
     }
 }
