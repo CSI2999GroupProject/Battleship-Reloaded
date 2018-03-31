@@ -10,6 +10,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import java.util.HashSet;
+
 
 /**
  * Created by isaac on 3/4/2018.
@@ -19,11 +21,13 @@ public class HudPanel implements Panel {
 
     private Context context;
     private GameBoard board;
+    private Player player;
     private Rect hud, endTurnBox;
     private Paint hudPaint, textStuff;
     private Bitmap endTurn;
     private Bitmap lastButtonPress;
     private Point lastMotion = new Point(0, 0);
+    private boolean win = false;
 
     public HudPanel(Context context, GameBoard board) {
         final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
@@ -69,33 +73,32 @@ public class HudPanel implements Panel {
 
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
                 if(endTurnBox.contains(x, y)) {
                     lastButtonPress = endTurn;
                 }
 
-                break;
+            break;
 
             case MotionEvent.ACTION_UP:
 
                 if(lastButtonPress == endTurn && endTurnBox.contains(x, y)) {
-                    switch(board.getPlayerTurn()) {
-                        case 0:
-                            board.setPlayerTurn(1);
-                            board.setPoints(12);
-                            board.getP2().resetPMove();
-                            board.getP1().resetPMove();
-                            board.getMasterPoint().set(board.SCREEN_WIDTH * -1 + 384, 256);
-                            break;
-                        case 1:
-                            board.setPlayerTurn(0);
-                            board.setPoints(12);
-                            board.getP1().resetPMove();
-                            board.getP2().resetPMove();
-                            board.getMasterPoint().set(0, 256);
-                            break;
+                        switch (board.getPlayerTurn()) {
+                            case 0:
+                                board.setPlayerTurn(1);
+                                board.setPoints(12);
+                                board.getP2().resetPMove();
+                                board.getP1().resetPMove();
+                                board.getMasterPoint().set(board.SCREEN_WIDTH * -1 + 384, 256);
+                                break;
+                            case 1:
+                                board.setPlayerTurn(0);
+                                board.setPoints(12);
+                                board.getP1().resetPMove();
+                                board.getP2().resetPMove();
+                                board.getMasterPoint().set(0, 256);
+                                break;
+                        }
                     }
-                }
                 board.purgeOldPanels();
                 break;
         }
@@ -103,11 +106,13 @@ public class HudPanel implements Panel {
 
     public String playerTurnText() {
         String str = "";
-        if(board.getPlayerTurn() == 0) {
-            str = "It's Player 1's turn";
-        } else {
-            str = "It's Player 2's turn";
-        }
-        return str;
+            if (board.getPlayerTurn() == 0) {
+                str = "It's Player 1's turn";
+            } else {
+                str = "It's Player 2's turn";
+            }
+            return str;
+
     }
+
 }

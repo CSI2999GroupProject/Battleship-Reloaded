@@ -1,7 +1,6 @@
 package sophomoreproject.battleship;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 
 import sophomoreproject.battleship.ships.Ship;
@@ -40,6 +39,7 @@ public class Player {
     }
 
     public HashSet<Ship> getPlayerSet() {
+        System.out.println(playerSet);
         return playerSet;
     }
 
@@ -53,4 +53,26 @@ public class Player {
         }
     }
 
+    public int endgame() {
+    int i=1;
+        for(Ship ship : playerSet) {
+            if(ship.getHitpoints()<=0)  {
+                i=0;
+            }else{
+                System.out.println("does i =1");
+                i=1;
+                break;
+
+            }
+        }
+        if(i==0) {
+            System.out.println("Fuck you");
+            return 0;
+
+        }else{
+            return 1;
+        }
+
+    }
 }
+
