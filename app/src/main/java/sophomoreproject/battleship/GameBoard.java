@@ -164,21 +164,22 @@ public class GameBoard implements GameBoardInterface, Panel {
                 p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
         }
     }
+  
 public int getPoints(){
     if(playerTurn == 0) {
         return  p1.getAvailablePoints();
     }else{
         return p2.getAvailablePoints();
-    }
-}
-public void setPoints(int points){
-    if(playerTurn == 0) {
-        p1.setAvailablePoints(points);
 
-    }else{
-        p2.setAvailablePoints(points);
     }
-}
+    public void setPoints(int points){
+        if(playerTurn == 0) {
+            p1.setAvailablePoints(points);
+
+        }else{
+            p2.setAvailablePoints(points);
+        }
+    }
     /**
      * A method that runs identically to the removeShip method, except it refunds points to the player.
      * Intended to be used only when removing ships when first creating a fleet using FleetBuildPanel.
@@ -416,7 +417,6 @@ public void setPoints(int points){
 
         /*for(int i = 0; i <= fireRange; i++) {
             for(int j = 0; j <= fireRange; j++) {
-
                 pointBottomRight = new Point(xPos + i, yPos + j);
                 if(pointBottomRight.y <= 15 && pointBottomRight.y >= 0 && pointBottomRight.x >= 0 && pointBottomRight.x <= 23) {
                     coordinateList.add(pointBottomRight);
@@ -671,9 +671,9 @@ public void setPoints(int points){
 
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
-      
+
         removeShip(aShip);
-      
+
         if (isHorizontal && direction)                //Facing West or East
         {
             aShip.setHorizontal(false);
@@ -891,7 +891,7 @@ public void setPoints(int points){
 
     public boolean contains(Point point)
     {
-      return waterBox.contains(point.x, point.y);
+        return waterBox.contains(point.x, point.y);
     }
 
     /**
@@ -1038,9 +1038,13 @@ public void setPoints(int points){
         Ship AttackedShip=board[y][x];
         //removeShip(AttackedShip);
         AttackedShip.applyDamage(Hits);
-       // RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
+        // RaddShip(AttackedShip,AttackedShip.getColumnCoord(),AttackedShip.getRowCoord());
         if(AttackedShip.getHitpoints()<=0){
-           removeShip(AttackedShip);
+            //Doesn't appear to be removing Destroyed ships, when printing the HasSet to the Console
+            removeShip(AttackedShip);
+            int one=p1.endgame();
+                int two=p2.endgame();
+                endGame(one,two);
         }
     }
 
@@ -1081,26 +1085,29 @@ public void setPoints(int points){
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
      */
-    public void endGame(Player player1, Player player2) {
+
+    public void endGame(int pl1,int pl2) {
+        if(pl1==0){
+            System.out.println("Player 2 wins");
+
+            System.out.print("YO");
+        }else if(pl2==0){
+            System.out.println("Player 1 wins");
+          
+    /*public void endGame(Player player1, Player player2) {
         if (!hasShips(player1.getPlayerSet())) {
             setWinText(player2);
         }
         if (!hasShips(player2.getPlayerSet())) {
             setWinText(player1);
         }
-    }
+    }*/
 
-    // * Use this method to display the text for who won the game
-    public void setWinText(Player player){
-        if(player == p1){
-            winningText.setText("Player 1 Wins!");
+            System.out.println("YO");
         }else{
-            winningText.setText("Player 2 Wins!");
+
         }
+
     }
 
-
-    public TextView getWinText(){
-        return winningText;
-    }
 }

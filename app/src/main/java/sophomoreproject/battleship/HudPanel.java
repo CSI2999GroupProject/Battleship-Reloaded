@@ -10,6 +10,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import java.util.HashSet;
+
 
 /**
  * Created by isaac on 3/4/2018.
@@ -19,11 +21,13 @@ public class HudPanel implements Panel {
     
     private Context context;
     private GameBoard board;
+    private Player player;
     private Rect hud, endTurnBox, playerPoints, maxPlayerPoints;
     private Paint hudPaint, textStuff, blackPaint, barPaint, pointsText;
     private Bitmap endTurn;
     private Bitmap lastButtonPress;
     private Point lastMotion = new Point(0, 0);
+    private boolean win = false;
 
     public HudPanel(Context context, GameBoard board) {
         final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
@@ -82,12 +86,11 @@ public class HudPanel implements Panel {
 
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
                 if(endTurnBox.contains(x, y)) {
                     lastButtonPress = endTurn;
                 }
 
-                break;
+            break;
 
             case MotionEvent.ACTION_UP:
 
@@ -108,7 +111,6 @@ public class HudPanel implements Panel {
                             board.getMasterPoint().x = -128*board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
                             break;
                     }
-                }
                 board.purgeOldPanels();
                 break;
         }
@@ -116,12 +118,13 @@ public class HudPanel implements Panel {
 
     public String playerTurnText() {
         String str = "";
-        if(board.getPlayerTurn() == 0) {
-            str = "It's Player 1's turn";
-        } else {
-            str = "It's Player 2's turn";
-        }
-        return str;
+            if (board.getPlayerTurn() == 0) {
+                str = "It's Player 1's turn";
+            } else {
+                str = "It's Player 2's turn";
+            }
+            return str;
+
     }
 
     public String playerPointText() {
