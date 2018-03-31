@@ -63,9 +63,6 @@ public class Marker implements Panel { // extends Ship {
             default:
                 break;
         }
-
-        //TEMPORARY CODE BEGINS HERE
-
     }
 
 
@@ -105,9 +102,11 @@ public class Marker implements Panel { // extends Ship {
                 break;
             case 1:     //Move
 
-                if(cost<=originalShip.getnMove()-originalShip.getpmove()) {
+                if(cost <= originalShip.getnMove() - originalShip.getpmove()) {
+                    if(originalShip.getpmove() == 0) //Only charge player points if they moved the ship for the first time.
+                        gb.setPoints(gb.getPoints()-1);
+
                     originalShip.setpmove(originalShip.getpmove() + cost);
-                    gb.setPoints(gb.getPoints()-1);
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
 
                 }

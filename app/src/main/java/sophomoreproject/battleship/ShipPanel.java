@@ -24,7 +24,7 @@ public class ShipPanel implements Panel
     private Rect panel;                                             //The back panel of the selection screen
     private Rect[] buttonBoxes = new Rect[BUTTON_TOTAL];            //Rects representing the dimensions and positions of the buttons
     private Bitmap[] buttonImages = new Bitmap[BUTTON_TOTAL];       //The images of the buttons (must match buttonBoxes perfectly)
-    private Paint panelPaint = new Paint(), blackPaint = new Paint(), bluePaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint();
+    private Paint panelPaint = new Paint(), blackPaint = new Paint(), bluePaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint(), redTextPaint;
     private int lastButtonClicked = -1;                             //Keeps track of what button the user pressed down on. If it's not the same as the button they let go over, don't do anything.
     private Rect maxHealthDisp, healthDisp, maxMoveDisp, moveDisp;
 
@@ -52,8 +52,12 @@ public class ShipPanel implements Panel
         maxMoveDisp = new Rect(panel.width()/6, maxHealthDisp.bottom + panel.width()/6, panel.width()*5/6, maxHealthDisp.bottom + panel.width()*2/6);
         moveDisp = new Rect();
 
-        textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(panel.width()/10);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(maxHealthDisp.height()*2/3);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+
+        redTextPaint = new Paint(textPaint);
+        redTextPaint.setColor(Color.RED);
 
         buttonImages[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
@@ -62,27 +66,36 @@ public class ShipPanel implements Panel
         panelPaint.setColor(Color.GRAY);
         blackPaint.setColor(Color.BLACK);
         bluePaint.setColor(Color.BLUE);
+
+        update();
     }
 
     @Override
     public void draw(Canvas canvas)
     {
-        update();
-
         canvas.drawRect(panel, panelPaint);
 
         canvas.drawRect(maxHealthDisp, blackPaint);
         canvas.drawRect(healthDisp, healthPaint);
-        canvas.drawText("HP: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.left, maxHealthDisp.bottom + panel.width()/10, textPaint);
+        canvas.drawText("HP: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.centerX(), (maxHealthDisp.centerY() + maxHealthDisp.bottom)/2, textPaint);
 
         canvas.drawRect(maxMoveDisp, blackPaint);
         canvas.drawRect(moveDisp, bluePaint);
-        canvas.drawText("Moves: " + (ship.getnMove() - ship.getpmove()) + "/" + ship.getnMove(), maxMoveDisp.left, maxMoveDisp.bottom + panel.width()/10, textPaint);
+        canvas.drawText("Moves: " + (ship.getnMove() - ship.getpmove()) + "/" + ship.getnMove(), maxMoveDisp.centerX(), (maxMoveDisp.centerY() + maxMoveDisp.bottom)/2, textPaint);
 
-        for(int i = 0; i < BUTTON_TOTAL; i++)
+        if(ship.getpShots() < ship.getnShots() && !gp.getBoard().possibleFireLoc(ship).isEmpty()) //Player hasn't run out of fires, and has a target in range
+            canvas.drawBitmap(buttonImages[0], buttonBoxes[0].left, buttonBoxes[0].top, null);
+
+        if(ship.getpmove() < ship.getnMove() && !gp.getBoard().possibleMoveLoc(ship).isEmpty())
         {
-            canvas.drawBitmap(buttonImages[i], buttonBoxes[i].left, buttonBoxes[i].top, null);
+            canvas.drawBitmap(buttonImages[1], buttonBoxes[1].left, buttonBoxes[1].top, null); //Player hasn't run out of moves and has at least 1 valid location
         }
+
+        if(ship.getpmove() == 0 && (gp.getBoard().checkRotate(ship)[0] != null || gp.getBoard().checkRotate(ship)[1] != null) ) //Player hasn't moved yet and can turn in at least 1 direction
+        {
+            canvas.drawBitmap(buttonImages[2], buttonBoxes[2].left, buttonBoxes[2].top, null);
+        }
+
     }
 
     @Override
