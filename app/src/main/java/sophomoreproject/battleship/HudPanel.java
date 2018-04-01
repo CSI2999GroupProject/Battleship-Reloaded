@@ -95,24 +95,25 @@ public class HudPanel implements Panel {
             case MotionEvent.ACTION_UP:
 
                 if(lastButtonPress == endTurn && endTurnBox.contains(x, y)) {
-                    switch(board.getPlayerTurn()) {
+                    switch (board.getPlayerTurn()) {
                         case 0:
                             board.setPlayerTurn(1);
                             board.setPoints(Player.POINTS_PER_TURN);
                             board.getP2().resetPMove();
                             board.getP1().resetPMove();
-                            board.getMasterPoint().x = -128*board.xPosOfShip(board.getP2()) + board.VIEW_RANGE - 128;
+                            board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP2()) + board.VIEW_RANGE - 128;
                             break;
                         case 1:
                             board.setPlayerTurn(0);
                             board.setPoints(Player.POINTS_PER_TURN);
                             board.getP1().resetPMove();
                             board.getP2().resetPMove();
-                            board.getMasterPoint().x = -128*board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
+                            board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
                             break;
                     }
-                board.purgeOldPanels();
-                break;
+                    board.purgeOldPanels();
+                    break;
+                }
         }
     }
 

@@ -165,13 +165,14 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
   
-public int getPoints(){
-    if(playerTurn == 0) {
-        return  p1.getAvailablePoints();
-    }else{
-        return p2.getAvailablePoints();
-
+public int getPoints() {
+    if (playerTurn == 0) {
+            return p1.getAvailablePoints();
+        } else {
+            return p2.getAvailablePoints();
+        }
     }
+
     public void setPoints(int points){
         if(playerTurn == 0) {
             p1.setAvailablePoints(points);
