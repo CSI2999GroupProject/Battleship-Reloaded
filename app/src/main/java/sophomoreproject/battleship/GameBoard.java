@@ -164,13 +164,14 @@ public class GameBoard implements GameBoardInterface, Panel {
                 p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
         }
     }
-  
-public int getPoints(){
-    if(playerTurn == 0) {
-        return  p1.getAvailablePoints();
-    }else{
-        return p2.getAvailablePoints();
-
+    public int getPoints(){
+        if(playerTurn == 0) {
+            p1.getAvailablePoints() ;
+            return  p1.getAvailablePoints();
+        }else{
+            p2.getAvailablePoints();
+            return p2.getAvailablePoints();
+        }
     }
     public void setPoints(int points){
         if(playerTurn == 0) {
@@ -946,7 +947,7 @@ public int getPoints(){
                         masterPoint.y = 256;
                     else if (masterPoint.y < -128*16 + SCREEN_HEIGHT)
                         masterPoint.y = -128*16 + SCREEN_HEIGHT;
-                    
+
                     if(ready)
                     {
                         if(playerTurn == 0)
@@ -1047,40 +1048,6 @@ public int getPoints(){
                 endGame(one,two);
         }
     }
-
-    /**
-     * Use this method to calculate the number of ships lost in order to determine if the player
-     * lost
-     *
-     * @param PlayerShips the number of ships from shipSet that you lost
-     */
-    public boolean hasLost(HashSet<Ship> PlayerShips) {
-        return PlayerShips.isEmpty();
-    }
-      
-    /**
-     * Use this method to calculate the number of the opponent's ships the player destroyed in
-     * order to determine if the player win
-     *
-     * @param OpponentsShips the number of ships from shipSet that you destroyed
-     */
-    public boolean hasWon(HashSet<Ship> OpponentsShips) {
-        return OpponentsShips.isEmpty();
-    }
-      
-    /**
-     * Use this method to calculate the number ships that the player still has in order
-     * to determine if the player still has any ships left
-     */
-    public boolean hasShips(HashSet<Ship> PlayerShips) {
-        if (PlayerShips.isEmpty())
-        {
-            return false;
-        }
-
-        return true;
-    }
-      
     /**
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
@@ -1089,23 +1056,12 @@ public int getPoints(){
     public void endGame(int pl1,int pl2) {
         if(pl1==0){
             System.out.println("Player 2 wins");
-
+            //display the winning screen
             System.out.print("YO");
-        }else if(pl2==0){
+        }else if(pl2==0) {
             System.out.println("Player 1 wins");
-          
-    /*public void endGame(Player player1, Player player2) {
-        if (!hasShips(player1.getPlayerSet())) {
-            setWinText(player2);
-        }
-        if (!hasShips(player2.getPlayerSet())) {
-            setWinText(player1);
-        }
-    }*/
-
+            //display the winning screen
             System.out.println("YO");
-        }else{
-
         }
 
     }
