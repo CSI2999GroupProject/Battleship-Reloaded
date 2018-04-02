@@ -9,8 +9,6 @@
         android:layout_height="wrap_content"
         android:text=""
         />
-    />
-
     <ImageView
         android:id="@+id/winScreen"
         android:layout_width="1000dp"
@@ -20,14 +18,12 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
-
     <ImageView
-        android:id="@+id/p1_wins_text"
+        android:id="@+id/p2_win_texts"
         android:layout_width="435dp"
         android:layout_height="95dp"
-        android:src="@drawable/p1_wins_text"
+        android:src="@drawable/p2_win_text"
         tools:layout_editor_absoluteX="280dp"
         tools:layout_editor_absoluteY="340dp"
-        tools:ignore="MissingConstraints"
-        />
+        tools:ignore="MissingConstraints" />
 </android.support.constraint.ConstraintLayout>
