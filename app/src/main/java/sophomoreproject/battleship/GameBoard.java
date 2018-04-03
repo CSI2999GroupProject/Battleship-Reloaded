@@ -1024,10 +1024,16 @@ public int getPoints(){
     public void Fire( int Hits,int x,int y){
         Ship AttackedShip=board[y][x];
         AttackedShip.applyDamage(Hits);
+        sunkenship(AttackedShip);
+    }
+
+    private void sunkenship(Ship AttackedShip) {
         if(AttackedShip.getHitpoints()<=0){
-           removeShip(AttackedShip);
+            removeShip(AttackedShip);
         }
     }
+
+
 
 
 
