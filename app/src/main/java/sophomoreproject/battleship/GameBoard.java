@@ -1,20 +1,20 @@
 package sophomoreproject.battleship;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.app.Activity;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.Bundle;
 import android.text.Layout;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.w3c.dom.Text;
-import android.view.View;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +26,7 @@ import sophomoreproject.battleship.ships.Ship;
  * Created by isaac on 1/31/2018.
  */
 public class GameBoard implements GameBoardInterface, Panel {
+
     private Ship[][] board;
     private int boardRows;
     private int boardColumns;
@@ -42,10 +43,13 @@ public class GameBoard implements GameBoardInterface, Panel {
     private GamePanel gp;
     private int playerTurn = 0;
     private Player p1, p2;
-    private WinBoard winBoard;
+    private TextView winningText = null;
+    private Layout winningScreen = null;
     public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
     public final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
     public final int VIEW_RANGE = 128*3;
+
+
     public GameBoard(Context context, GamePanel gp)
     {
         this.context = context;
@@ -858,8 +862,8 @@ public class GameBoard implements GameBoardInterface, Panel {
     }
 
     /**
-     * A method to
-     * the map and its contents onto the screen during a cycle of the game loop
+     * A method to draw the map and its contents onto the screen during a cycle of the game loop
+     *
      * @param canvas the main canvas of the game
      */
     public void draw(Canvas canvas) {
@@ -868,8 +872,8 @@ public class GameBoard implements GameBoardInterface, Panel {
         for (Ship ship : shipSet) {
             ship.draw(canvas);
         }
-
     }
+
     @Override
     public void update() {
 
@@ -1042,23 +1046,37 @@ public class GameBoard implements GameBoardInterface, Panel {
             //Doesn't appear to be removing Destroyed ships, when printing the HasSet to the Console
             removeShip(AttackedShip);
             int one=p1.endgame();
-                int two=p2.endgame();
-                endGame(one,two);
+            int two=p2.endgame();
+            endGame(one,two);
         }
     }
     /**
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
      */
-    public void endGame(int pl1,int pl2) {
-        if(pl1==0){
-            System.out.println("Player 2 wins");
 
+    public void endGame(int pl1,int pl2) {
+        Intent intent = new Intent(context, WinScreen.class);
+        if(pl1==0){
+
+            System.out.println("Player 2 wins");
+            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_LONG).show();
+            context.startActivity(intent);
+
+            //display the winning screen
             System.out.print("YO");
         }else if(pl2==0) {
             System.out.println("Player 1 wins");
+            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_SHORT).show();
+            context.startActivity(intent);
 
+            System.out.println("Player 1 wins");
+            //display the winning screen
             System.out.println("YO");
+        }else{
+
         }
+
     }
+
 }
