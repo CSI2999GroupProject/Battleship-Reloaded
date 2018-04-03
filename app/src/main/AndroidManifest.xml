@@ -21,6 +21,7 @@
         <activity android:name=".Debug"
             android:screenOrientation="landscape">></activity>
         <activity android:name=".TutorialActivity"></activity>
+        <activity android:name=".WinScreen" />
     </application>
 
 </manifest>
