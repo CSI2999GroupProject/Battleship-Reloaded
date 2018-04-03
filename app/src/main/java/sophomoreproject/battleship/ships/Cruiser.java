@@ -10,7 +10,7 @@ import sophomoreproject.battleship.R;
  * Created by isaac on 1/31/2018.
  */
 
-public class Cruiser extends Ship implements ShipInterface{
+public class Cruiser extends Ship{
     public Cruiser(Context context, int row, int column) {
         super(context, row, column);
         setName("cruiser");
@@ -31,8 +31,4 @@ public class Cruiser extends Ship implements ShipInterface{
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.cruiser), 128*getShipSize(), 128, false);
     }
 
-    @Override
-    public void ability() {
-
-    }
 }

@@ -25,6 +25,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private static final int DEFAULT_ROWS = 16;
     private static final int DEFAULT_COLUMNS = 24;
     private HashSet<Ship> shipSet;
+    private HashSet<Point> mineSet;
     private Rect waterBox;
     private Drawable waterImage;
     private boolean isScrolling = false;
@@ -47,6 +48,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
         shipSet = new HashSet<>();
+        mineSet = new HashSet<>();
         masterPoint = new Point(0, 0);
         waterBox = new Rect();
         waterBox.set(0, 0, 128*24, 128*16);
@@ -109,6 +111,11 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void setPlayerTurn(int playerTurn) { this.playerTurn = playerTurn; }
 
+    public Ship[][] getShipBoard() {
+        return board;
+    }
+
+    public HashSet<Point> getMineSet() { return mineSet; }
 
     /**
      * A method that runs identically to the addShip method, but costs points to place.
@@ -552,18 +559,38 @@ public void setPoints(int points){
         if (isHorizontal && direction)          //Facing East
         {
             RaddShip(aShip, xPos + pmove, yPos);
+            for(Point p : mineSet) {
+                if(xPos + pmove == p.x && yPos == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
         else if (isHorizontal)                  //West
         {
             RaddShip(aShip, xPos - pmove, yPos);
+            for(Point p : mineSet) {
+                if(xPos - pmove == p.x && yPos == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
         else if (direction)                     //North
         {
             RaddShip(aShip, xPos, yPos - pmove);
+            for(Point p : mineSet) {
+                if(xPos == p.x && yPos - pmove == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
         else                                    //South
         {
             RaddShip(aShip, xPos, yPos + pmove);
+            for(Point p : mineSet) {
+                if(xPos == p.x && yPos + pmove == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
     }
 

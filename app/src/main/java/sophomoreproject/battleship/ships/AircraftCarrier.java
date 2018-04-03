@@ -11,7 +11,7 @@ import sophomoreproject.battleship.R;
  * Created by isaac on 1/31/2018.
  */
 
-public class AircraftCarrier extends Ship implements ShipInterface{
+public class AircraftCarrier extends Ship{
 
     public AircraftCarrier(Context context, int row, int column)
     {
@@ -32,10 +32,5 @@ public class AircraftCarrier extends Ship implements ShipInterface{
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.aircraftcarrier), 128*getShipSize(), 128, false);
     }
 
-    @Override
-    public void ability()
-    {
-
-    }
 
 }

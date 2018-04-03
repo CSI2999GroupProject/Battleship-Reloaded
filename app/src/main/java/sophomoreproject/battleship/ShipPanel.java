@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import sophomoreproject.battleship.ships.Ship;
 
@@ -31,11 +32,15 @@ public class ShipPanel implements Panel
 
     private Ship ship;
     private GamePanel gp;
+    private GameBoard gb;
+    private Ship[][] board;
 
     public ShipPanel(Context context, Ship ship, GamePanel gp)
     {
         this.ship = ship;
         this.gp = gp;
+        gb = gp.getBoard();
+        board = gb.getShipBoard();
 
         final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
         final int SCREEN_HEIGHT = context.getResources().getSystem().getDisplayMetrics().heightPixels;
@@ -62,13 +67,13 @@ public class ShipPanel implements Panel
                 buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.mine_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "Aircraft Carrier":
-                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_x2), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "submarine":
                 buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.torpedo_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "Battleship":
-                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_x1), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
                 break;
             case "destroyer":
                 buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_2x2), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
@@ -198,34 +203,80 @@ public class ShipPanel implements Panel
                                 }
                                 break;
                             case 3: //Ship ability button
+                                int shipSize = ship.getShipSize();
+                                int x = ship.getColumnCoord();
+                                int y = ship.getRowCoord();
+                                boolean isHorizontal = ship.getHorizontal();
+                                boolean direction = ship.getDirection();
+
                                 switch(ship.getName()) {
-                                    case "cruiser":
+                                    case "cruiser": //places a mine behind the cruiser
+                                        HashSet<Point> mines = gb.getMineSet();
+                                        if(isHorizontal) {
+                                            if(direction) { //east
+                                                mines.add(new Point(x - shipSize, y));
+                                                int a= x-shipSize;
+                                                System.out.println("mine placed at ("+a+", "+y+")");
+                                            } else { //west
+                                                mines.add(new Point(x + shipSize, y));
+                                            }
+                                        } else {
+                                            if(direction) { //north
+                                                mines.add(new Point(x, y + shipSize));
+                                            } else { //south
+                                                mines.add(new Point(x, y - shipSize));
+                                            }
+                                        }
+
                                         break;
                                     case "Aircraft Carrier":
                                         break;
-                                    case "submarine":
-                                        int x = ship.getColumnCoord();
-                                        int y = ship.getRowCoord();
-                                        boolean isHorizontal = ship.getHorizontal();
-                                        boolean direction = ship.getDirection();
+                                    case "submarine": //fires torpedo across the board depending on the direction the ship is
+                                        Ship ship;
                                         if(isHorizontal) {
                                             if(direction) { //east
+                                                x++;
                                                 while(x < 24) {
+                                                    if(board[y][x] != null) {
 
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                        System.out.println("ship found at x: " + x + " y: " + y + " name: " + ship.getName());
+                                                        break;
+                                                    } else {
+                                                        System.out.println("no ship found");
+                                                    }
+                                                    System.out.println("incrementing x");
+                                                    x++;
                                                 }
                                             } else { //west
+                                                x--;
                                                 while(x >= 0) {
-
+                                                    if(board[y][x] != null) {
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                    }
+                                                    x--;
                                                 }
                                             }
                                         } else {
                                             if(direction) { //north
+                                                y--;
                                                 while(y >= 0) {
-
+                                                    if(board[y][x] != null) {
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                    }
+                                                    y--;
                                                 }
                                             } else { //south
+                                                y++;
                                                 while(y < 16) {
-
+                                                    if(board[y][x] != null) {
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                    }
+                                                    y++;
                                                 }
                                             }
                                         }
