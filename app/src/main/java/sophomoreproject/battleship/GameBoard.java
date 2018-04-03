@@ -31,6 +31,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private static final int DEFAULT_ROWS = 16;
     private static final int DEFAULT_COLUMNS = 24;
     private HashSet<Ship> shipSet;
+    private HashSet<Point> mineSet;
     private Rect waterBox;
     private Drawable waterImage;
     private boolean isScrolling = false;
@@ -39,11 +40,11 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Point masterPoint;
     private Context context;
     private GamePanel gp;
-    private int playerTurn = 0;
+    private int playerTurn;
     private Player p1, p2;
     private TextView winningText = null;
     private Layout winningScreen = null;
-    public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels; //width of the screen, not board
     public final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
     public final int VIEW_RANGE = 128*3;
 
@@ -56,6 +57,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         boardColumns = DEFAULT_COLUMNS;
         board = new Ship[boardRows][boardColumns];
         shipSet = new HashSet<>();
+        mineSet = new HashSet<>();
         masterPoint = new Point(0, 0);
         waterBox = new Rect();
         waterBox.set(0, 0, 128 * 24, 128 * 16);
@@ -113,14 +115,15 @@ public class GameBoard implements GameBoardInterface, Panel {
         this.ready = ready;
     }
 
-    public int getPlayerTurn() {
-        return playerTurn;
+    public int getPlayerTurn() { return playerTurn; }
+
+    public void setPlayerTurn(int playerTurn) { this.playerTurn = playerTurn; }
+
+    public Ship[][] getShipBoard() {
+        return board;
     }
 
-    public void setPlayerTurn(int playerTurn) {
-        this.playerTurn = playerTurn;
-    }
-
+    public HashSet<Point> getMineSet() { return mineSet; }
 
     /**
      * A method that runs identically to the addShip method, but costs points to place.
@@ -164,7 +167,7 @@ public class GameBoard implements GameBoardInterface, Panel {
                 p2.setAvailablePoints(p2.getAvailablePoints() + aShip.getShipCost());
         }
     }
-  
+
 public int getPoints() {
     if (playerTurn == 0) {
             return p1.getAvailablePoints();
@@ -198,11 +201,11 @@ public int getPoints() {
     /**
      * A method to add a cruiser to the board. If the shipSize is greater than 1, then depending on the direction of the Ship,
      * the Ship[][] will add multiple of the same object in the corresponding spot.
-     * <p>
+     *
      * After it adds the cruiser to board, it adds the front of the cruiser to the HashSet shipSet and sets the Ship's coordinates.
-     * <p>
+     *
      * Still needs checks on the boundaries of the array
-     * <p>
+     *
      * Will be updated when user input is available
      */
     @Override
@@ -325,35 +328,33 @@ public int getPoints() {
 
         if (isHorizontal && direction) {       //Facing East
             for (int i = 1; i <= numOfMoves; i++) {
-                if (xPos + numOfMoves < 24) {
+                if(xPos + i < 24) {
                     if(board[yPos][xPos + i] == null){
-                        if(xPos + i < 24) {
-                            coordinateList.add(new Point(xPos + i, yPos));
-                            System.out.println("point addedfg");
-                        }
+                        coordinateList.add(new Point(xPos + i, yPos));
+                        System.out.println("point addedfg");
                     } else if (board[yPos][xPos + i] != null) {
                         System.out.println("gonna break. i = " + i);
                         break;
                     }
-                    else
-                        break;
+                } else {
+                    break;
                 }
+
+
             }
         }
         else if (isHorizontal && !direction)                  //West
         {
             for (int i = 1; i <= numOfMoves; i++) {
-                if(xPos - numOfMoves >= 0) {
+                if (xPos - i >= 0) {
                     if (board[yPos][xPos - i] == null) {
-                        if (xPos - i > 0) {
-                            point = new Point(xPos - i, yPos);
-                            coordinateList.add(point);
-                        }
+                        point = new Point(xPos - i, yPos);
+                        coordinateList.add(point);
                     } else if (board[yPos][xPos - i] != null) {
                         break;
                     }
-                    else
-                        break;
+                } else {
+                    break;
                 }
             }
         }
@@ -400,7 +401,6 @@ public int getPoints() {
      */
     public ArrayList<Point> possibleFireLoc(Ship aShip) {
         ArrayList<Point> coordinateList = new ArrayList<>();
-        Point pointBottomRight, pointBottomLeft, pointUpperRight, pointUpperLeft;
         int fireRange = aShip.getFrange();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
@@ -418,6 +418,7 @@ public int getPoints() {
 
         /*for(int i = 0; i <= fireRange; i++) {
             for(int j = 0; j <= fireRange; j++) {
+
                 pointBottomRight = new Point(xPos + i, yPos + j);
                 if(pointBottomRight.y <= 15 && pointBottomRight.y >= 0 && pointBottomRight.x >= 0 && pointBottomRight.x <= 23) {
                     coordinateList.add(pointBottomRight);
@@ -563,18 +564,38 @@ public int getPoints() {
         if (isHorizontal && direction)          //Facing East
         {
             RaddShip(aShip, xPos + pmove, yPos);
+            for(Point p : mineSet) {
+                if(xPos + pmove == p.x && yPos == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
         else if (isHorizontal)                  //West
         {
             RaddShip(aShip, xPos - pmove, yPos);
+            for(Point p : mineSet) {
+                if(xPos - pmove == p.x && yPos == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
         else if (direction)                     //North
         {
             RaddShip(aShip, xPos, yPos - pmove);
+            for(Point p : mineSet) {
+                if(xPos == p.x && yPos - pmove == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
         else                                    //South
         {
             RaddShip(aShip, xPos, yPos + pmove);
+            for(Point p : mineSet) {
+                if(xPos == p.x && yPos + pmove == p.y) {
+                    aShip.damageShip(500);
+                }
+            }
         }
     }
 
@@ -745,10 +766,8 @@ public int getPoints() {
         }
         return true;
     }
-
     /**
      * A boolean that checks if the area around the ship would go outside the index of the board.
-     *
      * @return true if it does not go outside the index of the board. false if it would.
      */
 
@@ -949,7 +968,7 @@ public int getPoints() {
                         masterPoint.y = 256;
                     else if (masterPoint.y < -128*16 + SCREEN_HEIGHT)
                         masterPoint.y = -128*16 + SCREEN_HEIGHT;
-                    
+
                     if(ready)
                     {
                         if(playerTurn == 0)
@@ -1060,7 +1079,7 @@ public int getPoints() {
     public boolean hasLost(HashSet<Ship> PlayerShips) {
         return PlayerShips.isEmpty();
     }
-      
+
     /**
      * Use this method to calculate the number of the opponent's ships the player destroyed in
      * order to determine if the player win
@@ -1070,7 +1089,7 @@ public int getPoints() {
     public boolean hasWon(HashSet<Ship> OpponentsShips) {
         return OpponentsShips.isEmpty();
     }
-      
+
     /**
      * Use this method to calculate the number ships that the player still has in order
      * to determine if the player still has any ships left
@@ -1083,7 +1102,7 @@ public int getPoints() {
 
         return true;
     }
-      
+
     /**
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
@@ -1096,7 +1115,7 @@ public int getPoints() {
             System.out.print("YO");
         }else if(pl2==0){
             System.out.println("Player 1 wins");
-          
+
     /*public void endGame(Player player1, Player player2) {
         if (!hasShips(player1.getPlayerSet())) {
             setWinText(player2);
