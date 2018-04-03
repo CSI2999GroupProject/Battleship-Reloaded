@@ -58,7 +58,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         board = new Ship[boardRows][boardColumns];
         shipSet = new HashSet<>();
         mineSet = new HashSet<>();
-        masterPoint = new Point(0, 0);
+        masterPoint = new Point(0, 0); //Makes sure that player 1's fleet build panel camera doesn't start showing part of P2's board
         waterBox = new Rect();
         waterBox.set(0, 0, 128 * 24, 128 * 16);
         waterImage = context.getResources().getDrawable(R.drawable.water_old);
@@ -331,9 +331,7 @@ public int getPoints() {
                 if(xPos + i < 24) {
                     if(board[yPos][xPos + i] == null){
                         coordinateList.add(new Point(xPos + i, yPos));
-                        System.out.println("point addedfg");
                     } else if (board[yPos][xPos + i] != null) {
-                        System.out.println("gonna break. i = " + i);
                         break;
                     }
                 } else {
@@ -388,7 +386,6 @@ public int getPoints() {
                     break;
             }
         }
-        System.out.println("Found " + coordinateList.size() + " valid locations");
         return coordinateList;
     }
 
@@ -404,8 +401,22 @@ public int getPoints() {
         int fireRange = aShip.getFrange();
         int xPos = aShip.getColumnCoord();
         int yPos = aShip.getRowCoord();
+        int minX, maxX;
 
-        for(int i = Math.max(xPos - fireRange, 0); i <= Math.min(xPos + fireRange, 23); i++) //Search within a horizontal range of fireRange from front of ship, unless it's off the board
+        if(playerTurn == 0)
+        {
+            minX = Math.max(xPos - fireRange, 0); //Don't check to the left of the board
+            maxX = Math.min( Math.min(xPos + fireRange, lastViewableColumn() ), 23); //Farthest to the right you can shoot is the smallest of the range, the view, and the board.
+            System.out.println("Farthest check is column " + lastViewableColumn());
+        }
+        else
+        {
+            minX = Math.max( Math.max(xPos - fireRange, lastViewableColumn() ), 0); //Farthest to the left you can shoot is the largest of the range, the view, and the board.
+            maxX = Math.min(xPos + fireRange, 23); //Don't check to the right of the board
+            System.out.println("Farthest check is column " + lastViewableColumn());
+        }
+
+        for(int i = minX; i <= maxX; i++) //Search within a horizontal range of fireRange from front of ship, unless it's off the board
         {
             for(int j = Math.max(yPos - fireRange, 0); j <= Math.min(yPos + fireRange, 15); j++) //Same thing as the previous for() statement, but vertical.
             {
@@ -679,7 +690,6 @@ public int getPoints() {
 
         RaddShip(aShip, shipX, shipY);
 
-        System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
 
     /**
@@ -721,8 +731,6 @@ public int getPoints() {
         aShip.applyRotateL(90);
 
         RaddShip(aShip, shipX, shipY);
-
-        System.out.println("Ships isHorizontal = " + aShip.getHorizontal() + " and direction = " + aShip.getDirection());
     }
     /**
      * A method to see if a player has enough points to place a ship on the board
@@ -862,6 +870,14 @@ public int getPoints() {
             }
         }
         return xPos;
+    }
+
+    public int lastViewableColumn()
+    {
+        if(playerTurn == 0)
+            return xPosOfShip(p1) + VIEW_RANGE/128 - 1; //Technically, our columns aren't represented by the integers; The right side of them are. To fully see the column, we need to subtract an additional 1.
+        else
+            return xPosOfShip(p2) - VIEW_RANGE/128 ;
     }
 
 
