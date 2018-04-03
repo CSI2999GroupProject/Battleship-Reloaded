@@ -44,7 +44,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Player p1, p2;
     private TextView winningText = null;
     private Layout winningScreen = null;
-    public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public final int SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels; //width of the screen, not board
     public final int SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
     public final int VIEW_RANGE = 128*3;
 
