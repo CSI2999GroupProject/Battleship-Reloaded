@@ -14,21 +14,16 @@ public class Battleship extends Ship{
     public Battleship(Context context, int row, int column) {
         super(context, row, column);
         setName("Battleship");
-        setShipSize(3);
-        setShipCost(2);
-        setnMove(2);
-        setHitpoints(1500);
-        //setfdamage(100);
-        //setFDamageCost(1);
-        setdamage(300);
-        setDamageCost(1);
-        //setbdamage(50);
-        //setBDamageCost(1);
-        setRange(5);
-        setFrange(5);
-        setnShots(1);
-        setpShots(0);
-        setpmove(0);
+        setShipSize(3);//the length of the ship
+        setShipCost(2);//the amount it costs to place a ship
+        setnMove(2);//number of total spaces a ship can move
+        setHitpoints(1700);//the ships health
+        setdamage(450);//the amount of damage a ship deals per ship
+        setnShots(1);//number of total shots per ship
+        setpShots(0);//number of shots used per ship
+        setDamageCost(2);//the amount it costs for each specific ship to shoot
+        setFrange(5);//fire range of the ship
+        setpmove(0);//number of spaces a ship has moved
         shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.battleship), 128*getShipSize(), 128, false);
     }

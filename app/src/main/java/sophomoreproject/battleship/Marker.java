@@ -92,16 +92,11 @@ public class Marker implements Panel { // extends Ship {
         switch (type)
         {
             case 0:     //Fire
-
-                    gb.Fire(originalShip.getdamage(),x,y);
-
+                gb.Fire(originalShip.getdamage(),x,y);
                 gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
                 originalShip.setpShots(originalShip.getpShots()+1);
-
-
                 break;
             case 1:     //Move
-
                 if(cost <= originalShip.getnMove() - originalShip.getpmove()) {
                     if(originalShip.getpmove() == 0) //Only charge player points if they moved the ship for the first time.
                         gb.setPoints(gb.getPoints()-1);
@@ -120,20 +115,17 @@ public class Marker implements Panel { // extends Ship {
                             gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
                         }
                     }
-
                 }
-
                 break;
-            case 2:     //Rotate
+            case 2:     //Rotate Left
                 gb.rotateLeft(originalShip, x, y);
                 originalShip.setpmove(originalShip.getnMove());
                 break;
-            case 3:     //Rotate
+            case 3:     //Rotate Right
                 gb.rotateRight(originalShip, x, y);
                 originalShip.setpmove(originalShip.getnMove());
                 break;
             default:
-
                 break;
         }
 
