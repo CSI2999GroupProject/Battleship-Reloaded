@@ -1057,12 +1057,13 @@ public class GameBoard implements GameBoardInterface, Panel {
 
     public void endGame(int pl1,int pl2) {
         Intent intent = new Intent(context, WinScreen.class);
+        Intent intent1 = new Intent(context,WinScreenP2.class);
         if(pl1==0){
 
 
             System.out.println("Player 2 wins");
             Toast.makeText(context, "player 2 won!!", Toast.LENGTH_LONG).show();
-            context.startActivity(intent);
+            context.startActivity(intent1);
 
             //display the winning screen
             System.out.print("YO");
