@@ -96,6 +96,7 @@
 
                         break;
 
+
                     case MotionEvent.ACTION_UP:
 
                         if (lastButtonPress == endTurn && endTurnBox.contains(x, y)) {
