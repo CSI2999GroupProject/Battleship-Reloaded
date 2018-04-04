@@ -302,12 +302,12 @@ public class FleetBuildPanel implements Panel
                 } else if(lastButtonPress == finishButton && finishBox.contains(x, y)) {
                     if(board.getPlayerTurn() == 0) {
                         board.setPlayerTurn(1);
-                        board.getMasterPoint().set(board.SCREEN_WIDTH * -1 + 384, 300);
+                        board.getMasterPoint().set(-128*12, 0);
                     } else if(board.getPlayerTurn() == 1) {
                         board.setPlayerTurn(0);
-                        board.getMasterPoint().set(0, 300);
+                        board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
                         initialSeq = 2;
-                        board.setPoints(12);
+                        board.setPoints(Player.POINTS_PER_TURN);
                     }
 
                 }

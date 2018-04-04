@@ -39,7 +39,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         board = new GameBoard(context, this);
         fbp = new FleetBuildPanel(context, board);
         hudPanel = new HudPanel(context, board);
-        masterPoint = new Point(0, 0); //Starts the game with the map's top-left corner being on the screen's top-left corner
+        masterPoint = new Point(board.SCREEN_WIDTH - 128*12, 0); //Starts the game with P1's camera adjusted as to not show anything on P2's side of the board
         locator = new Point(0,0);
         seq = 0;
     }

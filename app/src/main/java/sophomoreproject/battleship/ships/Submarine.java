@@ -11,7 +11,7 @@ import sophomoreproject.battleship.R;
  * Created by isaac on 1/31/2018.
  */
 
-public class Submarine extends Ship implements ShipInterface{
+public class Submarine extends Ship{
 
     public Submarine(Context context, int row, int column)
     {
@@ -32,9 +32,5 @@ public class Submarine extends Ship implements ShipInterface{
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), 128*getShipSize(), 128, false);
     }
 
-    @Override
-    public void ability()
-    {
 
-    }
 }
