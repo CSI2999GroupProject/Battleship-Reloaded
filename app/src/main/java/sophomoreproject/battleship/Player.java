@@ -57,6 +57,7 @@ public class Player {
 
     public int endgame() {
     int i=1;
+    /*
         for(Ship ship : playerSet) {
             if(ship.getHitpoints()<=0)  {
                 i=0;
@@ -66,8 +67,8 @@ public class Player {
                 break;
 
             }
-        }
-        if(i==0) {
+        }*/
+        if(playerSet.isEmpty()) {
             System.out.println("Fuck you");
             return 0;
 
