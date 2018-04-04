@@ -106,19 +106,32 @@ public class ShipPanel implements Panel
         canvas.drawRect(moveDisp, bluePaint);
         canvas.drawText("Moves: " + (ship.getnMove() - ship.getpmove()) + "/" + ship.getnMove(), maxMoveDisp.centerX(), (maxMoveDisp.centerY() + maxMoveDisp.bottom)/2, textPaint);
 
-        if(ship.getpShots() < ship.getnShots() && !gp.getBoard().possibleFireLoc(ship).isEmpty()) //Player hasn't run out of fires, and has a target in range
-            canvas.drawBitmap(buttonImages[0], buttonBoxes[0].left, buttonBoxes[0].top, null);
+        Player player;
 
-        if(ship.getpmove() < ship.getnMove() && !gp.getBoard().possibleMoveLoc(ship).isEmpty())
+        if(gb.getPlayerTurn() == 0)
         {
-            canvas.drawBitmap(buttonImages[1], buttonBoxes[1].left, buttonBoxes[1].top, null); //Player hasn't run out of moves and has at least 1 valid location
+            player = gb.getP1();
+        }
+        else
+        {
+            player = gb.getP2();
         }
 
-        if(ship.getpmove() == 0 && (gp.getBoard().checkRotate(ship)[0] != null || gp.getBoard().checkRotate(ship)[1] != null) ) //Player hasn't moved yet and can turn in at least 1 direction
+        if(ship.getpShots() < ship.getnShots() && ship.getDamageCost() <= player.getAvailablePoints() && !gp.getBoard().possibleFireLoc(ship).isEmpty()) //Player hasn't run out of fires, and has a target in range
+            canvas.drawBitmap(buttonImages[0], buttonBoxes[0].left, buttonBoxes[0].top, null);
+
+        //IMPORTANT NOTE: If you want moving a ship to have different costs, replace 1 with the variable that holds the move cost for the ship.
+        if(ship.getpmove() < ship.getnMove() && 1 <= player.getAvailablePoints() && !gp.getBoard().possibleMoveLoc(ship).isEmpty()) //Player hasn't run out of moves and has at least 1 valid location.
+        {
+            canvas.drawBitmap(buttonImages[1], buttonBoxes[1].left, buttonBoxes[1].top, null);
+        }
+
+        //IMPORTANT NOTE: The same thing applies here, but use the variable to hold rotation cost.
+        if(ship.getpmove() == 0 && 1 <= player.getAvailablePoints() && (gp.getBoard().checkRotate(ship)[0] != null || gp.getBoard().checkRotate(ship)[1] != null) ) //Player hasn't moved yet and can turn in at least 1 direction
         {
             canvas.drawBitmap(buttonImages[2], buttonBoxes[2].left, buttonBoxes[2].top, null);
         }
-
+        canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
     }
 
     @Override
