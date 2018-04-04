@@ -131,7 +131,7 @@ public class ShipPanel implements Panel
         {
             canvas.drawBitmap(buttonImages[2], buttonBoxes[2].left, buttonBoxes[2].top, null);
         }
-
+        canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
     }
 
     @Override
