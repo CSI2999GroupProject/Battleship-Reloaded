@@ -65,61 +65,28 @@
                 canvas.drawBitmap(endTurn, endTurnBox.left, endTurnBox.top, null);
                 canvas.drawText(playerTurnText(), 600, 75, textStuff);
 
-                canvas.drawRect(maxPlayerPoints, blackPaint);
-                canvas.drawRect(playerPoints, barPaint);
-                canvas.drawText(playerPointText(), maxPlayerPoints.centerX(), maxPlayerPoints.bottom, pointsText);
-            }
-
-            @Override
-            public void update() {
-                double pointsPercent = (double) board.getPoints() / (double) Player.POINTS_PER_TURN;
-
-                playerPoints.set(maxPlayerPoints.left, maxPlayerPoints.top, maxPlayerPoints.left + (int) (pointsPercent * (maxPlayerPoints.right - maxPlayerPoints.left)), maxPlayerPoints.bottom);
-            }
-
-            @Override
-            public boolean contains(Point point) {
-                return hud.contains(point.x, point.y);
-            }
-
-            @Override
-            public void onTouchEvent(MotionEvent event) {
-                int x = (int) event.getX();
-                int y = (int) event.getY();
-                lastMotion.set(x, y);
-
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (endTurnBox.contains(x, y)) {
-                            lastButtonPress = endTurn;
-                        }
-
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-
-                        if (lastButtonPress == endTurn && endTurnBox.contains(x, y)) {
-                            switch (board.getPlayerTurn()) {
-                                case 0:
-                                    board.setPlayerTurn(1);
-                                    board.setPoints(Player.POINTS_PER_TURN);
-                                    board.getP2().resetPMove();
-                                    board.getP1().resetPMove();
-                                    board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP2()) + board.VIEW_RANGE - 128;
-                                    break;
-                                case 1:
-                                    board.setPlayerTurn(0);
-                                    board.setPoints(Player.POINTS_PER_TURN);
-                                    board.getP1().resetPMove();
-                                    board.getP2().resetPMove();
-                                    board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
-                                    break;
-                            }
-                            board.purgeOldPanels();
+                if(lastButtonPress == endTurn && endTurnBox.contains(x, y)) {
+                    switch (board.getPlayerTurn()) {
+                        case 0:
+                            board.setPlayerTurn(1);
+                            board.setPoints(Player.POINTS_PER_TURN);
+                            board.getP2().resetPMove();
+                            board.getP1().resetPMove();
+                            board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP2()) + board.VIEW_RANGE - 128;
                             break;
-                        }
+                        case 1:
+                            board.setPlayerTurn(0);
+                            board.setPoints(Player.POINTS_PER_TURN);
+                            board.getP1().resetPMove();
+                            board.getP2().resetPMove();
+                            board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
+                            break;
+                    }
+                    board.purgeOldPanels();
+                    break;
                 }
-            }
+        }
+    }
 
                 public String playerTurnText () {
                     String str = "";

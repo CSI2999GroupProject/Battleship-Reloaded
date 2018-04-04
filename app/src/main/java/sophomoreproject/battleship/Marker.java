@@ -107,7 +107,19 @@ public class Marker implements Panel { // extends Ship {
                         gb.setPoints(gb.getPoints()-1);
 
                     originalShip.setpmove(originalShip.getpmove() + cost);
+                    int lastViewableColumn = gb.lastViewableColumn();
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
+                    if(lastViewableColumn != gb.lastViewableColumn()) //player moved a ship further into enemy waters, or retreated their front ship
+                    {
+                        if(currentPlayer == 0)
+                        {
+                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP2()) + gb.VIEW_RANGE - 128;
+                        }
+                        else
+                        {
+                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
+                        }
+                    }
 
                 }
 
