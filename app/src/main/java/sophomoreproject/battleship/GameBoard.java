@@ -1059,6 +1059,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         Intent intent = new Intent(context, WinScreen.class);
         if(pl1==0){
 
+
             System.out.println("Player 2 wins");
             Toast.makeText(context, "player 2 won!!", Toast.LENGTH_LONG).show();
             context.startActivity(intent);
@@ -1067,7 +1068,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             System.out.print("YO");
         }else if(pl2==0) {
             System.out.println("Player 1 wins");
-            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "player 1 won!!", Toast.LENGTH_SHORT).show();
             context.startActivity(intent);
 
             System.out.println("Player 1 wins");
