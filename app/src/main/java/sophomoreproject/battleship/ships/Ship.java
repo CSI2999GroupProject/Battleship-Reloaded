@@ -20,27 +20,22 @@ public class Ship {
      *                      depending on if horizontal is true or false
      *                      if direction is false, then it corresponds to facing down or left
      */
-    private int shipSize;
+    private int shipSize;//the size of the ships length
     private String name;
-    private boolean isHorizontal;
-    private boolean direction;
-    private int rowCoord;
-    private int columnCoord;
-    private int ShipCost;
-    private int nMove;
-    private int damage;
-    //private int fDamage;
-    //private int bDamage;
-    private int nShots;
-    private int pShots;
-    private int DamageCost;
-    //private int FDamageCost;
-    //private int BDamageCost;
+    private boolean isHorizontal;//like on a graph this tells if it is along side x or y axis
+    private boolean direction;//like on a graph this tells if it is positive or negative
+    private int rowCoord;//the y coordinate
+    private int columnCoord;//the x coordinate
+    private int ShipCost;//the amount it cost to place each ship
+    private int nMove;//number of max movement spaces per ship
+    private int damage;//damage output per ship
+    private int nShots;//number of total shots each ship has
+    private int pShots;//counter to hold how many shots each ship has used
+    private int DamageCost;//the amount it costs to shoot each shot
     public  int maxHealth;
-    private int Hitpoints;
-    private int range;
-    private int Frange;
-    private int pmove;
+    private int Hitpoints;//the hitpoints given to each ship
+    private int Frange;//the range each ship can fire
+    private int pmove;//counter to keep track on how much a ship has moved
     private int player;
 
     Rect shipBox;
@@ -159,9 +154,6 @@ public class Ship {
         this.columnCoord = columnCoord;
     }
 
-
-
-
     public int getShipCost() {
         return ShipCost;
     }
@@ -176,33 +168,15 @@ public class Ship {
     }
     //the max number of moves a single ship can physically move per turn
 
+    public int getpmove(){return pmove;}
+    public void setpmove(int pmove){this.pmove =pmove;}
+    //counter to keep track of moves
+
     public int getdamage() {
         return damage;
     }
     public void setdamage(int damage) {this.damage = damage; }
-    /*special damage
-    *Battleship: damage out sides
-    * AirCraft carrier: damage at any spot of choice
-    * cruiser: main gun damage
-    * destroyer: damage out sides
-    */
-/*
-    public int getfdamage() {
-        return fDamage;
-    }
-    public void setfdamage(int fdamage) {this.fDamage = fdamage; }
-    /
-            *damage from front of ships
-     *only used on destroyer and battleship
-     *
-
-    public int getbdamage() {
-        return bDamage;
-    }
-    public void setbdamage(int bdamage) {this.bDamage = bdamage; }
-    *damage from back of ship
-     *only used on destroyer and battleship
-     */
+  //damage the ship deals
 
     /**
      * A method to get the current health of the ship.
@@ -239,13 +213,6 @@ public class Ship {
 
 
 
-    /**
-     *Don't worry about nshots, and the diffrent damage costs they are part of my part in making the game rules
-     */
-    public int getRange(){return range;}
-    public void setRange(int range){this.range=range;}
-    //range ships can fire
-
     public int getFrange(){return Frange;}
     public void setFrange(int Frange){this.Frange =Frange;}
     //range ships can fire
@@ -261,27 +228,11 @@ public class Ship {
 
     //number of shots a ship specific damage can shoot per turn
 
-    public int getpmove(){return pmove;}
-    public void setpmove(int pmove){this.pmove =pmove;}
-
     public int getDamageCost() {
         return DamageCost;
     }
     public void setDamageCost(int DamageCost) {this.DamageCost = DamageCost; }
     //damage cost
-/*
-    public int getFDamageCost() {
-        return FDamageCost;
-    }
-    public void setFDamageCost(int FDamageCoust) {this.FDamageCost = FDamageCost; }
-    //front damage cost
-
-    public int getBDamageCost() {
-        return BDamageCost;
-    }
-    public void setBDamageCost(int BDamageCost) {this.BDamageCost = BDamageCost; }
-    //back damage cost
-*/
 
 
 
