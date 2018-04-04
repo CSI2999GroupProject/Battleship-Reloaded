@@ -1,7 +1,6 @@
 package sophomoreproject.battleship;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -11,7 +10,6 @@ import android.text.Layout;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -1083,8 +1081,8 @@ public int getPoints() {
             //Doesn't appear to be removing Destroyed ships, when printing the HasSet to the Console
             removeShip(AttackedShip);
             int one=p1.endgame();
-            int two=p2.endgame();
-            endGame(one,two);
+                int two=p2.endgame();
+                endGame(one,two);
         }
     }
 
@@ -1117,6 +1115,8 @@ public int getPoints() {
         {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -1125,18 +1125,23 @@ public int getPoints() {
      */
 
     public void endGame(int pl1,int pl2) {
-        Intent intent = new Intent(context, WinScreen.class);
         if(pl1==0){
-
             System.out.println("Player 2 wins");
-            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_LONG).show();
-            context.startActivity(intent);
 
-            //display the winning screen
-        }else if(pl2==0) {
+            System.out.print("YO");
+        }else if(pl2==0){
             System.out.println("Player 1 wins");
-            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_SHORT).show();
-            context.startActivity(intent);
+
+    /*public void endGame(Player player1, Player player2) {
+        if (!hasShips(player1.getPlayerSet())) {
+            setWinText(player2);
+        }
+        if (!hasShips(player2.getPlayerSet())) {
+            setWinText(player1);
+        }
+    }*/
+
+            System.out.println("YO");
         }else{
 
         }
