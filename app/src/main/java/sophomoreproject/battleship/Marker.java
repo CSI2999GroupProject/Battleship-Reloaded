@@ -52,20 +52,17 @@ public class Marker implements Panel { // extends Ship {
                 image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), 128, 128, false);
                 break;
             case 1:     //Move
-                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
             case 2:     //Rotate
-                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
             case 3:     //Rotate
-                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.temp), 128, 128, false);
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
             default:
                 break;
         }
-
-        //TEMPORARY CODE BEGINS HERE
-
     }
 
 
@@ -100,10 +97,24 @@ public class Marker implements Panel { // extends Ship {
                 originalShip.setpShots(originalShip.getpShots()+1);
                 break;
             case 1:     //Move
-                if(cost<=originalShip.getnMove()-originalShip.getpmove()) {
+                if(cost <= originalShip.getnMove() - originalShip.getpmove()) {
+                    if(originalShip.getpmove() == 0) //Only charge player points if they moved the ship for the first time.
+                        gb.setPoints(gb.getPoints()-1);
+
                     originalShip.setpmove(originalShip.getpmove() + cost);
-                    gb.setPoints(gb.getPoints()-1);
+                    int lastViewableColumn = gb.lastViewableColumn();
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
+                    if(lastViewableColumn != gb.lastViewableColumn()) //player moved a ship further into enemy waters, or retreated their front ship
+                    {
+                        if(currentPlayer == 0)
+                        {
+                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP2()) + gb.VIEW_RANGE - 128;
+                        }
+                        else
+                        {
+                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
+                        }
+                    }
                 }
                 break;
             case 2:     //Rotate Left

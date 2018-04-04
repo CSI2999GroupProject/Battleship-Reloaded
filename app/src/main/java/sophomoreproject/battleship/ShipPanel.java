@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import sophomoreproject.battleship.ships.Ship;
 
@@ -20,22 +21,25 @@ import sophomoreproject.battleship.ships.Ship;
 
 public class ShipPanel implements Panel
 {
-    private final int BUTTON_TOTAL = 3;                             //The total number of buttons on the panel
+    private final int BUTTON_TOTAL = 4;                             //The total number of buttons on the panel
     private Rect panel;                                             //The back panel of the selection screen
     private Rect[] buttonBoxes = new Rect[BUTTON_TOTAL];            //Rects representing the dimensions and positions of the buttons
     private Bitmap[] buttonImages = new Bitmap[BUTTON_TOTAL];       //The images of the buttons (must match buttonBoxes perfectly)
-    private Paint panelPaint = new Paint(), maxHealthPaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint();
+    private Paint panelPaint = new Paint(), blackPaint = new Paint(), bluePaint = new Paint(), healthPaint = new Paint(), textPaint = new Paint(), redTextPaint;
     private int lastButtonClicked = -1;                             //Keeps track of what button the user pressed down on. If it's not the same as the button they let go over, don't do anything.
-
-    private Rect maxHealthDisp, healthDisp;
+    private Rect maxHealthDisp, healthDisp, maxMoveDisp, moveDisp;
 
     private Ship ship;
     private GamePanel gp;
+    private GameBoard gb;
+    private Ship[][] board;
 
     public ShipPanel(Context context, Ship ship, GamePanel gp)
     {
         this.ship = ship;
         this.gp = gp;
+        gb = gp.getBoard();
+        board = gb.getShipBoard();
 
         final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
         final int SCREEN_HEIGHT = context.getResources().getSystem().getDisplayMetrics().heightPixels;
@@ -50,46 +54,101 @@ public class ShipPanel implements Panel
         maxHealthDisp = new Rect(panel.width()/6, buttonBoxes[BUTTON_TOTAL-1].bottom + panel.width()/6, panel.width()*5/6, buttonBoxes[BUTTON_TOTAL-1].bottom + panel.width()*2/6);
         healthDisp = new Rect();
 
-        textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(panel.width()/12);
+        maxMoveDisp = new Rect(panel.width()/6, maxHealthDisp.bottom + panel.width()/6, panel.width()*5/6, maxHealthDisp.bottom + panel.width()*2/6);
+        moveDisp = new Rect();
+
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(maxHealthDisp.height()*2/3);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+
+        redTextPaint = new Paint(textPaint);
+        redTextPaint.setColor(Color.RED);
 
         buttonImages[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
         buttonImages[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turn_left_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+        //switch on type of ship
+        switch(ship.getName()) {
+            case "cruiser":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.mine_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "Aircraft Carrier":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_x2), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "submarine":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.torpedo_button), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "Battleship":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_x1), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
+            case "destroyer":
+                buttonImages[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.firing_button_2x2), buttonBoxes[0].width(), buttonBoxes[0].width(), false);
+                break;
 
+        }
         panelPaint.setColor(Color.GRAY);
-        maxHealthPaint.setColor(Color.BLACK);
+        blackPaint.setColor(Color.BLACK);
+        bluePaint.setColor(Color.BLUE);
+
+        update();
     }
 
     @Override
     public void draw(Canvas canvas)
     {
-        update();
-
         canvas.drawRect(panel, panelPaint);
-        canvas.drawRect(maxHealthDisp, maxHealthPaint);
-        canvas.drawRect(healthDisp, healthPaint);
-        canvas.drawText("Health: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.left, maxHealthDisp.bottom + panel.width()/12, textPaint);
 
-        for(int i = 0; i < BUTTON_TOTAL; i++)
+        canvas.drawRect(maxHealthDisp, blackPaint);
+        canvas.drawRect(healthDisp, healthPaint);
+        canvas.drawText("HP: " + ship.getHitpoints() + "/" + ship.maxHealth, maxHealthDisp.centerX(), (maxHealthDisp.centerY() + maxHealthDisp.bottom)/2, textPaint);
+
+        canvas.drawRect(maxMoveDisp, blackPaint);
+        canvas.drawRect(moveDisp, bluePaint);
+        canvas.drawText("Moves: " + (ship.getnMove() - ship.getpmove()) + "/" + ship.getnMove(), maxMoveDisp.centerX(), (maxMoveDisp.centerY() + maxMoveDisp.bottom)/2, textPaint);
+
+        Player player;
+
+        if(gb.getPlayerTurn() == 0)
         {
-            canvas.drawBitmap(buttonImages[i], buttonBoxes[i].left, buttonBoxes[i].top, null);
+            player = gb.getP1();
         }
+        else
+        {
+            player = gb.getP2();
+        }
+
+        if(ship.getpShots() < ship.getnShots() && ship.getDamageCost() <= player.getAvailablePoints() && !gp.getBoard().possibleFireLoc(ship).isEmpty()) //Player hasn't run out of fires, and has a target in range
+            canvas.drawBitmap(buttonImages[0], buttonBoxes[0].left, buttonBoxes[0].top, null);
+
+        //IMPORTANT NOTE: If you want moving a ship to have different costs, replace 1 with the variable that holds the move cost for the ship.
+        if(ship.getpmove() < ship.getnMove() && 1 <= player.getAvailablePoints() && !gp.getBoard().possibleMoveLoc(ship).isEmpty()) //Player hasn't run out of moves and has at least 1 valid location.
+        {
+            canvas.drawBitmap(buttonImages[1], buttonBoxes[1].left, buttonBoxes[1].top, null);
+        }
+
+        //IMPORTANT NOTE: The same thing applies here, but use the variable to hold rotation cost.
+        if(ship.getpmove() == 0 && 1 <= player.getAvailablePoints() && (gp.getBoard().checkRotate(ship)[0] != null || gp.getBoard().checkRotate(ship)[1] != null) ) //Player hasn't moved yet and can turn in at least 1 direction
+        {
+            canvas.drawBitmap(buttonImages[2], buttonBoxes[2].left, buttonBoxes[2].top, null);
+        }
+        canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
     }
 
     @Override
     public void update()
     {
         double healthPercent = (double)ship.getHitpoints() / (double)ship.maxHealth;
+        double movePercent = (double)(ship.getnMove() - ship.getpmove()) / (double)ship.getnMove();
 
         if(healthPercent > .5)
             healthPaint.setColor(Color.argb(255, 0, 140, 0)); //Green
-        else if(healthPercent > .2)
+        else if(healthPercent > .25)
             healthPaint.setColor(Color.YELLOW);
         else
             healthPaint.setColor(Color.RED);
 
         healthDisp.set(maxHealthDisp.left, maxHealthDisp.top, maxHealthDisp.left + (int)(healthPercent*(maxHealthDisp.right - maxHealthDisp.left)), maxHealthDisp.bottom);
+        moveDisp.set(maxMoveDisp.left, maxMoveDisp.top, maxMoveDisp.left + (int)(movePercent*(maxMoveDisp.right - maxMoveDisp.left)), maxMoveDisp.bottom);
     }
 
     @Override
@@ -178,6 +237,91 @@ public class ShipPanel implements Panel
                                 else
                                 {
                                     System.out.println("You cannot rotate and move");
+                                }
+                                break;
+                            case 3: //Ship ability button
+                                int shipSize = ship.getShipSize();
+                                int x = ship.getColumnCoord();
+                                int y = ship.getRowCoord();
+                                boolean isHorizontal = ship.getHorizontal();
+                                boolean direction = ship.getDirection();
+
+                                switch(ship.getName()) {
+                                    case "cruiser": //places a mine behind the cruiser
+                                        HashSet<Point> mines = gb.getMineSet();
+                                        if(isHorizontal) {
+                                            if(direction) { //east
+                                                mines.add(new Point(x - shipSize, y));
+                                                int a= x-shipSize;
+                                                System.out.println("mine placed at ("+a+", "+y+")");
+                                            } else { //west
+                                                mines.add(new Point(x + shipSize, y));
+                                            }
+                                        } else {
+                                            if(direction) { //north
+                                                mines.add(new Point(x, y + shipSize));
+                                            } else { //south
+                                                mines.add(new Point(x, y - shipSize));
+                                            }
+                                        }
+
+                                        break;
+                                    case "Aircraft Carrier":
+                                        break;
+                                    case "submarine": //fires torpedo across the board depending on the direction the ship is
+                                        Ship ship;
+                                        if(isHorizontal) {
+                                            if(direction) { //east
+                                                x++;
+                                                while(x < 24) {
+                                                    if(board[y][x] != null) {
+
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                        System.out.println("ship found at x: " + x + " y: " + y + " name: " + ship.getName());
+                                                        break;
+                                                    } else {
+                                                        System.out.println("no ship found");
+                                                    }
+                                                    System.out.println("incrementing x");
+                                                    x++;
+                                                }
+                                            } else { //west
+                                                x--;
+                                                while(x >= 0) {
+                                                    if(board[y][x] != null) {
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                    }
+                                                    x--;
+                                                }
+                                            }
+                                        } else {
+                                            if(direction) { //north
+                                                y--;
+                                                while(y >= 0) {
+                                                    if(board[y][x] != null) {
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                    }
+                                                    y--;
+                                                }
+                                            } else { //south
+                                                y++;
+                                                while(y < 16) {
+                                                    if(board[y][x] != null) {
+                                                        ship = board[y][x];
+                                                        ship.damageShip(500);
+                                                    }
+                                                    y++;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case "Battleship":
+                                        break;
+                                    case "destroyer":
+                                        break;
                                 }
                                 break;
                             default:
