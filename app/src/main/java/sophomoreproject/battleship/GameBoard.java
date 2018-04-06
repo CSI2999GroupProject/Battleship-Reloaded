@@ -1013,13 +1013,13 @@ public int getPoints() {
                     else if (masterPoint.y < -128*16 + SCREEN_HEIGHT)
                         masterPoint.y = -128*16 + SCREEN_HEIGHT;
 
-                    if(ready)
+                    if(ready) //In-game
                     {
-                        if(playerTurn == 0)
+                        if(playerTurn == 0) //P1's turn
                         {
-                            if (masterPoint.x > SCREEN_WIDTH)
+                            if (masterPoint.x > SCREEN_WIDTH) //You can't scroll so far to the left that the board is completely offscreen
                                 masterPoint.x = SCREEN_WIDTH;
-                            else if (masterPoint.x < -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH)
+                            else if (masterPoint.x < -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH) //Can't see more than VIEW_RANGE tiles to the right of your rightmost ship
                                 masterPoint.x = -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH;
                         }
                         else
@@ -1065,10 +1065,17 @@ public int getPoints() {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                Ship selected = null;
+                int y = ((int) event.getY() - masterPoint.y) / 128;
+                int x = ((int) event.getX() - masterPoint.x) / 128;
+
+                if(x >= 0 && x <= 23 && y >= 0 && y <= 15)
+                {
+                    selected = board[y][x];
+                }
+
                 if (!isScrolling && ready) //User only clicked a ship, didn't swipe screen over one
                 {
-                    Ship selected = board[((int) event.getY() - masterPoint.y) / 128][((int) event.getX() - masterPoint.x) / 128];
-
                     purgeOldPanels();
 
                     if(selected != null) //Player clicked on a ship, not empty space
@@ -1082,8 +1089,6 @@ public int getPoints() {
                 }
                 else if (!isScrolling) //User clicks on a ship while still building a fleet
                 {
-                    Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
-
                     if(selected != null)
                     {
                         removeShipWithCost(selected);
