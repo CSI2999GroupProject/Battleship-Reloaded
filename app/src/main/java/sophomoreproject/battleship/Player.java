@@ -50,14 +50,13 @@ public class Player {
 
         for(Ship ship : playerSet ) {
 
-            ship.setpmove(0);
-            ship.setpShots(0);
+            ship.setpmove(0);//resets the ship move counter after each turn
+            ship.setpShots(0);//return the ship shot counter after each turn
         }
     }
 
     public int endgame() {
     int i=1;
-    /*
         for(Ship ship : playerSet) {
             if(ship.getHitpoints()<=0)  {
                 i=0;
@@ -67,8 +66,8 @@ public class Player {
                 break;
 
             }
-        }*/
-        if(playerSet.isEmpty()) {
+        }
+        if(i==0) {
             System.out.println("Fuck you");
             return 0;
 

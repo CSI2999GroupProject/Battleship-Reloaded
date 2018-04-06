@@ -10,32 +10,24 @@ import sophomoreproject.battleship.R;
  * Created by isaac on 1/31/2018.
  */
 
-public class Destroyer extends Ship implements ShipInterface{
+public class Destroyer extends Ship{
     public Destroyer(Context context, int row, int column) {
         super(context, row, column);
         setName("destroyer");
-        setShipSize(4);
-        setShipCost(3);
-        setnMove(2);
-        setHitpoints(2500);
-        setdamage(400);
-        setnShots(1);
-        setpShots(0);
-        setDamageCost(5);
-        //setfdamage(600);
-        //setFDamageCost(4);
-        //setbdamage(400);
-        //setBDamageCost(3);
-        setRange(8);
-        setFrange(8);
-        setpmove(0);
+        setShipSize(4);//the length of the ship
+        setShipCost(3);//the amount it costs to place a ship
+        setnMove(2);//number of total spaces a ship can move
+        setHitpoints(2500);//the ships health
+        setdamage(600);//the amount of damage a ship deals per ship
+        setnShots(1);//number of total shots per ship
+        setpShots(0);//number of shots used per ship
+        setDamageCost(3);//the amount it costs for each specific ship to shoot
+        setFrange(8);//fire range of the ship
+        setpmove(0);//number of spaces a ship has moved
         shipBox = new Rect(0, 0, 128*getShipSize(), 128);
         shipImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.destroyer), 128*getShipSize(), 128, false);
     }
 
-    @Override
-    public void ability() {
 
-    }
 
 }
