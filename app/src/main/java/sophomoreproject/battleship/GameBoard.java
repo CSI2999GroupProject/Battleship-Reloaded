@@ -1149,12 +1149,20 @@ public int getPoints() {
      */
 
     public void endGame(int pl1,int pl2) {
+        Intent intent = new Intent(context, WinScreen.class);
+        Intent intent1 = new Intent(context,WinScreenP2.class);
         if(pl1==0){
+
+
             System.out.println("Player 2 wins");
+            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_LONG).show();
+            context.startActivity(intent1);
 
             System.out.print("YO");
         }else if(pl2==0){
             System.out.println("Player 1 wins");
+            Toast.makeText(context, "player 1 won!!", Toast.LENGTH_SHORT).show();
+            context.startActivity(intent);
 
     /*public void endGame(Player player1, Player player2) {
         if (!hasShips(player1.getPlayerSet())) {
