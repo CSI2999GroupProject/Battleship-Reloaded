@@ -92,70 +92,72 @@ public class Marker implements Panel { // extends Ship {
     {
         int currentPlayer = gb.getPlayerTurn() + 1;
 
-        switch (type)
+        if(event.getAction() == MotionEvent.ACTION_UP && this.contains(new Point((int)event.getX(), (int)event.getY())))
         {
-            case 0:     //fire
-                gb.fire(originalShip.getdamage(),x,y);
-                gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
-                originalShip.setpShots(originalShip.getpShots()+1);
-                break;
-            case 1:     //Move
-                if(cost <= originalShip.getnMove() - originalShip.getpmove()) {
-                    if(originalShip.getpmove() == 0) //Only charge player points if they moved the ship for the first time.
-                        gb.setPoints(gb.getPoints()-1);
+            switch (type)
+            {
+                case 0:     //fire
+                    gb.fire(originalShip.getdamage(),x,y);
+                    gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
+                    originalShip.setpShots(originalShip.getpShots()+1);
+                    break;
+                case 1:     //Move
+                    if(cost <= originalShip.getnMove() - originalShip.getpmove()) {
+                        if(originalShip.getpmove() == 0) //Only charge player points if they moved the ship for the first time.
+                            gb.setPoints(gb.getPoints()-1);
 
-                    originalShip.setpmove(originalShip.getpmove() + cost);
-                    int lastViewableColumn = gb.lastViewableColumn();
-                    gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
-                    if(lastViewableColumn != gb.lastViewableColumn()) //player moved a ship further into enemy waters, or retreated their front ship
-                    {
-                        if(currentPlayer == 1)
+                        originalShip.setpmove(originalShip.getpmove() + cost);
+                        int lastViewableColumn = gb.lastViewableColumn();
+                        gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
+                        if(lastViewableColumn != gb.lastViewableColumn()) //player moved a ship further into enemy waters, or retreated their front ship
                         {
-                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
-                        }
-                        else
-                        {
-                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP2()) + gb.VIEW_RANGE - 128;
+                            if(currentPlayer == 1)
+                            {
+                                gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
+                            }
+                            else
+                            {
+                                gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP2()) + gb.VIEW_RANGE - 128;
+                            }
                         }
                     }
-                }
-                break;
-            case 2:     //Rotate Left
-                gb.rotateLeft(originalShip, x, y);
-                originalShip.setpmove(originalShip.getnMove());
-                break;
-            case 3:     //Rotate Right
-                gb.rotateRight(originalShip, x, y);
-                originalShip.setpmove(originalShip.getnMove());
-                break;
-            case 4:
-                int maxHP = originalShip.maxHealth;
-                int currentHP = originalShip.getHitpoints();
-                double bonusDamage = (maxHP - currentHP) * 1.1;
-                switch(originalShip.getName()) {
-                    case "Battleship":
-                        gb.fire(originalShip.getdamage(),x,y);
+                    break;
+                case 2:     //Rotate Left
+                    gb.rotateLeft(originalShip, x, y);
+                    originalShip.setpmove(originalShip.getnMove());
+                    break;
+                case 3:     //Rotate Right
+                    gb.rotateRight(originalShip, x, y);
+                    originalShip.setpmove(originalShip.getnMove());
+                    break;
+                case 4:
+                    int maxHP = originalShip.maxHealth;
+                    int currentHP = originalShip.getHitpoints();
+                    double bonusDamage = (maxHP - currentHP) * 1.1;
+                    switch(originalShip.getName()) {
+                        case "Battleship":
+                            gb.fire(originalShip.getdamage(),x,y);
 
-                        gb.setPoints(gb.getPoints() - 3);
-                        break;
-                    case "Aircraft Carrier":
-                        gb.fire(originalShip.getdamage(),x,y);
+                            gb.setPoints(gb.getPoints() - 3);
+                            break;
+                        case "Aircraft Carrier":
+                            gb.fire(originalShip.getdamage(),x,y);
 
-                        gb.setPoints(gb.getPoints() - 6);
-                        break;
-                    case "destroyer":
-                        gb.fire(100 + (int)bonusDamage, x, y);
-                        System.out.println(100 + bonusDamage);
-                        gb.setPoints((gb.getPoints() - 10));
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                break;
+                            gb.setPoints(gb.getPoints() - 6);
+                            break;
+                        case "destroyer":
+                            gb.fire(100 + (int)bonusDamage, x, y);
+                            System.out.println(100 + bonusDamage);
+                            gb.setPoints((gb.getPoints() - 10));
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            gp.getBoard().purgeOldPanels();
         }
-
-        gp.getBoard().purgeOldPanels();
     }
 }
