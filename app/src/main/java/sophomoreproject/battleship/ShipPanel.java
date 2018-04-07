@@ -215,7 +215,7 @@ public class ShipPanel implements Panel
                             pointsLeft = gp.getBoard().getP2().getAvailablePoints();
 
                         switch (i) {
-                            case 0: //Fire button pressed
+                            case 0: //fire button pressed
                                 if(ship.getpShots()<ship.getnShots()) {
                                     validLocations = gp.getBoard().possibleFireLoc(ship);
                                     cost = ship.getDamageCost();

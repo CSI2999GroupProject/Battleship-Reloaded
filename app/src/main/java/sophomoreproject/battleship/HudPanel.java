@@ -79,6 +79,7 @@ public class HudPanel implements Panel {
 
     @Override
     public void onTouchEvent(MotionEvent event) {
+
         int x = (int)event.getX();
         int y = (int)event.getY();
         lastMotion.set(x, y);

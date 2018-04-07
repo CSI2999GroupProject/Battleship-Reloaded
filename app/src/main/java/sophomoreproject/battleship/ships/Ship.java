@@ -39,7 +39,6 @@ public class Ship {
     private int player;
 
     Rect shipBox;
-    Rect dshipBox;
     private Paint boxPaint = new Paint();
     Bitmap shipImage;
     private Point masterPoint;

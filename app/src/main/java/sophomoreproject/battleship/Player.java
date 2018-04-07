@@ -56,31 +56,13 @@ public class Player {
     }
 
     public int endgame() {
-    int i=1;
-
-        for(Ship ship : playerSet) {
-            if(ship.getHitpoints()<=0)  {
-                i=0;
-            }else{
-                System.out.println("does i =1");
-                i=1;
-                break;
-
-            }
-        }
-        if(i==0){
-            System.out.println("Merge fault doesn't erase playerset correctly again");
-            return 0;
-        }else{
-            return 1;
-        }
-        /*if(playerSet.isEmpty()) {
+        if(playerSet.isEmpty()) {
             System.out.println("Fuck you");
             return 0;
 
         }else{
             return 1;
-        }*/
+        }
 
     }
 }

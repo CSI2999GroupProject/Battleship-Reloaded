@@ -26,7 +26,7 @@ public class Marker implements Panel { // extends Ship {
      * Constructor for a marker
      *
      * @param type an integer specifying what it is marking.
-     *             0: Fire
+     *             0: fire
      *             1: Move
      *             2: Rotate Left
      *             3: Rotate Right
@@ -48,7 +48,7 @@ public class Marker implements Panel { // extends Ship {
 
         switch (type)
         {
-            case 0:     //Fire
+            case 0:     //fire
                 image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), 128, 128, false);
                 break;
             case 1:     //Move
@@ -94,8 +94,8 @@ public class Marker implements Panel { // extends Ship {
 
         switch (type)
         {
-            case 0:     //Fire
-                gb.Fire(originalShip.getdamage(),x,y);
+            case 0:     //fire
+                gb.fire(originalShip.getdamage(),x,y);
                 gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
                 originalShip.setpShots(originalShip.getpShots()+1);
                 break;
@@ -109,13 +109,13 @@ public class Marker implements Panel { // extends Ship {
                     gb.move(originalShip, originalShip.getColumnCoord(), originalShip.getRowCoord(), cost);
                     if(lastViewableColumn != gb.lastViewableColumn()) //player moved a ship further into enemy waters, or retreated their front ship
                     {
-                        if(currentPlayer == 0)
+                        if(currentPlayer == 1)
                         {
-                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP2()) + gb.VIEW_RANGE - 128;
+                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
                         }
                         else
                         {
-                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP1()) - gb.VIEW_RANGE + gb.SCREEN_WIDTH;
+                            gb.getMasterPoint().x = -128 * gb.xPosOfShip(gb.getP2()) + gb.VIEW_RANGE - 128;
                         }
                     }
                 }
@@ -134,17 +134,17 @@ public class Marker implements Panel { // extends Ship {
                 double bonusDamage = (maxHP - currentHP) * 1.1;
                 switch(originalShip.getName()) {
                     case "Battleship":
-                        gb.Fire(originalShip.getdamage(),x,y);
+                        gb.fire(originalShip.getdamage(),x,y);
 
                         gb.setPoints(gb.getPoints() - 3);
                         break;
                     case "Aircraft Carrier":
-                        gb.Fire(originalShip.getdamage(),x,y);
+                        gb.fire(originalShip.getdamage(),x,y);
 
                         gb.setPoints(gb.getPoints() - 6);
                         break;
                     case "destroyer":
-                        gb.Fire(100 + (int)bonusDamage, x, y);
+                        gb.fire(100 + (int)bonusDamage, x, y);
                         System.out.println(100 + bonusDamage);
                         gb.setPoints((gb.getPoints() - 10));
                         break;

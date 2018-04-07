@@ -9,16 +9,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import sophomoreproject.battleship.ships.Ship;
 
@@ -544,11 +540,8 @@ public class GameBoard implements GameBoardInterface, Panel {
 
         shipSet.remove(aShip);
 
-        if(playerTurn == 0) {
-            p1.getPlayerSet().remove(aShip);
-        } else {
-            p2.getPlayerSet().remove(aShip);
-        }
+        p1.getPlayerSet().remove(aShip);
+        p2.getPlayerSet().remove(aShip);
 
         if (isHorizontal && direction)          //Facing East
         {
@@ -588,7 +581,7 @@ public class GameBoard implements GameBoardInterface, Panel {
 
         if (isHorizontal && direction)          //Facing East
         {
-            RaddShip(aShip, xPos + pmove, yPos);
+            addShip(aShip, xPos + pmove, yPos);
             for(Point p : mineSet) {
                 while(i < shipSize) {
                     if((xPos + pmove == p.x + i && yPos == p.y)) {
@@ -602,7 +595,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
         else if (isHorizontal)                  //West
         {
-            RaddShip(aShip, xPos - pmove, yPos);
+            addShip(aShip, xPos - pmove, yPos);
             for(Point p : mineSet) {
                 while(i < shipSize) {
                     if(xPos - pmove == p.x - i && yPos == p.y) {
@@ -616,7 +609,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
         else if (direction)                     //North
         {
-            RaddShip(aShip, xPos, yPos - pmove);
+            addShip(aShip, xPos, yPos - pmove);
             for(Point p : mineSet) {
                 while(i < shipSize) {
                     if (xPos == p.x && yPos - pmove == p.y - i) {
@@ -630,7 +623,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
         else                                    //South
         {
-            RaddShip(aShip, xPos, yPos + pmove);
+            addShip(aShip, xPos, yPos + pmove);
             for(Point p : mineSet) {
                 while(i < shipSize) {
                     if (xPos == p.x && yPos + pmove == p.y + i) {
@@ -642,59 +635,6 @@ public class GameBoard implements GameBoardInterface, Panel {
                 }
             }
         }
-    }
-
-    /**
-     * adds the ships to the board after move and rotate
-     * @param aShip the ship that gets placed
-     * @param xPos the position of the head of the ships X
-     * @param yPos the position of the head of the ships Y
-     * @throws IndexOutOfBoundsException
-     */
-    public void RaddShip(Ship aShip, int xPos, int yPos) throws IndexOutOfBoundsException {
-        int shipSize = aShip.getShipSize();
-        boolean isHorizontal = aShip.getHorizontal();
-        boolean direction = aShip.getDirection();
-
-        aShip.setRowCoord(yPos);
-        aShip.setColumnCoord(xPos);
-        if (shipSize > 1){
-            if (isHorizontal){
-                if (direction) {
-                    for (int i = 0; i < shipSize; i++) {
-
-                        board[yPos][xPos - i] = aShip;
-                    }
-                }else if (!direction){
-                    for (int i = 0; i < shipSize; i++){
-                        board[yPos][xPos + i] = aShip;
-                    }
-                }
-            }else{
-                if (direction) {
-                    for (int i = 0; i < shipSize; i++) {
-
-                        board[yPos + i][xPos] = aShip;
-
-
-                    }
-                } else {
-                    for (int i = 0; i < shipSize; i++) {
-
-                        board[yPos - i][xPos] = aShip;
-
-                    }
-                }}
-        } else {
-            board[yPos][xPos] = aShip;
-        }
-        shipSet.add(aShip);
-        if(playerTurn == 0) {
-            p1.getPlayerSet().add(aShip);
-        } else {
-            p2.getPlayerSet().add(aShip);
-        }
-
     }
 
     /**
@@ -759,7 +699,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
         aShip.applyRotateL(-90);
 
-        RaddShip(aShip, shipX, shipY);
+        addShip(aShip, shipX, shipY);
 
     }
 
@@ -828,7 +768,7 @@ public class GameBoard implements GameBoardInterface, Panel {
 
         aShip.applyRotateL(90);
 
-        RaddShip(aShip, shipX, shipY);
+        addShip(aShip, shipX, shipY);
     }
     /**
      * A method to see if a player has enough points to place a ship on the board
@@ -980,7 +920,7 @@ public class GameBoard implements GameBoardInterface, Panel {
 
 
     /**
-     * A method to update the map's position on the board
+     * A method to update the map's position on the screen
      *
      * @param point where the user has dragged the top-left corner of the map
      */
@@ -1119,19 +1059,6 @@ public class GameBoard implements GameBoardInterface, Panel {
                                 masterPoint.x = -128*24;
                         }
                     }
-
-                    /*
-                    //Will not let the user scroll anymore if there are only MIN_GRID_SPACES left on the screen.
-                    if (masterPoint.x > SCREEN_WIDTH - 128 * MIN_GRID_SPACES)
-                        masterPoint.x = SCREEN_WIDTH - 128 * MIN_GRID_SPACES;
-                    else if (masterPoint.x < -128 * (24 - MIN_GRID_SPACES))
-                        masterPoint.x = -128 * (24 - MIN_GRID_SPACES);
-                    if (masterPoint.y > SCREEN_HEIGHT - 128 * MIN_GRID_SPACES)
-                        masterPoint.y = SCREEN_HEIGHT - 128 * MIN_GRID_SPACES;
-                    else if (masterPoint.y < -128 * (16 - MIN_GRID_SPACES))
-                        masterPoint.y = -128 * (16 - MIN_GRID_SPACES);
-                    */
-
                     //update the locator to the current position of the finger
                     locator.set((int) event.getX(), (int) event.getY());
                 }
@@ -1170,67 +1097,45 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
+
     /**
-     * Use this method when a ship is Hit or Missed
-     * //@param AttackedShip the ship from shipSet that is being attacked
+     * The default fire method, assuming it hit a ship.
      * @param Hits the amount of damage the ship from the shipSet is about to take
      * */
-
-
-    public void Fire( int Hits,int x,int y){
+    public void fire(int Hits, int x, int y){
         Ship AttackedShip=board[y][x];
         AttackedShip.applyDamage(Hits);
-        if(AttackedShip.getHitpoints()<=0){
-            removeShip(AttackedShip);
-            int one = p1.endgame();
-            int two = p2.endgame();
-            System.out.println("1");
-            sinkShip(AttackedShip);
-            endGame(one,two);
-        }else {
-            sinkShip(AttackedShip);
-        }
-
         sinkShip(AttackedShip);
     }
 
+    /**
+     * A method to check if a ship has been sunk or not (whether or not its health is 0 or lower).
+     * If a ship should be sunk, it will also check if the game should end
+     * @param AttackedShip the ship that is to be checked for sinkage.
+     */
     public void sinkShip(Ship AttackedShip) {
         if(AttackedShip.getHitpoints()<=0){
             removeShip(AttackedShip);
-
+            checkWinConditions();
         }
     }
-
-
-
 
     /**
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
      */
-
-    public void endGame(int pl1,int pl2) {
-        Intent intent = new Intent(context, WinScreen.class);
-        Intent intent1 = new Intent(context,WinScreenP2.class);
-        if(pl1==0){
-
-
-            System.out.println("Player 2 wins");
-            Toast.makeText(context, "player 2 won!!", Toast.LENGTH_LONG).show();
-            context.startActivity(intent1);
-
-            System.out.print("YO");
-        }else if(pl2==0){
-            System.out.println("Player 1 wins");
-            Toast.makeText(context, "player 1 won!!", Toast.LENGTH_SHORT).show();
-            context.startActivity(intent);
-
-
-            System.out.println("YO");
-        }else{
-
+    public void checkWinConditions() {
+        Intent p2WinScreen = new Intent(context, WinScreen.class);
+        Intent p1WinScreen = new Intent(context, WinScreenP2.class);
+        if(p1.getPlayerSet().isEmpty()) //P2 Won
+        {
+            Toast.makeText(context, "Player 2 won!", Toast.LENGTH_LONG).show();
+            context.startActivity(p1WinScreen);
         }
-
+        else if(p2.getPlayerSet().isEmpty()) //P1 won
+        {
+            Toast.makeText(context, "Player 1 won!", Toast.LENGTH_SHORT).show();
+            context.startActivity(p2WinScreen);
+        }
     }
-
 }
