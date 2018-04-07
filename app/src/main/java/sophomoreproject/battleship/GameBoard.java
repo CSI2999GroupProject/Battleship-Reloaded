@@ -1194,7 +1194,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         sinkShip(AttackedShip);
     }
 
-    private void sinkShip(Ship AttackedShip) {
+    public void sinkShip(Ship AttackedShip) {
         if(AttackedShip.getHitpoints()<=0){
             removeShip(AttackedShip);
 

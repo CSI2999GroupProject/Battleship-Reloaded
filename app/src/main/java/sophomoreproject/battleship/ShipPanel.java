@@ -387,6 +387,7 @@ public class ShipPanel implements Panel
 
                                                         ship = board[y][x];
                                                         ship.applyDamage(500);
+                                                        gb.sinkShip(ship);
                                                         System.out.println("ship found at x: " + x + " y: " + y + " name: " + ship.getName());
                                                         break;
                                                     } else {
@@ -401,6 +402,7 @@ public class ShipPanel implements Panel
                                                     if(board[y][x] != null) {
                                                         ship = board[y][x];
                                                         ship.applyDamage(500);
+                                                        gb.sinkShip(ship);
                                                     }
                                                     x--;
                                                 }
@@ -412,6 +414,7 @@ public class ShipPanel implements Panel
                                                     if(board[y][x] != null) {
                                                         ship = board[y][x];
                                                         ship.applyDamage(500);
+                                                        gb.sinkShip(ship);
                                                     }
                                                     y--;
                                                 }
@@ -421,6 +424,7 @@ public class ShipPanel implements Panel
                                                     if(board[y][x] != null) {
                                                         ship = board[y][x];
                                                         ship.applyDamage(500);
+                                                        gb.sinkShip(ship);
                                                     }
                                                     y++;
                                                 }
