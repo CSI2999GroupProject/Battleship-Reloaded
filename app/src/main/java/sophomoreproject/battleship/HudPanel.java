@@ -30,12 +30,10 @@ public class HudPanel implements Panel {
     private boolean win = false;
 
     public HudPanel(Context context, GameBoard board) {
-        final int SCREEN_WIDTH = context.getResources().getSystem().getDisplayMetrics().widthPixels;
-
         this.context = context;
         this.board = board;
 
-        hud = new Rect(SCREEN_WIDTH/8, 0, SCREEN_WIDTH, 230);
+        hud = new Rect(board.SCREEN_WIDTH/8, 0, board.SCREEN_WIDTH, board.SCREEN_HEIGHT/5);
         hudPaint = new Paint();
         hudPaint.setColor(Color.DKGRAY);
 
@@ -45,12 +43,13 @@ public class HudPanel implements Panel {
         barPaint = new Paint(); barPaint.setColor(Color.BLUE);
         pointsText = new Paint(); pointsText.setColor(Color.WHITE); pointsText.setTextSize(maxPlayerPoints.height()); pointsText.setTextAlign(Paint.Align.CENTER);
 
+        endTurnBox = new Rect(hud.right - hud.bottom*13/8, hud.bottom/8, hud.right - hud.bottom/8, hud.bottom*7/8);
+        endTurn = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.endturn_button_on), endTurnBox.width(), endTurnBox.height(), false);
+
         textStuff = new Paint();
         textStuff.setColor(Color.RED);
-        textStuff.setTextSize(72);
-
-        endTurnBox = new Rect(1800 - 420, 15, 1800 - 20, 215);
-        endTurn = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.endturn_button_on), 388, 195, false);
+        textStuff.setTextSize(endTurnBox.height()/2);
+        textStuff.setTextAlign(Paint.Align.CENTER);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class HudPanel implements Panel {
         canvas.drawRect(hud, hudPaint);
 
         canvas.drawBitmap(endTurn, endTurnBox.left, endTurnBox.top, null);
-        canvas.drawText(playerTurnText(), 600, 75, textStuff);
+        canvas.drawText(playerTurnText(), maxPlayerPoints.centerX(), (hud.top + maxPlayerPoints.top)/2, textStuff);
 
         canvas.drawRect(maxPlayerPoints, blackPaint);
         canvas.drawRect(playerPoints, barPaint);
