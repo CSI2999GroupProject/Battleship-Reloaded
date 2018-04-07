@@ -60,6 +60,9 @@ public class Marker implements Panel { // extends Ship {
             case 3:     //Rotate
                 image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.move_icon), 128, 128, false);
                 break;
+            case 4:     //Ability
+                image = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_button), 128, 128, false);
+                break;
             default:
                 break;
         }
@@ -124,6 +127,30 @@ public class Marker implements Panel { // extends Ship {
             case 3:     //Rotate Right
                 gb.rotateRight(originalShip, x, y);
                 originalShip.setpmove(originalShip.getnMove());
+                break;
+            case 4:
+                int maxHP = originalShip.maxHealth;
+                int currentHP = originalShip.getHitpoints();
+                double bonusDamage = (maxHP - currentHP) * 1.1;
+                switch(originalShip.getName()) {
+                    case "Battleship":
+                        gb.Fire(originalShip.getdamage(),x,y);
+
+                        gb.setPoints(gb.getPoints() - 3);
+                        break;
+                    case "Aircraft Carrier":
+                        gb.Fire(originalShip.getdamage(),x,y);
+
+                        gb.setPoints(gb.getPoints() - 6);
+                        break;
+                    case "destroyer":
+                        gb.Fire(100 + (int)bonusDamage, x, y);
+                        System.out.println(100 + bonusDamage);
+                        gb.setPoints((gb.getPoints() - 10));
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;

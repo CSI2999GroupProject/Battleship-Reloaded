@@ -170,13 +170,13 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
-public int getPoints() {
-    if (playerTurn == 0) {
-            return p1.getAvailablePoints();
-        } else {
-            return p2.getAvailablePoints();
+    public int getPoints() {
+        if (playerTurn == 0) {
+                return p1.getAvailablePoints();
+            } else {
+                return p2.getAvailablePoints();
+            }
         }
-    }
 
     public void setPoints(int points){
         if(playerTurn == 0) {
@@ -373,13 +373,13 @@ public int getPoints() {
         {
             minX = Math.max(xPos - fireRange, 0); //Don't check to the left of the board
             maxX = Math.min( Math.min(xPos + fireRange, lastViewableColumn() ), 23); //Farthest to the right you can shoot is the smallest of the range, the view, and the board.
-            System.out.println("Farthest check is column " + lastViewableColumn());
+           // System.out.println("Farthest check is column " + lastViewableColumn());
         }
         else
         {
             minX = Math.max( Math.max(xPos - fireRange, lastViewableColumn() ), 0); //Farthest to the left you can shoot is the largest of the range, the view, and the board.
             maxX = Math.min(xPos + fireRange, 23); //Don't check to the right of the board
-            System.out.println("Farthest check is column " + lastViewableColumn());
+           // System.out.println("Farthest check is column " + lastViewableColumn());
         }
 
         for(int i = minX; i <= maxX; i++) //Search within a horizontal range of fireRange from front of ship, unless it's off the board
@@ -531,7 +531,7 @@ public int getPoints() {
     }
 
     /**
-     * this method removes the ship fro the board so that the other methods can adjust its location or sink it
+     * this method removes the ship from the board so that the other methods can adjust its location or sink it
      * @param aShip the ship that gets removed
      */
     public void removeShip(Ship aShip)
@@ -572,7 +572,7 @@ public int getPoints() {
         }
     }
     /**
-     * method that moves the ship on the board
+     * method that moves the ship on the board, also checks if you are moving onto a mine
      * @param aShip the ship that gets placed
      * @param xPos the position of the head of the ships X
      * @param yPos the position of the head of the ships Y
@@ -581,6 +581,8 @@ public int getPoints() {
     public void move(Ship aShip, int xPos, int yPos, int pmove) {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
+        int shipSize = aShip.getShipSize();
+        int i = 0;
 
         removeShip(aShip);
 
@@ -588,8 +590,13 @@ public int getPoints() {
         {
             RaddShip(aShip, xPos + pmove, yPos);
             for(Point p : mineSet) {
-                if(xPos + pmove == p.x && yPos == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if((xPos + pmove == p.x + i && yPos == p.y)) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
@@ -597,8 +604,13 @@ public int getPoints() {
         {
             RaddShip(aShip, xPos - pmove, yPos);
             for(Point p : mineSet) {
-                if(xPos - pmove == p.x && yPos == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if(xPos - pmove == p.x - i && yPos == p.y) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
@@ -606,8 +618,13 @@ public int getPoints() {
         {
             RaddShip(aShip, xPos, yPos - pmove);
             for(Point p : mineSet) {
-                if(xPos == p.x && yPos - pmove == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if (xPos == p.x && yPos - pmove == p.y - i) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
@@ -615,8 +632,13 @@ public int getPoints() {
         {
             RaddShip(aShip, xPos, yPos + pmove);
             for(Point p : mineSet) {
-                if(xPos == p.x && yPos + pmove == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if (xPos == p.x && yPos + pmove == p.y + i) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
@@ -696,20 +718,44 @@ public int getPoints() {
             aShip.setHorizontal(false);
             aShip.setDirection(true);
             shipY=shipY-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }else if (isHorizontal)                //Facing West
         {
             aShip.setHorizontal(false);
             shipY=shipY+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
             aShip.setDirection(false);
             shipX=shipX-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else                            //Facing South
         {
             aShip.setHorizontal(true);
             aShip.setDirection(true);
             shipX=shipX+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }
         aShip.applyRotateL(-90);
 
@@ -739,21 +785,45 @@ public int getPoints() {
             aShip.setHorizontal(false);
             aShip.setDirection(false);
             shipY=shipY+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }else if (isHorizontal)                //Facing West or East
         {
             aShip.setHorizontal(false);
             aShip.setDirection(true);
             shipY=shipY-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
 
             shipX=shipX+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else                            //Facing South
         {
             aShip.setHorizontal(true);
 
             shipX=shipX-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }
 
         aShip.applyRotateL(90);
@@ -1115,16 +1185,16 @@ public int getPoints() {
             int one = p1.endgame();
             int two = p2.endgame();
             System.out.println("1");
-            sunkenship(AttackedShip);
+            sinkShip(AttackedShip);
             endGame(one,two);
         }else {
-            sunkenship(AttackedShip);
+            sinkShip(AttackedShip);
         }
 
+        sinkShip(AttackedShip);
     }
 
-    private void sunkenship(Ship AttackedShip) {
-        System.out.println("2");
+    private void sinkShip(Ship AttackedShip) {
         if(AttackedShip.getHitpoints()<=0){
             removeShip(AttackedShip);
 

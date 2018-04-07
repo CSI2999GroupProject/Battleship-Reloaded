@@ -195,9 +195,7 @@ public class Ship {
         this.Hitpoints = Hitpoints;
         maxHealth = Hitpoints;
     }
-    public void damageShip(int amount) {
-        setHitpoints(getHitpoints() - amount);
-    }
+
 
     /**
      *  A method to damage a ship. Note: Health may be negative after using this method.

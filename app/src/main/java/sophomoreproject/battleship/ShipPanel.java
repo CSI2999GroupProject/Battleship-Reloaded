@@ -131,7 +131,33 @@ public class ShipPanel implements Panel
         {
             canvas.drawBitmap(buttonImages[2], buttonBoxes[2].left, buttonBoxes[2].top, null);
         }
-        canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
+        switch(ship.getName()) {
+            case "Aircraft Carrier":
+                if(player.getAvailablePoints() > 5 && !gp.getBoard().possibleFireLoc(ship).isEmpty()) {
+                    canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
+                }
+                break;
+            case "Battleship":
+                if(player.getAvailablePoints() > 2 && !gp.getBoard().possibleFireLoc(ship).isEmpty()) {
+                    canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
+                }
+                break;
+            case "cruiser":
+                if(player.getAvailablePoints() > 3) {
+                    canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
+                }
+                break;
+            case "destroyer":
+                if(player.getAvailablePoints() > 4) {
+                    canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
+                }
+                break;
+            case "submarine":
+                if(player.getAvailablePoints() > 2) {
+                    canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
+                }
+                break;
+        }
     }
 
     @Override
@@ -243,33 +269,116 @@ public class ShipPanel implements Panel
                                 int shipSize = ship.getShipSize();
                                 int x = ship.getColumnCoord();
                                 int y = ship.getRowCoord();
+                                int j = 0;
                                 boolean isHorizontal = ship.getHorizontal();
                                 boolean direction = ship.getDirection();
 
                                 switch(ship.getName()) {
                                     case "cruiser": //places a mine behind the cruiser
                                         HashSet<Point> mines = gb.getMineSet();
+                                        Point pnt;
                                         if(isHorizontal) {
                                             if(direction) { //east
-                                                mines.add(new Point(x - shipSize, y));
-                                                int a= x-shipSize;
-                                                System.out.println("mine placed at ("+a+", "+y+")");
+                                                pnt = new Point(x - shipSize, y);
+                                                if(!mines.isEmpty()) {
+                                                    for (Point p : mines) {
+                                                        if (!pnt.equals(p.x, p.y)) {
+                                                            j++;
+                                                            System.out.println("j incremented");
+
+                                                        }
+                                                        if(j == mines.size()) {
+                                                            mines.add(pnt);
+                                                            gb.setPoints(gb.getPoints() - 4);
+                                                            System.out.println("mine added cause j == size");
+                                                        }
+                                                    }
+                                                } else {
+                                                    mines.add(pnt);
+                                                    gb.setPoints(gb.getPoints() - 4);
+                                                    System.out.println("mine added cuz empty set");
+                                                }
+
+
                                             } else { //west
-                                                mines.add(new Point(x + shipSize, y));
+                                                pnt = new Point(x + shipSize, y);
+                                                if(!mines.isEmpty()) {
+                                                    for (Point p : mines) {
+                                                        if (!pnt.equals(p.x, p.y)) {
+                                                            j++;
+                                                            System.out.println("j incremented");
+
+                                                        }
+                                                        if(j == mines.size()) {
+                                                            mines.add(pnt);
+                                                            gb.setPoints(gb.getPoints() - 4);
+                                                            System.out.println("mine added cause j == size");
+                                                        }
+                                                    }
+                                                } else {
+                                                    mines.add(pnt);
+                                                    gb.setPoints(gb.getPoints() - 4);
+                                                    System.out.println("mine added cuz empty set");
+                                                }
                                             }
                                         } else {
                                             if(direction) { //north
-                                                mines.add(new Point(x, y + shipSize));
+                                                pnt = new Point(x, y + shipSize);
+                                                if(!mines.isEmpty()) {
+                                                    for (Point p : mines) {
+                                                        if (!pnt.equals(p.x, p.y)) {
+                                                            j++;
+                                                            System.out.println("j incremented");
+
+                                                        }
+                                                        if(j == mines.size()) {
+                                                            mines.add(pnt);
+                                                            gb.setPoints(gb.getPoints() - 4);
+                                                            System.out.println("mine added cause j == size");
+                                                        }
+                                                    }
+                                                } else {
+                                                    mines.add(pnt);
+                                                    gb.setPoints(gb.getPoints() - 4);
+                                                    System.out.println("mine added cuz empty set");
+                                                }
                                             } else { //south
-                                                mines.add(new Point(x, y - shipSize));
+                                                pnt = new Point(x, y - shipSize);
+                                                if(!mines.isEmpty()) {
+                                                    for (Point p : mines) {
+                                                        if (!pnt.equals(p.x, p.y)) {
+                                                            j++;
+                                                            System.out.println("j incremented");
+
+                                                        }
+                                                        if(j == mines.size()) {
+                                                            mines.add(pnt);
+                                                            gb.setPoints(gb.getPoints() - 4);
+                                                            System.out.println("mine added cause j == size");
+                                                        }
+                                                    }
+                                                } else {
+                                                    mines.add(pnt);
+                                                    gb.setPoints(gb.getPoints() - 4);
+                                                    System.out.println("mine added cuz empty set");
+                                                }
                                             }
                                         }
 
+
+
                                         break;
                                     case "Aircraft Carrier":
+                                        validLocations = gp.getBoard().possibleFireLoc(ship);
+                                        cost = 6;
+                                        if(cost <= pointsLeft) {
+                                            for (Point point : validLocations) {
+                                                gp.panels.add(new Marker(gp.getContext(), gp, 4, ship, point.x, point.y, cost));
+                                            }
+                                        }
                                         break;
                                     case "submarine": //fires torpedo across the board depending on the direction the ship is
-                                        Ship ship;
+                                        //Ship ship;
                                         if(isHorizontal) {
                                             if(direction) { //east
                                                 x++;
@@ -277,7 +386,7 @@ public class ShipPanel implements Panel
                                                     if(board[y][x] != null) {
 
                                                         ship = board[y][x];
-                                                        ship.damageShip(500);
+                                                        ship.applyDamage(500);
                                                         System.out.println("ship found at x: " + x + " y: " + y + " name: " + ship.getName());
                                                         break;
                                                     } else {
@@ -291,7 +400,7 @@ public class ShipPanel implements Panel
                                                 while(x >= 0) {
                                                     if(board[y][x] != null) {
                                                         ship = board[y][x];
-                                                        ship.damageShip(500);
+                                                        ship.applyDamage(500);
                                                     }
                                                     x--;
                                                 }
@@ -302,7 +411,7 @@ public class ShipPanel implements Panel
                                                 while(y >= 0) {
                                                     if(board[y][x] != null) {
                                                         ship = board[y][x];
-                                                        ship.damageShip(500);
+                                                        ship.applyDamage(500);
                                                     }
                                                     y--;
                                                 }
@@ -311,16 +420,33 @@ public class ShipPanel implements Panel
                                                 while(y < 16) {
                                                     if(board[y][x] != null) {
                                                         ship = board[y][x];
-                                                        ship.damageShip(500);
+                                                        ship.applyDamage(500);
                                                     }
                                                     y++;
                                                 }
                                             }
                                         }
+                                        gb.setPoints(gb.getPoints() - 3);
                                         break;
                                     case "Battleship":
+                                        validLocations = gp.getBoard().possibleFireLoc(ship);
+                                        cost = 3;
+                                        for (Point point : validLocations) {
+                                            if (cost <= pointsLeft) {
+                                                gp.panels.add(new Marker(gp.getContext(), gp, 4, ship, point.x, point.y, cost));
+
+                                            }
+                                        }
                                         break;
-                                    case "destroyer":
+                                    case "destroyer": //fires a shot that scales on missing health
+                                        validLocations = gp.getBoard().possibleFireLoc(ship);
+                                        cost = 10;
+                                        for (Point point : validLocations) {
+                                            if (cost <= pointsLeft) {
+                                                gp.panels.add(new Marker(gp.getContext(), gp, 4, ship, point.x, point.y, cost));
+
+                                            }
+                                        }
                                         break;
                                 }
                                 break;
