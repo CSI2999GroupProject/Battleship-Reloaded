@@ -54,16 +54,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="168dp" />
-
-    <ImageButton
-        android:id="@+id/settingbutton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/settings2"
-        tools:layout_editor_absoluteX="702dp"
-        tools:layout_editor_absoluteY="242dp"
-        android:onClick="on"
-        />
 </android.support.constraint.ConstraintLayout>

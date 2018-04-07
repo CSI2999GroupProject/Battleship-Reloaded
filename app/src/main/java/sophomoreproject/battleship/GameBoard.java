@@ -1,6 +1,7 @@
 package sophomoreproject.battleship;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -8,15 +9,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import sophomoreproject.battleship.ships.Ship;
 
@@ -40,7 +38,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Point masterPoint;
     private Context context;
     private GamePanel gp;
-    private int playerTurn;
+    private int playerTurn = 0;
     private Player p1, p2;
     private TextView winningText = null;
     private Layout winningScreen = null;
@@ -168,13 +166,13 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
     }
 
-public int getPoints() {
-    if (playerTurn == 0) {
-            return p1.getAvailablePoints();
-        } else {
-            return p2.getAvailablePoints();
+    public int getPoints() {
+        if (playerTurn == 0) {
+                return p1.getAvailablePoints();
+            } else {
+                return p2.getAvailablePoints();
+            }
         }
-    }
 
     public void setPoints(int points){
         if(playerTurn == 0) {
@@ -371,13 +369,13 @@ public int getPoints() {
         {
             minX = Math.max(xPos - fireRange, 0); //Don't check to the left of the board
             maxX = Math.min( Math.min(xPos + fireRange, lastViewableColumn() ), 23); //Farthest to the right you can shoot is the smallest of the range, the view, and the board.
-            System.out.println("Farthest check is column " + lastViewableColumn());
+           // System.out.println("Farthest check is column " + lastViewableColumn());
         }
         else
         {
             minX = Math.max( Math.max(xPos - fireRange, lastViewableColumn() ), 0); //Farthest to the left you can shoot is the largest of the range, the view, and the board.
             maxX = Math.min(xPos + fireRange, 23); //Don't check to the right of the board
-            System.out.println("Farthest check is column " + lastViewableColumn());
+           // System.out.println("Farthest check is column " + lastViewableColumn());
         }
 
         for(int i = minX; i <= maxX; i++) //Search within a horizontal range of fireRange from front of ship, unless it's off the board
@@ -529,7 +527,7 @@ public int getPoints() {
     }
 
     /**
-     * this method removes the ship fro the board so that the other methods can adjust its location or sink it
+     * this method removes the ship from the board so that the other methods can adjust its location or sink it
      * @param aShip the ship that gets removed
      */
     public void removeShip(Ship aShip)
@@ -542,11 +540,8 @@ public int getPoints() {
 
         shipSet.remove(aShip);
 
-        if(playerTurn == 0) {
-            p1.getPlayerSet().remove(aShip);
-        } else {
-            p2.getPlayerSet().remove(aShip);
-        }
+        p1.getPlayerSet().remove(aShip);
+        p2.getPlayerSet().remove(aShip);
 
         if (isHorizontal && direction)          //Facing East
         {
@@ -570,7 +565,7 @@ public int getPoints() {
         }
     }
     /**
-     * method that moves the ship on the board
+     * method that moves the ship on the board, also checks if you are moving onto a mine
      * @param aShip the ship that gets placed
      * @param xPos the position of the head of the ships X
      * @param yPos the position of the head of the ships Y
@@ -579,98 +574,67 @@ public int getPoints() {
     public void move(Ship aShip, int xPos, int yPos, int pmove) {
         boolean isHorizontal = aShip.getHorizontal();
         boolean direction = aShip.getDirection();
+        int shipSize = aShip.getShipSize();
+        int i = 0;
 
         removeShip(aShip);
 
         if (isHorizontal && direction)          //Facing East
         {
-            RaddShip(aShip, xPos + pmove, yPos);
+            addShip(aShip, xPos + pmove, yPos);
             for(Point p : mineSet) {
-                if(xPos + pmove == p.x && yPos == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if((xPos + pmove == p.x + i && yPos == p.y)) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
         else if (isHorizontal)                  //West
         {
-            RaddShip(aShip, xPos - pmove, yPos);
+            addShip(aShip, xPos - pmove, yPos);
             for(Point p : mineSet) {
-                if(xPos - pmove == p.x && yPos == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if(xPos - pmove == p.x - i && yPos == p.y) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
         else if (direction)                     //North
         {
-            RaddShip(aShip, xPos, yPos - pmove);
+            addShip(aShip, xPos, yPos - pmove);
             for(Point p : mineSet) {
-                if(xPos == p.x && yPos - pmove == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if (xPos == p.x && yPos - pmove == p.y - i) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
         else                                    //South
         {
-            RaddShip(aShip, xPos, yPos + pmove);
+            addShip(aShip, xPos, yPos + pmove);
             for(Point p : mineSet) {
-                if(xPos == p.x && yPos + pmove == p.y) {
-                    aShip.damageShip(500);
+                while(i < shipSize) {
+                    if (xPos == p.x && yPos + pmove == p.y + i) {
+                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                        sinkShip(aShip);
+                        mineSet.remove(p);
+                    }
+                    i++;
                 }
             }
         }
-    }
-
-    /**
-     * adds the ships to the board after move and rotate
-     * @param aShip the ship that gets placed
-     * @param xPos the position of the head of the ships X
-     * @param yPos the position of the head of the ships Y
-     * @throws IndexOutOfBoundsException
-     */
-    public void RaddShip(Ship aShip, int xPos, int yPos) throws IndexOutOfBoundsException {
-        int shipSize = aShip.getShipSize();
-        boolean isHorizontal = aShip.getHorizontal();
-        boolean direction = aShip.getDirection();
-
-        aShip.setRowCoord(yPos);
-        aShip.setColumnCoord(xPos);
-        if (shipSize > 1){
-            if (isHorizontal){
-                if (direction) {
-                    for (int i = 0; i < shipSize; i++) {
-
-                        board[yPos][xPos - i] = aShip;
-                    }
-                }else if (!direction){
-                    for (int i = 0; i < shipSize; i++){
-                        board[yPos][xPos + i] = aShip;
-                    }
-                }
-            }else{
-                if (direction) {
-                    for (int i = 0; i < shipSize; i++) {
-
-                        board[yPos + i][xPos] = aShip;
-
-
-                    }
-                } else {
-                    for (int i = 0; i < shipSize; i++) {
-
-                        board[yPos - i][xPos] = aShip;
-
-                    }
-                }}
-        } else {
-            board[yPos][xPos] = aShip;
-        }
-        shipSet.add(aShip);
-        if(playerTurn == 0) {
-            p1.getPlayerSet().add(aShip);
-        } else {
-            p2.getPlayerSet().add(aShip);
-        }
-
     }
 
     /**
@@ -694,24 +658,48 @@ public int getPoints() {
             aShip.setHorizontal(false);
             aShip.setDirection(true);
             shipY=shipY-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }else if (isHorizontal)                //Facing West
         {
             aShip.setHorizontal(false);
             shipY=shipY+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
             aShip.setDirection(false);
             shipX=shipX-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else                            //Facing South
         {
             aShip.setHorizontal(true);
             aShip.setDirection(true);
             shipX=shipX+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }
         aShip.applyRotateL(-90);
 
-        RaddShip(aShip, shipX, shipY);
+        addShip(aShip, shipX, shipY);
 
     }
 
@@ -737,26 +725,50 @@ public int getPoints() {
             aShip.setHorizontal(false);
             aShip.setDirection(false);
             shipY=shipY+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }else if (isHorizontal)                //Facing West or East
         {
             aShip.setHorizontal(false);
             aShip.setDirection(true);
             shipY=shipY-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else if (direction)             //Facing North
         {
             aShip.setHorizontal(true);
 
             shipX=shipX+shipSize-1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         } else                            //Facing South
         {
             aShip.setHorizontal(true);
 
             shipX=shipX-shipSize+1;
+            for(Point p: mineSet) {
+                if(shipX == p.x && shipY == p.y) {
+                    aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+                    mineSet.remove(p);
+                }
+            }
         }
 
         aShip.applyRotateL(90);
 
-        RaddShip(aShip, shipX, shipY);
+        addShip(aShip, shipX, shipY);
     }
     /**
      * A method to see if a player has enough points to place a ship on the board
@@ -908,7 +920,7 @@ public int getPoints() {
 
 
     /**
-     * A method to update the map's position on the board
+     * A method to update the map's position on the screen
      *
      * @param point where the user has dragged the top-left corner of the map
      */
@@ -951,6 +963,8 @@ public int getPoints() {
             if (next instanceof ShipPanel || next instanceof Marker)
                 gp.panels.remove(next);
         }
+
+        isScrolling = false;
     }
 
     public boolean contains(Point point)
@@ -1011,13 +1025,13 @@ public int getPoints() {
                     else if (masterPoint.y < -128*16 + SCREEN_HEIGHT)
                         masterPoint.y = -128*16 + SCREEN_HEIGHT;
 
-                    if(ready)
+                    if(ready) //In-game
                     {
-                        if(playerTurn == 0)
+                        if(playerTurn == 0) //P1's turn
                         {
-                            if (masterPoint.x > SCREEN_WIDTH)
+                            if (masterPoint.x > SCREEN_WIDTH) //You can't scroll so far to the left that the board is completely offscreen
                                 masterPoint.x = SCREEN_WIDTH;
-                            else if (masterPoint.x < -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH)
+                            else if (masterPoint.x < -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH) //Can't see more than VIEW_RANGE tiles to the right of your rightmost ship
                                 masterPoint.x = -128*xPosOfShip(p1) - VIEW_RANGE + SCREEN_WIDTH;
                         }
                         else
@@ -1039,34 +1053,28 @@ public int getPoints() {
                         }
                         else
                         {
-                            if (masterPoint.x > -128*12 + SCREEN_WIDTH/4)
-                                masterPoint.x = -128*12 + SCREEN_WIDTH/4;
+                            if (masterPoint.x > -128*12 + SCREEN_WIDTH/5)
+                                masterPoint.x = -128*12 + SCREEN_WIDTH/5;
                             else if (masterPoint.x < -128*24)
                                 masterPoint.x = -128*24;
                         }
                     }
-
-                    /*
-                    //Will not let the user scroll anymore if there are only MIN_GRID_SPACES left on the screen.
-                    if (masterPoint.x > SCREEN_WIDTH - 128 * MIN_GRID_SPACES)
-                        masterPoint.x = SCREEN_WIDTH - 128 * MIN_GRID_SPACES;
-                    else if (masterPoint.x < -128 * (24 - MIN_GRID_SPACES))
-                        masterPoint.x = -128 * (24 - MIN_GRID_SPACES);
-                    if (masterPoint.y > SCREEN_HEIGHT - 128 * MIN_GRID_SPACES)
-                        masterPoint.y = SCREEN_HEIGHT - 128 * MIN_GRID_SPACES;
-                    else if (masterPoint.y < -128 * (16 - MIN_GRID_SPACES))
-                        masterPoint.y = -128 * (16 - MIN_GRID_SPACES);
-                    */
-
                     //update the locator to the current position of the finger
                     locator.set((int) event.getX(), (int) event.getY());
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                Ship selected = null;
+                int y = ((int) event.getY() - masterPoint.y) / 128;
+                int x = ((int) event.getX() - masterPoint.x) / 128;
+
+                if(x >= 0 && x <= 23 && y >= 0 && y <= 15)
+                {
+                    selected = board[y][x];
+                }
+
                 if (!isScrolling && ready) //User only clicked a ship, didn't swipe screen over one
                 {
-                    Ship selected = board[((int) event.getY() - masterPoint.y) / 128][((int) event.getX() - masterPoint.x) / 128];
-
                     purgeOldPanels();
 
                     if(selected != null) //Player clicked on a ship, not empty space
@@ -1080,8 +1088,6 @@ public int getPoints() {
                 }
                 else if (!isScrolling) //User clicks on a ship while still building a fleet
                 {
-                    Ship selected = board[((int)event.getY() - masterPoint.y)/128][((int)event.getX() - masterPoint.x)/128];
-
                     if(selected != null)
                     {
                         removeShipWithCost(selected);
@@ -1091,85 +1097,45 @@ public int getPoints() {
         }
     }
 
+
     /**
-     * Use this method when a ship is Hit or Missed
-     * //@param AttackedShip the ship from shipSet that is being attacked
+     * The default fire method, assuming it hit a ship.
      * @param Hits the amount of damage the ship from the shipSet is about to take
      * */
-
-
-    public void Fire( int Hits,int x,int y){
+    public void fire(int Hits, int x, int y){
         Ship AttackedShip=board[y][x];
         AttackedShip.applyDamage(Hits);
-        sunkenship(AttackedShip);
+        sinkShip(AttackedShip);
     }
 
-    private void sunkenship(Ship AttackedShip) {
+    /**
+     * A method to check if a ship has been sunk or not (whether or not its health is 0 or lower).
+     * If a ship should be sunk, it will also check if the game should end
+     * @param AttackedShip the ship that is to be checked for sinkage.
+     */
+    public void sinkShip(Ship AttackedShip) {
         if(AttackedShip.getHitpoints()<=0){
             removeShip(AttackedShip);
+            checkWinConditions();
         }
-    }
-
-    /**
-     * Use this method to calculate the number of ships lost in order to determine if the player
-     * lost
-     *
-     * @param PlayerShips the number of ships from shipSet that you lost
-     */
-    public boolean hasLost(HashSet<Ship> PlayerShips) {
-        return PlayerShips.isEmpty();
-    }
-
-    /**
-     * Use this method to calculate the number of the opponent's ships the player destroyed in
-     * order to determine if the player win
-     *
-     * @param OpponentsShips the number of ships from shipSet that you destroyed
-     */
-    public boolean hasWon(HashSet<Ship> OpponentsShips) {
-        return OpponentsShips.isEmpty();
-    }
-
-    /**
-     * Use this method to calculate the number ships that the player still has in order
-     * to determine if the player still has any ships left
-     */
-    public boolean hasShips(HashSet<Ship> PlayerShips) {
-        if (PlayerShips.isEmpty())
-        {
-            return false;
-        }
-
-        return true;
     }
 
     /**
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
      */
-
-    public void endGame(int pl1,int pl2) {
-        if(pl1==0){
-            System.out.println("Player 2 wins");
-
-            System.out.print("YO");
-        }else if(pl2==0){
-            System.out.println("Player 1 wins");
-
-    /*public void endGame(Player player1, Player player2) {
-        if (!hasShips(player1.getPlayerSet())) {
-            setWinText(player2);
+    public void checkWinConditions() {
+        Intent p2WinScreen = new Intent(context, WinScreen.class);
+        Intent p1WinScreen = new Intent(context, WinScreenP2.class);
+        if(p1.getPlayerSet().isEmpty()) //P2 Won
+        {
+            Toast.makeText(context, "Player 2 won!", Toast.LENGTH_LONG).show();
+            context.startActivity(p1WinScreen);
         }
-        if (!hasShips(player2.getPlayerSet())) {
-            setWinText(player1);
+        else if(p2.getPlayerSet().isEmpty()) //P1 won
+        {
+            Toast.makeText(context, "Player 1 won!", Toast.LENGTH_SHORT).show();
+            context.startActivity(p2WinScreen);
         }
-    }*/
-
-            System.out.println("YO");
-        }else{
-
-        }
-
     }
-
 }
