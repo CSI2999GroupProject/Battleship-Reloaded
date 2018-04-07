@@ -953,6 +953,8 @@ public int getPoints() {
             if (next instanceof ShipPanel || next instanceof Marker)
                 gp.panels.remove(next);
         }
+
+        isScrolling = false;
     }
 
     public boolean contains(Point point)
@@ -1041,8 +1043,8 @@ public int getPoints() {
                         }
                         else
                         {
-                            if (masterPoint.x > -128*12 + SCREEN_WIDTH/4)
-                                masterPoint.x = -128*12 + SCREEN_WIDTH/4;
+                            if (masterPoint.x > -128*12 + SCREEN_WIDTH/5)
+                                masterPoint.x = -128*12 + SCREEN_WIDTH/5;
                             else if (masterPoint.x < -128*24)
                                 masterPoint.x = -128*24;
                         }
