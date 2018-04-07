@@ -42,7 +42,7 @@ public class GameBoard implements GameBoardInterface, Panel {
     private Point masterPoint;
     private Context context;
     private GamePanel gp;
-    private int playerTurn;
+    private int playerTurn = 0;
     private Player p1, p2;
     private TextView winningText = null;
     private Layout winningScreen = null;
@@ -1108,47 +1108,29 @@ public int getPoints() {
     public void Fire( int Hits,int x,int y){
         Ship AttackedShip=board[y][x];
         AttackedShip.applyDamage(Hits);
-        sunkenship(AttackedShip);
+        if(AttackedShip.getHitpoints()<=0){
+            removeShip(AttackedShip);
+            int one = p1.endgame();
+            int two = p2.endgame();
+            System.out.println("1");
+            sunkenship(AttackedShip);
+            endGame(one,two);
+        }else {
+            sunkenship(AttackedShip);
+        }
+
     }
 
     private void sunkenship(Ship AttackedShip) {
+        System.out.println("2");
         if(AttackedShip.getHitpoints()<=0){
             removeShip(AttackedShip);
+
         }
     }
 
-    /**
-     * Use this method to calculate the number of ships lost in order to determine if the player
-     * lost
-     *
-     * @param PlayerShips the number of ships from shipSet that you lost
-     */
-    public boolean hasLost(HashSet<Ship> PlayerShips) {
-        return PlayerShips.isEmpty();
-    }
 
-    /**
-     * Use this method to calculate the number of the opponent's ships the player destroyed in
-     * order to determine if the player win
-     *
-     * @param OpponentsShips the number of ships from shipSet that you destroyed
-     */
-    public boolean hasWon(HashSet<Ship> OpponentsShips) {
-        return OpponentsShips.isEmpty();
-    }
 
-    /**
-     * Use this method to calculate the number ships that the player still has in order
-     * to determine if the player still has any ships left
-     */
-    public boolean hasShips(HashSet<Ship> PlayerShips) {
-        if (PlayerShips.isEmpty())
-        {
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * Use this method to end the game and display the win screen if one of the players is
@@ -1171,14 +1153,6 @@ public int getPoints() {
             Toast.makeText(context, "player 1 won!!", Toast.LENGTH_SHORT).show();
             context.startActivity(intent);
 
-    /*public void endGame(Player player1, Player player2) {
-        if (!hasShips(player1.getPlayerSet())) {
-            setWinText(player2);
-        }
-        if (!hasShips(player2.getPlayerSet())) {
-            setWinText(player1);
-        }
-    }*/
 
             System.out.println("YO");
         }else{
