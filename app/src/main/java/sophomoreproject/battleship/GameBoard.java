@@ -1134,7 +1134,7 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
         else if(p2.getPlayerSet().isEmpty()) //P1 won
         {
-            Toast.makeText(context, "Player 1 won!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Player 1 won!", Toast.LENGTH_LONG).show();
             context.startActivity(p2WinScreen);
         }
     }
