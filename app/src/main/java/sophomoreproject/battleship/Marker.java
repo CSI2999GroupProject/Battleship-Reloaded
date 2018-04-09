@@ -108,10 +108,12 @@ public class Marker implements Panel { // extends Ship {
                 break;
             case 2:     //Rotate Left
                 gb.rotateLeft(originalShip, x, y);
+                gb.setPoints(gb.getPoints()-originalShip.getShipSize()-1);
                 originalShip.setpmove(originalShip.getnMove());
                 break;
             case 3:     //Rotate Right
                 gb.rotateRight(originalShip, x, y);
+                gb.setPoints(gb.getPoints()-originalShip.getShipSize()-1);
                 originalShip.setpmove(originalShip.getnMove());
                 break;
             default:
