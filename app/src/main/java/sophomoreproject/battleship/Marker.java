@@ -124,10 +124,12 @@ public class Marker implements Panel { // extends Ship {
                     break;
                 case 2:     //Rotate Left
                     gb.rotateLeft(originalShip, x, y);
+                    gb.setPoints(gb.getPoints()-originalShip.getShipSize()-1);
                     originalShip.setpmove(originalShip.getnMove());
                     break;
                 case 3:     //Rotate Right
                     gb.rotateRight(originalShip, x, y);
+                    gb.setPoints(gb.getPoints()-originalShip.getShipSize()-1);
                     originalShip.setpmove(originalShip.getnMove());
                     break;
                 case 4:
@@ -138,17 +140,17 @@ public class Marker implements Panel { // extends Ship {
                         case "Battleship":
                             gb.fire(originalShip.getdamage(),x,y);
 
-                            gb.setPoints(gb.getPoints() - 3);
+                            gb.setPoints(gb.getPoints() - originalShip.getDamageCost());
                             break;
                         case "Aircraft Carrier":
                             gb.fire(originalShip.getdamage(),x,y);
 
-                            gb.setPoints(gb.getPoints() - 6);
+                            gb.setPoints(gb.getPoints() - 2);
                             break;
                         case "destroyer":
                             gb.fire(100 + (int)bonusDamage, x, y);
                             System.out.println(100 + bonusDamage);
-                            gb.setPoints((gb.getPoints() - 10));
+                            gb.setPoints((gb.getPoints() - 6));
                             break;
                         default:
                             break;
