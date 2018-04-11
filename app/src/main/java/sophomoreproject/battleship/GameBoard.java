@@ -582,57 +582,63 @@ public class GameBoard implements GameBoardInterface, Panel {
         if (isHorizontal && direction)          //Facing East
         {
             addShip(aShip, xPos + pmove, yPos);
-            for(Point p : mineSet) {
-                while(i < shipSize) {
-                    if((xPos + pmove == p.x + i && yPos == p.y)) {
-                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+            while(i < shipSize) {
+                for (Point p : mineSet) {
+                    System.out.println("x: " + p.x + " y: " + p.y);
+                    if ((p.equals(xPos + pmove - i, yPos))) {
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
                         sinkShip(aShip);
                         mineSet.remove(p);
+                        break;
                     }
-                    i++;
+
                 }
+                i++;
             }
         }
         else if (isHorizontal)                  //West
         {
             addShip(aShip, xPos - pmove, yPos);
-            for(Point p : mineSet) {
-                while(i < shipSize) {
-                    if(xPos - pmove == p.x - i && yPos == p.y) {
-                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+            while(i < shipSize) {
+                for (Point p : mineSet) {
+                    if ((p.equals(xPos - pmove + i, yPos))) {
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
                         sinkShip(aShip);
                         mineSet.remove(p);
+                        break;
                     }
-                    i++;
                 }
+                i++;
             }
         }
         else if (direction)                     //North
         {
             addShip(aShip, xPos, yPos - pmove);
-            for(Point p : mineSet) {
-                while(i < shipSize) {
-                    if (xPos == p.x && yPos - pmove == p.y - i) {
-                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+            while(i < shipSize) {
+                for (Point p : mineSet) {
+                    if ((p.equals(xPos, yPos - pmove + i))) {
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
                         sinkShip(aShip);
                         mineSet.remove(p);
+                        break;
                     }
-                    i++;
                 }
+                i++;
             }
         }
         else                                    //South
         {
             addShip(aShip, xPos, yPos + pmove);
-            for(Point p : mineSet) {
-                while(i < shipSize) {
-                    if (xPos == p.x && yPos + pmove == p.y + i) {
-                        aShip.applyDamage((int)(aShip.getHitpoints() * .5));
+            while(i < shipSize) {
+                for (Point p : mineSet) {
+                    if ((p.equals(xPos, yPos + pmove - i))) {
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
                         sinkShip(aShip);
                         mineSet.remove(p);
+                        break;
                     }
-                    i++;
                 }
+                i++;
             }
         }
     }

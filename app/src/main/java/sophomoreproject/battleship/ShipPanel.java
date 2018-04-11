@@ -272,6 +272,7 @@ public class ShipPanel implements Panel
                                 int j = 0;
                                 boolean isHorizontal = ship.getHorizontal();
                                 boolean direction = ship.getDirection();
+                                Ship otherShip;
 
                                 switch(ship.getName()) {
                                     case "cruiser": //places a mine behind the cruiser
@@ -288,15 +289,25 @@ public class ShipPanel implements Panel
 
                                                         }
                                                         if(j == mines.size()) {
-                                                            mines.add(pnt);
-                                                            gb.setPoints(gb.getPoints() - 4);
-                                                            System.out.println("mine added cause j == size");
+                                                            if(board[y][x - shipSize] == null) {
+                                                                mines.add(pnt);
+                                                                gb.setPoints(gb.getPoints() - 4);
+                                                                System.out.println("mine added cause j == size");
+                                                            } else {
+                                                                otherShip = board[y][x - shipSize];
+                                                                otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                            }
                                                         }
                                                     }
                                                 } else {
-                                                    mines.add(pnt);
-                                                    gb.setPoints(gb.getPoints() - 4);
-                                                    System.out.println("mine added cuz empty set");
+                                                    if(board[y][x - shipSize] == null) {
+                                                        mines.add(pnt);
+                                                        gb.setPoints(gb.getPoints() - 4);
+                                                        System.out.println("mine added cause j == size");
+                                                    } else {
+                                                        otherShip = board[y][x - shipSize];
+                                                        otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                    }
                                                 }
 
 
@@ -310,15 +321,25 @@ public class ShipPanel implements Panel
 
                                                         }
                                                         if(j == mines.size()) {
-                                                            mines.add(pnt);
-                                                            gb.setPoints(gb.getPoints() - 4);
-                                                            System.out.println("mine added cause j == size");
+                                                            if(board[y][x + shipSize] == null) {
+                                                                mines.add(pnt);
+                                                                gb.setPoints(gb.getPoints() - 4);
+                                                                System.out.println("mine added cause j == size");
+                                                            } else {
+                                                                otherShip = board[y][x + shipSize];
+                                                                otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                            }
                                                         }
                                                     }
                                                 } else {
-                                                    mines.add(pnt);
-                                                    gb.setPoints(gb.getPoints() - 4);
-                                                    System.out.println("mine added cuz empty set");
+                                                    if(board[y][x + shipSize] == null) {
+                                                        mines.add(pnt);
+                                                        gb.setPoints(gb.getPoints() - 4);
+                                                        System.out.println("mine added cause j == size");
+                                                    } else {
+                                                        otherShip = board[y][x + shipSize];
+                                                        otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                    }
                                                 }
                                             }
                                         } else {
@@ -332,15 +353,25 @@ public class ShipPanel implements Panel
 
                                                         }
                                                         if(j == mines.size()) {
-                                                            mines.add(pnt);
-                                                            gb.setPoints(gb.getPoints() - 4);
-                                                            System.out.println("mine added cause j == size");
+                                                            if(board[y + shipSize][x] == null) {
+                                                                mines.add(pnt);
+                                                                gb.setPoints(gb.getPoints() - 4);
+                                                                System.out.println("mine added cause j == size");
+                                                            } else {
+                                                                otherShip = board[y + shipSize][x];
+                                                                otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                            }
                                                         }
                                                     }
                                                 } else {
-                                                    mines.add(pnt);
-                                                    gb.setPoints(gb.getPoints() - 4);
-                                                    System.out.println("mine added cuz empty set");
+                                                    if(board[y + shipSize][x] == null) {
+                                                        mines.add(pnt);
+                                                        gb.setPoints(gb.getPoints() - 4);
+                                                        System.out.println("mine added cause j == size");
+                                                    } else {
+                                                        otherShip = board[y + shipSize][x];
+                                                        otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                    }
                                                 }
                                             } else { //south
                                                 pnt = new Point(x, y - shipSize);
@@ -352,15 +383,25 @@ public class ShipPanel implements Panel
 
                                                         }
                                                         if(j == mines.size()) {
-                                                            mines.add(pnt);
-                                                            gb.setPoints(gb.getPoints() - 4);
-                                                            System.out.println("mine added cause j == size");
+                                                            if(board[y - shipSize][x] == null) {
+                                                                mines.add(pnt);
+                                                                gb.setPoints(gb.getPoints() - 4);
+                                                                System.out.println("mine added cause j == size");
+                                                            } else {
+                                                                otherShip = board[y - shipSize][x];
+                                                                otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                            }
                                                         }
                                                     }
                                                 } else {
-                                                    mines.add(pnt);
-                                                    gb.setPoints(gb.getPoints() - 4);
-                                                    System.out.println("mine added cuz empty set");
+                                                    if(board[y - shipSize][x] == null) {
+                                                        mines.add(pnt);
+                                                        gb.setPoints(gb.getPoints() - 4);
+                                                        System.out.println("mine added cause j == size");
+                                                    } else {
+                                                        otherShip = board[y - shipSize][x];
+                                                        otherShip.applyDamage((int) (ship.getHitpoints() * .5));
+                                                    }
                                                 }
                                             }
                                         }
