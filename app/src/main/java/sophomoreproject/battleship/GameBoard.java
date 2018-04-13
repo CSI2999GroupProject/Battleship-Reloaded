@@ -1119,7 +1119,6 @@ public class GameBoard implements GameBoardInterface, Panel {
             checkWinConditions();
         }
     }
-
     /**
      * Use this method to end the game and display the win screen if one of the players is
      * out of ships
