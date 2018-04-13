@@ -1,6 +1,7 @@
 package sophomoreproject.battleship;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -10,6 +11,7 @@ import android.text.Layout;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -1107,6 +1109,7 @@ public int getPoints() {
     private void sunkenship(Ship AttackedShip) {
         if(AttackedShip.getHitpoints()<=0){
             removeShip(AttackedShip);
+
         }
     }
 
@@ -1159,19 +1162,12 @@ public int getPoints() {
             context.startActivity(intent1);
 
             System.out.print("YO");
-        }else if(pl2==0){
+        }else if(pl2==0) {
             System.out.println("Player 1 wins");
             Toast.makeText(context, "player 1 won!!", Toast.LENGTH_SHORT).show();
             context.startActivity(intent);
 
-    /*public void endGame(Player player1, Player player2) {
-        if (!hasShips(player1.getPlayerSet())) {
-            setWinText(player2);
-        }
-        if (!hasShips(player2.getPlayerSet())) {
-            setWinText(player1);
-        }
-    }*/
+
 
             System.out.println("YO");
         }else{
