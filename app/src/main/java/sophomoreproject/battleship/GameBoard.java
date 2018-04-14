@@ -586,12 +586,11 @@ public class GameBoard implements GameBoardInterface, Panel {
                 for (Point p : mineSet) {
                     System.out.println("x: " + p.x + " y: " + p.y);
                     if ((p.equals(xPos + pmove - i, yPos))) {
-                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5) + 50);
                         sinkShip(aShip);
                         mineSet.remove(p);
                         break;
                     }
-
                 }
                 i++;
             }
@@ -602,7 +601,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             while(i < shipSize) {
                 for (Point p : mineSet) {
                     if ((p.equals(xPos - pmove + i, yPos))) {
-                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5) + 50);
                         sinkShip(aShip);
                         mineSet.remove(p);
                         break;
@@ -617,7 +616,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             while(i < shipSize) {
                 for (Point p : mineSet) {
                     if ((p.equals(xPos, yPos - pmove + i))) {
-                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5) + 50);
                         sinkShip(aShip);
                         mineSet.remove(p);
                         break;
@@ -632,7 +631,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             while(i < shipSize) {
                 for (Point p : mineSet) {
                     if ((p.equals(xPos, yPos + pmove - i))) {
-                        aShip.applyDamage((int) (aShip.getHitpoints() * .5));
+                        aShip.applyDamage((int) (aShip.getHitpoints() * .5) + 50);
                         sinkShip(aShip);
                         mineSet.remove(p);
                         break;
