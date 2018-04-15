@@ -24,5 +24,6 @@ public class WinScreenP2 extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         startActivity(new Intent(getApplicationContext(), MainMenu.class));
+        finish();
     }
 }
