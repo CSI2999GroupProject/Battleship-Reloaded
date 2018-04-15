@@ -151,7 +151,7 @@ public class ShipPanel implements Panel
                 }
                 break;
             case "destroyer":
-                if(player.getAvailablePoints() > 4) {
+                if(player.getAvailablePoints() > 4 && !gp.getBoard().possibleFireLoc(ship).isEmpty()) {
                     canvas.drawBitmap(buttonImages[3], buttonBoxes[3].left, buttonBoxes[3].top, null);
                 }
                 break;
@@ -292,6 +292,7 @@ public class ShipPanel implements Panel
                                                                     System.out.println("mine added cause j == size");
                                                                 } else {
                                                                     otherShip = board[y][x - shipSize];
+                                                                    gb.setPoints(gb.getPoints() - 4);
                                                                     otherShip.applyDamage((int) (otherShip.getHitpoints() * .5) + 50);
                                                                     gb.sinkShip(otherShip);
                                                                 }
@@ -304,6 +305,7 @@ public class ShipPanel implements Panel
                                                             System.out.println("mine added cause j == size");
                                                         } else {
                                                             otherShip = board[y][x - shipSize];
+                                                            gb.setPoints(gb.getPoints() - 4);
                                                             otherShip.applyDamage((int) (otherShip.getHitpoints() * .5) + 50);
                                                             gb.sinkShip(otherShip);
                                                         }
