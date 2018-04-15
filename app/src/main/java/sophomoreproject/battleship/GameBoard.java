@@ -220,10 +220,10 @@ public class GameBoard implements GameBoardInterface, Panel {
         }
         if (!checkIndexBoundaries(aShip)) {
             throw new IllegalStateException("Can't place a ship beyond the board's boundaries B");
-        }*/
+        }
         if(!checkPlacementInEnemy(aShip, xPos)) {
             throw new IllegalArgumentException("checkPlacementInEnemy returns false");
-        }
+        }*/
         if (nullCountOfShipSize(shipSize, xPos, yPos, isHorizontal, direction) != shipSize) {
             throw new IllegalStateException("There is already a ship there");
         }
