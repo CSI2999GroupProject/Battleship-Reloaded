@@ -21,4 +21,12 @@ public class WinScreen extends AppCompatActivity {
         Intent intent = new Intent(this, Debug.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), MainMenu.class));
+        finish();
+    }
+
+
 }
