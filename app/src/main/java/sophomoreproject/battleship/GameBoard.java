@@ -584,7 +584,7 @@ public class GameBoard implements GameBoardInterface, Panel {
             addShip(aShip, xPos + pmove, yPos);
             while(i < shipSize) {
                 for (Point p : mineSet) {
-                    System.out.println("x: " + p.x + " y: " + p.y);
+                    //System.out.println("x: " + p.x + " y: " + p.y);
                     if ((p.equals(xPos + pmove - i, yPos))) {
                         aShip.applyDamage((int) (aShip.getHitpoints() * .5) + 50);
                         sinkShip(aShip);

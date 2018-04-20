@@ -42,7 +42,6 @@ public class Player {
     }
 
     public HashSet<Ship> getPlayerSet() {
-        System.out.println(playerSet);
         return playerSet;
     }
 

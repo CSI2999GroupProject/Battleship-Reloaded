@@ -65,27 +65,27 @@ public class FleetBuildPanel implements Panel
         selectedPaint.setAlpha(175);
 
         aircraftcarrierBox = new Rect();
-        aircraftcarrierBox.set(panel.width()/16, panel.height()/16 - panel.width()*7/(32*5) , panel.width()/2, panel.height()/16 + panel.width()*7/(32*5));
+        aircraftcarrierBox.set(panel.width()/16, panel.height()/16 - panel.width()*7/(32*5) , panel.width()/16 + panel.height()/8, panel.height()/16 + panel.width()*7/(32*5));
         aircraftcarrier = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.aircraftcarrier), aircraftcarrierBox.width(), aircraftcarrierBox.height(), false);
 
         battleshipBox = new Rect();
-        battleshipBox.set(panel.width()/16, panel.height()*3/16 - panel.width()*7/(32*3) , panel.width()/2, panel.height()*3/16 + panel.width()*7/(32*3));
+        battleshipBox.set(panel.width()/16, panel.height()*3/16 - panel.width()*7/(32*3) , panel.width()/16 + panel.height()/8, panel.height()*3/16 + panel.width()*7/(32*3));
         battleship = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.battleship), battleshipBox.width(), battleshipBox.height(), false);
 
         cruiserBox = new Rect();
-        cruiserBox.set(panel.width()/16, panel.height()*5/16 - panel.width()*7/(32*2) , panel.width()/2, panel.height()*5/16 + panel.width()*7/(32*2));
+        cruiserBox.set(panel.width()/16, panel.height()*5/16 - panel.width()*7/(32*2) , panel.width()/16 + panel.height()/8, panel.height()*5/16 + panel.width()*7/(32*2));
         cruiser = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.cruiser), cruiserBox.width(), cruiserBox.height(), false);
 
         destroyerBox = new Rect();
-        destroyerBox.set(panel.width()/16, panel.height()*7/16 - panel.width()*7/(32*4) , panel.width()/2, panel.height()*7/16 + panel.width()*7/(32*4));
+        destroyerBox.set(panel.width()/16, panel.height()*7/16 - panel.width()*7/(32*4) , panel.width()/16 + panel.height()/8, panel.height()*7/16 + panel.width()*7/(32*4));
         destroyer = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.destroyer), destroyerBox.width(), destroyerBox.height(), false);
 
         submarineBox = new Rect();
-        submarineBox.set(panel.width()/16, panel.height()*9/16 - panel.width()*7/(32*3) , panel.width()/2, panel.height()*9/16 + panel.width()*7/(32*3));
+        submarineBox.set(panel.width()/16, panel.height()*9/16 - panel.width()*7/(32*3) , panel.width()/16 + panel.height()/8, panel.height()*9/16 + panel.width()*7/(32*3));
         submarine = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.submarine), submarineBox.width(), submarineBox.height(), false);
 
         finishBox = new Rect(panel.width()/8, panel.height()*7/8, panel.width()*7/8, panel.height()*7/8 + panel.width()*3/8);
-        finishButton = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.shipplacing_button_on), finishBox.width(), finishBox.height(), false);
+        finishButton = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.shipplacing_button_off), finishBox.width(), finishBox.height(), false);
 
         fleetPointsBox = new Rect(w*3/8, h - (w * 3)/(4 * 8) , w*5/8, h);
         fleetPointsDisplay = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.points_title), fleetPointsBox.width(), fleetPointsBox.height(), false);
@@ -139,13 +139,31 @@ public class FleetBuildPanel implements Panel
         canvas.drawBitmap(turnRight, turnRightBox.left, turnRightBox.top, null);
         canvas.drawBitmap(finishButton, finishBox.left, finishBox.top, null);
         canvas.drawBitmap(fleetPointsDisplay, fleetPointsBox.left, fleetPointsBox.top, null);
+
+        if(board.getPlayerTurn() == 0 && !board.getP1().getPlayerSet().isEmpty()
+        || board.getPlayerTurn() == 1 && !board.getP2().getPlayerSet().isEmpty())
+        {
+            canvas.drawBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.shipplacing_button_on), finishBox.width(), finishBox.height(), false), finishBox.left, finishBox.top, null);
+        }
+
         canvas.drawText("" + board.getP1().getAvailablePoints(), fleetPointsBox.left + (fleetPointsBox.right - fleetPointsBox.left)*2/5, fleetPointsBox.top + (fleetPointsBox.bottom - fleetPointsBox.top)*35/48, fontColor);
         canvas.drawText("" + board.getP2().getAvailablePoints(), fleetPointsBox.left + (fleetPointsBox.right - fleetPointsBox.left)*35/40, fleetPointsBox.top + (fleetPointsBox.bottom - fleetPointsBox.top)*35/48, fontColor);
-        canvas.drawText("4 points", aircraftcarrierBox.right + panel.width()/16, aircraftcarrierBox.centerY() + costFontColor.getTextSize()/2, costFontColor);
-        canvas.drawText("2 points", battleshipBox.right + panel.width()/16, battleshipBox.centerY() + costFontColor.getTextSize()/2, costFontColor);
-        canvas.drawText("1 point", cruiserBox.right + panel.width()/16, cruiserBox.centerY() + costFontColor.getTextSize()/2, costFontColor);
-        canvas.drawText("3 points", destroyerBox.right + panel.width()/16, destroyerBox.centerY() + costFontColor.getTextSize()/2, costFontColor);
-        canvas.drawText("2 points", submarineBox.right + panel.width()/16, submarineBox.centerY() + costFontColor.getTextSize()/2, costFontColor);
+
+        //Points fields
+        canvas.drawText("4 points", panel.width()/2 + panel.width()/16, panel.height()/16 + costFontColor.getTextSize()/2, costFontColor);
+        canvas.drawText("2 points", panel.width()/2 + panel.width()/16, panel.height()*3/16 + costFontColor.getTextSize()/2, costFontColor);
+        canvas.drawText("1 point", panel.width()/2 + panel.width()/16, panel.height()*5/16 + costFontColor.getTextSize()/2, costFontColor);
+        canvas.drawText("3 points", panel.width()/2 + panel.width()/16, panel.height()*7/16 + costFontColor.getTextSize()/2, costFontColor);
+        canvas.drawText("2 points", panel.width()/2 + panel.width()/16, panel.height()*9/16 + costFontColor.getTextSize()/2, costFontColor);
+
+        //Putting labels over the images of the ships
+        costFontColor.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("Aircraft Carrier", panel.width()*5/16, panel.height()/16 - panel.height()/64, costFontColor);
+        canvas.drawText("Battleship", panel.width()*5/16, panel.height()*3/16 - panel.height()/64, costFontColor);
+        canvas.drawText("Cruiser", panel.width()*5/16, panel.height()*5/16 - panel.height()/64, costFontColor);
+        canvas.drawText("Destroyer", panel.width()*5/16, panel.height()*7/16 - panel.height()/64, costFontColor);
+        canvas.drawText("Submarine", panel.width()*5/16, panel.height()*9/16 - panel.height()/64, costFontColor);
+        costFontColor.setTextAlign(Paint.Align.LEFT);
 
         if (selected != null) {
             if (isHorizontal)
@@ -192,8 +210,6 @@ public class FleetBuildPanel implements Panel
         switch(event.getAction())
         {
             case MotionEvent.ACTION_DOWN: //What happens after any of the Rect is clicked
-
-
 
                 if(aircraftcarrierBox.contains(x, y))
                 {
@@ -242,24 +258,15 @@ public class FleetBuildPanel implements Panel
                 else if(turnRightBox.contains(x, y))
                 {
                     lastButtonPress = turnRight;
-                } else if(finishBox.contains(x, y)) { //
+                } else if(finishBox.contains(x, y)) {
                     lastButtonPress = finishButton;
                 }
 
-
-
-
-
             case MotionEvent.ACTION_MOVE:
                 break;
+
             case MotionEvent.ACTION_UP:
                 selected = null;
-
-
-
-
-
-
                 if(lastButtonPress == turnLeft && turnLeftBox.contains(x, y))
                 {
                     aircraftcarrier = applyRotate(aircraftcarrier, -90);
@@ -304,10 +311,10 @@ public class FleetBuildPanel implements Panel
                         isHorizontal = true;
                     }
                 } else if(lastButtonPress == finishButton && finishBox.contains(x, y)) {
-                    if(board.getPlayerTurn() == 0) {
+                    if(board.getPlayerTurn() == 0 && !board.getP1().getPlayerSet().isEmpty()) {
                         board.setPlayerTurn(1);
-                        board.getMasterPoint().set(-128*12, 0);
-                    } else if(board.getPlayerTurn() == 1) {
+                        board.getMasterPoint().set(-128*12 + panel.width(), 0);
+                    } else if(board.getPlayerTurn() == 1 && !board.getP2().getPlayerSet().isEmpty()) {
                         board.setPlayerTurn(0);
                         board.getMasterPoint().x = -128 * board.xPosOfShip(board.getP1()) - board.VIEW_RANGE + board.SCREEN_WIDTH;
                         initialSeq = 2;
@@ -316,10 +323,6 @@ public class FleetBuildPanel implements Panel
 
                 }
 
-
-
-
-
                 lastButtonPress = null;
 
                 if(panel.contains(x, y))
@@ -327,9 +330,6 @@ public class FleetBuildPanel implements Panel
 
                 int row = (x - board.getMasterPoint().x)/128;
                 int column = (y - board.getMasterPoint().y)/128;
-
-
-
 
                 try
                 {
